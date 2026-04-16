@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Central Luan Estifer</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div class="app-layout">
+      <!-- Sidebar Navigation -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <img src="/Foto de Perfil IA.jpg" alt="Luan Estifer" class="profile-img" onerror="this.src='https://via.placeholder.com/80/00b4d8/ffffff?text=LE'">
+          <h2>Central Luan</h2>
+          <p>Portfólio & Rotina</p>
+        </div>
+        <nav class="sidebar-nav">
+          <button class="nav-item active" data-target="rotina"><i class="fas fa-calendar-alt"></i> Minha Rotina</button>
+          <button class="nav-item" data-target="biblia"><i class="fas fa-book-bible"></i> Plano Bíblico</button>
+          <button class="nav-item" data-target="vagas"><i class="fas fa-briefcase"></i> Vagas</button>
+          <button class="nav-item" data-target="curriculo"><i class="fas fa-file-contract"></i> Currículo</button>
+        </nav>
+      </aside>
+
+      <!-- Main Content Area -->
+      <main class="main-content" id="app-content">
+        <!-- Views will be injected here -->
+      </main>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
