@@ -3,13 +3,48 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "main": "electron-main.js",
+  "homepage": "./",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "electron-dev": "cross-env NODE_ENV=development concurrently \"npm run dev\" \"wait-on http://localhost:5173 && electron .\"",
+    "electron-build": "npm run build && electron-builder"
   },
   "devDependencies": {
+    "concurrently": "^8.2.2",
+    "cross-env": "^10.1.0",
+    "electron": "^41.2.1",
+    "electron-builder": "^24.13.3",
     "gh-pages": "^6.3.0",
-    "vite": "^8.0.4"
+    "vite": "^8.0.4",
+    "wait-on": "^7.2.0"
+  },
+  "build": {
+    "appId": "com.luanestifer.app",
+    "productName": "App Pessoal",
+    "files": [
+      "dist/**/*",
+      "electron-main.js",
+      "preload.js",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "public"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "public/favicon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
   }
 }
