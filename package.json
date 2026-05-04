@@ -28,6 +28,7 @@
   "build": {
     "appId": "com.luanestifer.app",
     "productName": "App Pessoal",
+    "asar": false,
     "files": [
       "dist/**/*",
       "electron-main.js",
