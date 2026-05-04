@@ -1,6 +1,6 @@
 # App Pessoal
 
-Aplicativo pessoal desktop desenvolvido com Electron + Vite para gerenciamento de rotina, plano bíblico, vagas de emprego e currículo.
+Aplicativo pessoal desktop desenvolvido com Electron + Vite para gerenciamento de rotina, plano bíblico, vagas de emprego e currículo. Suporta totalmente Windows e Linux.
 
 ## 🚀 Funcionalidades
 
@@ -12,7 +12,7 @@ Aplicativo pessoal desktop desenvolvido com Electron + Vite para gerenciamento d
 ## 🛠️ Tecnologias
 
 - **Electron** - Framework para aplicações desktop
-- **Vite** - Build tool e dev server
+- **Vite** - Build tool e dev server com suporte a caminhos relativos em produção
 - **JavaScript ES6+** - Linguagem principal
 - **HTML5/CSS3** - Interface e estilos
 
@@ -36,23 +36,39 @@ npm install
 
 ### Desenvolvimento
 ```bash
-# Opção 1: Terminal invisível (recomendado)
-iniciar_invisivel.vbs
-
-# Opção 2: Com terminal visível
-iniciar.cmd
-
-# Opção 3: PowerShell
-.\iniciar.ps1
-
-# Opção 4: Terminal direto
+# Executar servidor de desenvolvimento e o Electron
 npm run electron-dev
 ```
 
-### Produção
+### Produção (Build)
+
+#### No Windows
 ```bash
-# Gerar executável/instalador
-compilar_executavel.cmd
+# Compilar instalador e versão portátil para Windows
+npm run electron-build:win
+```
+
+#### No Linux
+```bash
+# Compilar versão AppImage e .deb para Linux
+npm run electron-build:linux
+
+# Ou via script auxiliar
+./compilar_executavel.sh
+```
+
+## 🐧 Rodando no Linux
+Você pode instalar o pacote nativo `.deb` ou executar o arquivo portátil `AppImage`:
+
+### Como instalar e rodar o arquivo `.deb`
+```bash
+sudo dpkg -i dist/app-pessoal_0.0.0_amd64.deb
+```
+
+### Como rodar o `AppImage`
+```bash
+chmod +x "dist/App Pessoal-0.0.0.AppImage"
+./"dist/App Pessoal-0.0.0.AppImage" --no-sandbox
 ```
 
 ## 📁 Estrutura do Projeto
@@ -70,6 +86,7 @@ App-Pessoal/
 ├── public/                # Assets estáticos
 ├── electron-main.js       # Processo principal do Electron
 ├── preload.js            # Script de preload
+├── vite.config.js        # Configuração do Vite para produção
 └── package.json          # Dependências e scripts
 ```
 
@@ -78,23 +95,10 @@ App-Pessoal/
 - `npm run dev` - Inicia servidor de desenvolvimento Vite
 - `npm run build` - Build para produção
 - `npm run electron-dev` - Desenvolvimento com Electron
-- `npm run electron-build` - Build do executável
-
-## 📋 Requisitos do Sistema
-
-- Windows 10 ou superior
-- 4GB RAM mínimo
-- 500MB espaço em disco
-
-## 🤝 Contribuição
-
-Este é um projeto pessoal, mas sugestões são bem-vindas!
-
-## 📄 Licença
-
-Este projeto é privado e pessoal.
+- `npm run electron-build` - Build do executável para Windows e Linux
+- `npm run electron-build:win` - Build do executável para Windows
+- `npm run electron-build:linux` - Build do executável para Linux
 
 ---
 
-**Desenvolvido por Luan Estifer**</content>
-<parameter name="filePath">c:\Users\luane\Downloads\App pessoal\README.md
+**Desenvolvido por Luan Estifer**

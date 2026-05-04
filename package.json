@@ -49,7 +49,10 @@
         "AppImage",
         "deb"
       ],
-      "category": "Utility"
+      "category": "Utility",
+      "executableArgs": [
+        "--no-sandbox"
+      ]
     },
     "nsis": {
       "oneClick": false,

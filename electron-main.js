@@ -17,6 +17,7 @@ const createWindow = () => {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,
       contextIsolation: true,
+      webSecurity: false,
     },
     icon: path.join(__dirname, 'public/favicon.ico'),
   });
@@ -30,6 +31,9 @@ const createWindow = () => {
     console.log('Loading production file...');
     mainWindow.loadFile(path.join(__dirname, 'dist/index.html'));
   }
+
+  // Descomente abaixo para ver os logs do DevTools caso haja algum erro em produção
+  mainWindow.webContents.openDevTools();
 
   mainWindow.on('closed', () => {
     mainWindow = null;
