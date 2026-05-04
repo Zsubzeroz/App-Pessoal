@@ -22,17 +22,14 @@ const createWindow = () => {
   });
 
   const isDev = process.env.NODE_ENV === 'development';
-  const startUrl = isDev
-    ? 'http://localhost:5173' // porta padrão do Vite
-    : `file://${path.join(__dirname, 'dist/index.html')}`;
 
-  console.log('Loading URL:', startUrl);
-  mainWindow.loadURL(startUrl);
-
-  // Abrir DevTools em desenvolvimento (comentar a linha abaixo para desabilitar)
-  // if (isDev) {
-  //   mainWindow.webContents.openDevTools();
-  // }
+  if (isDev) {
+    console.log('Loading development URL...');
+    mainWindow.loadURL('http://localhost:5173');
+  } else {
+    console.log('Loading production file...');
+    mainWindow.loadFile(path.join(__dirname, 'dist/index.html'));
+  }
 
   mainWindow.on('closed', () => {
     mainWindow = null;
