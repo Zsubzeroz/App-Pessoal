@@ -317,8 +317,7 @@ input:focus, select:focus, textarea:focus {
 .b-table th { text-align: left; padding: 16px; background: rgba(255,255,255,0.02); color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; border-bottom: 1px solid var(--border); }
 .b-table td { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 0.95rem; transition: 0.2s; }
 .b-table tr:hover { background: rgba(255,255,255,0.01); }
-.b-table tr.completed td { background: rgba(16, 185, 129, 0.03); opacity: 0.6; }
-.b-table tr.completed td strong { text-decoration: line-through; color: var(--c-success); }
+.b-table tr.completed { display: none; }
 
 .b-checkbox { width: 24px; height: 24px; cursor: pointer; accent-color: var(--c-success); }
 

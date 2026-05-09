@@ -95,6 +95,29 @@ export function mountBiblia() {
         localStorage.removeItem(`biblia_dia_${dia}`);
       }
       updateProgress();
+
+      // Check if finished (Cycle completion)
+      let currentCompleted = 0;
+      for(let i = 1; i <= 365; i++) {
+        if(localStorage.getItem(`biblia_dia_${i}`) === 'true') currentCompleted++;
+      }
+
+      if (currentCompleted === 365) {
+        // Wait a bit for the last hide animation/feel, then reset
+        setTimeout(() => {
+          if(confirm("Parabéns! Você concluiu o plano de 365 dias. Deseja reiniciar o ciclo?")) {
+            for(let i = 1; i <= 365; i++) localStorage.removeItem(`biblia_dia_${i}`);
+            // Force re-mount or simple UI reset
+            const rows = tbody.querySelectorAll('tr');
+            rows.forEach(r => {
+              r.classList.remove('completed');
+              const cb = r.querySelector('input');
+              if(cb) cb.checked = false;
+            });
+            updateProgress();
+          }
+        }, 500);
+      }
     }
   });
 
