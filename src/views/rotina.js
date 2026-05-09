@@ -1,25 +1,72 @@
+const DEFAULT_ROUTINE = {
+  Segunda: [
+    { title: "🎹 Piano", desc: "Aula e Prática", link: "#", color: "c-music" },
+    { title: "Unicesumar", desc: "Studeo / Atividades", link: "https://studeo.unicesumar.edu.br/", color: "c-tech" },
+    { title: "Mate Academy", desc: "Frontend", link: "https://mate.academy/pt-br/home", color: "c-tech" },
+    { title: "Fluency", desc: "Listening", link: "https://academy.fluency.io/", color: "c-lang" }
+  ],
+  Terça: [
+    { title: "🗣️ Conversação", desc: "Fluency Talks", link: "https://talks.fluency.io/", color: "c-talks" },
+    { title: "Cisco NetAcad", desc: "Networking", link: "https://www.netacad.com/", color: "c-tech" },
+    { title: "SEDA College", desc: "Inglês", link: "https://sedacollegeonline.com/", color: "c-lang" },
+    { title: "🧮 Ábaco Mental", desc: "Matemática", link: "https://www.geogebra.org/m/S97v79S5", color: "c-math" }
+  ],
+  Quarta: [
+    { title: "Coddy.tech", desc: "Python", link: "https://coddy.tech/", color: "c-tech" },
+    { title: "Mate Academy", desc: "Projetos", link: "https://mate.academy/pt-br/home", color: "c-tech" },
+    { title: "Little Lang", desc: "Daily Lessons", link: "https://littlelanguagelessons.com/", color: "c-lang" },
+    { title: "Unicesumar", desc: "Fórum", link: "https://studeo.unicesumar.edu.br/", color: "c-tech" }
+  ],
+  Quinta: [
+    { title: "🗣️ Conversação", desc: "Fluency Talks", link: "https://talks.fluency.io/", color: "c-talks" },
+    { title: "Cisco NetAcad", desc: "Labs", link: "https://www.netacad.com/", color: "c-tech" },
+    { title: "Fluency", desc: "Anki", link: "https://academy.fluency.io/", color: "c-lang" },
+    { title: "🎼 Teoria", desc: "Partitura", link: "#", color: "c-music" }
+  ],
+  Sexta: [
+    { title: "Eu Capacito", desc: "Cursos", link: "https://eucapacito.com.br/", color: "c-tech" },
+    { title: "Coddy.tech", desc: "Problemas", link: "https://coddy.tech/", color: "c-tech" },
+    { title: "Libras", desc: "Prática", link: "https://www.handtalk.me/br/libras/", color: "c-lang" },
+    { title: "♟️ Xadrez", desc: "Análise", link: "https://www.chess.com/pt-BR", color: "c-relax" }
+  ],
+  Sábado: [
+    { title: "💻 Eng. Software", desc: "Projetos/Portfólio", link: "#", color: "c-tech" },
+    { title: "Cursos Educa", desc: "Pessoal", link: "https://www.cursosonlineeduca.com.br/", color: "c-tech" },
+    { title: "🎹 Piano", desc: "Prática Livre", link: "#", color: "c-music" },
+    { title: "Imersão", desc: "Filmes/Séries", link: "#", color: "c-lang" }
+  ],
+  Domingo: [
+    { title: "Bíblia", desc: "Estudo", link: "https://www.bibliaonline.com.br/", color: "c-spirit" },
+    { title: "Planejamento", desc: "Agenda", link: "#", color: "c-relax" }
+  ]
+};
+
 export function renderRotina() {
-  const links = {
-    coddy: "https://coddy.tech/",
-    littleLanguage: "https://littlelanguagelessons.com/",
-    cisco: "https://www.netacad.com/",
-    seda: "https://sedacollegeonline.com/",
-    biblia: "https://www.bibliaonline.com.br/",
-    libras: "https://www.handtalk.me/br/libras/",
-    duolingo: "https://www.duolingo.com/",
-    mate: "https://mate.academy/pt-br/home",
-    unicesumar: "https://studeo.unicesumar.edu.br/",
-    educa: "https://www.cursosonlineeduca.com.br/",
-    euCapacito: "https://eucapacito.com.br/",
-    fluency: "https://academy.fluency.io/",
-    fluencyTalks: "https://talks.fluency.io/",
-    xadrez: "https://www.chess.com/pt-BR",
-    abaco: "https://www.geogebra.org/m/S97v79S5"
-  };
+  const currentRoutine = JSON.parse(localStorage.getItem('zen-routine-data')) || DEFAULT_ROUTINE;
+  const completedTasks = JSON.parse(localStorage.getItem('zen-routine-completed')) || [];
+
+  const dayColumns = Object.entries(currentRoutine).map(([day, tasks]) => {
+    const taskCards = tasks.map((task, idx) => {
+      const taskId = `${day}-${idx}`;
+      const isDone = completedTasks.includes(taskId);
+      return `
+        <div class="task-card ${task.color} ${isDone ? 'done' : ''}" data-id="${taskId}" data-link="${task.link}">
+          <span class="t-title">${task.title}</span>
+          <span class="t-desc">${task.desc}</span>
+        </div>
+      `;
+    }).join('');
+
+    return `
+      <div class="day-column">
+        <div class="day-label">${day}</div>
+        <div class="day-tasks">${taskCards}</div>
+      </div>
+    `;
+  }).join('');
 
   return `
     <div class="r-page-wrapper" id="capture-area">
-      <!-- Header with Clock and Greeting -->
       <header class="dashboard-header">
         <div class="greeting-box">
           <div class="status-indicator"><span class="pulse"></span> Online e Focado</div>
@@ -38,9 +85,7 @@ export function renderRotina() {
         </div>
       </header>
 
-      <!-- Top Widgets Row -->
       <div class="widgets-row">
-        <!-- Pomodoro Timer -->
         <div class="widget-card glass-panel pomodoro-widget">
           <div class="widget-header">
             <i class="fas fa-stopwatch"></i>
@@ -54,7 +99,6 @@ export function renderRotina() {
           </div>
         </div>
 
-        <!-- Today's Progress -->
         <div class="widget-card progress-widget">
           <div class="widget-header">
             <i class="fas fa-chart-line"></i>
@@ -68,114 +112,42 @@ export function renderRotina() {
           </div>
         </div>
 
-        <!-- Quick Habits -->
         <div class="widget-card habits-widget">
           <div class="widget-header">
             <i class="fas fa-star"></i>
             <span>Hábitos Rápidos</span>
           </div>
           <div class="habits-list">
-            <a href="${links.biblia}" target="_blank" class="habit-mini">📖</a>
-            <a href="${links.duolingo}" target="_blank" class="habit-mini">🦉</a>
-            <a href="${links.libras}" target="_blank" class="habit-mini">✋</a>
-            <a href="${links.xadrez}" target="_blank" class="habit-mini">♟️</a>
-            <a href="${links.abaco}" target="_blank" class="habit-mini">🧮</a>
+            <a href="https://www.bibliaonline.com.br/" target="_blank" class="habit-mini">📖</a>
+            <a href="https://www.duolingo.com/" target="_blank" class="habit-mini">🦉</a>
+            <a href="https://www.handtalk.me/br/libras/" target="_blank" class="habit-mini">✋</a>
+            <a href="https://www.chess.com/pt-BR" target="_blank" class="habit-mini">♟️</a>
+            <a href="https://www.geogebra.org/m/S97v79S5" target="_blank" class="habit-mini">🧮</a>
           </div>
         </div>
       </div>
 
-      <!-- Weekly Planner Grid -->
       <section class="planner-section">
         <div class="section-header">
-          <h2 class="section-title">Cronograma de Estudos</h2>
-          <p class="section-desc">Clique para abrir o link | Botão direito ou clique duplo para concluir</p>
+          <div class="header-left">
+            <h2 class="section-title">Cronograma de Estudos</h2>
+            <p class="section-desc">Clique para abrir o link | Botão direito ou clique duplo para concluir</p>
+          </div>
+          <button id="btn-edit-routine" class="pomo-btn" title="Editar Rotina"><i class="fas fa-edit"></i> Editar Rotina</button>
         </div>
 
         <div class="planner-grid">
-          <!-- SEGUNDA -->
-          <div class="day-column">
-            <div class="day-label">Segunda</div>
-            <div class="day-tasks">
-              <div class="task-card c-music" data-link="#"><span class="t-title">🎹 Piano</span><span class="t-desc">Aula e Prática</span></div>
-              <div class="task-card c-tech" data-link="${links.unicesumar}"><span class="t-title">Unicesumar</span><span class="t-desc">Studeo / Atividades</span></div>
-              <div class="task-card c-tech" data-link="${links.mate}"><span class="t-title">Mate Academy</span><span class="t-desc">Frontend</span></div>
-              <div class="task-card c-lang" data-link="${links.fluency}"><span class="t-title">Fluency</span><span class="t-desc">Listening</span></div>
-            </div>
-          </div>
-          
-          <!-- TERÇA -->
-          <div class="day-column">
-            <div class="day-label">Terça</div>
-            <div class="day-tasks">
-              <div class="task-card c-talks" data-link="${links.fluencyTalks}"><span class="t-title">🗣️ Conversação</span><span class="t-desc">Fluency Talks</span></div>
-              <div class="task-card c-tech" data-link="${links.cisco}"><span class="t-title">Cisco NetAcad</span><span class="t-desc">Networking</span></div>
-              <div class="task-card c-lang" data-link="${links.seda}"><span class="t-title">SEDA College</span><span class="t-desc">Inglês</span></div>
-              <div class="task-card c-math" data-link="${links.abaco}"><span class="t-title">🧮 Ábaco Mental</span><span class="t-desc">Matemática</span></div>
-            </div>
-          </div>
-
-          <!-- QUARTA -->
-          <div class="day-column">
-            <div class="day-label">Quarta</div>
-            <div class="day-tasks">
-              <div class="task-card c-tech" data-link="${links.coddy}"><span class="t-title">Coddy.tech</span><span class="t-desc">Python</span></div>
-              <div class="task-card c-tech" data-link="${links.mate}"><span class="t-title">Mate Academy</span><span class="t-desc">Projetos</span></div>
-              <div class="task-card c-lang" data-link="${links.littleLanguage}"><span class="t-title">Little Lang</span><span class="t-desc">Daily Lessons</span></div>
-              <div class="task-card c-tech" data-link="${links.unicesumar}"><span class="t-title">Unicesumar</span><span class="t-desc">Fórum</span></div>
-            </div>
-          </div>
-
-          <!-- QUINTA -->
-          <div class="day-column">
-            <div class="day-label">Quinta</div>
-            <div class="day-tasks">
-              <div class="task-card c-talks" data-link="${links.fluencyTalks}"><span class="t-title">🗣️ Conversação</span><span class="t-desc">Fluency Talks</span></div>
-              <div class="task-card c-tech" data-link="${links.cisco}"><span class="t-title">Cisco NetAcad</span><span class="t-desc">Labs</span></div>
-              <div class="task-card c-lang" data-link="${links.fluency}"><span class="t-title">Fluency</span><span class="t-desc">Anki</span></div>
-              <div class="task-card c-music" data-link="#"><span class="t-title">🎼 Teoria</span><span class="t-desc">Partitura</span></div>
-            </div>
-          </div>
-
-          <!-- SEXTA -->
-          <div class="day-column">
-            <div class="day-label">Sexta</div>
-            <div class="day-tasks">
-              <div class="task-card c-tech" data-link="${links.euCapacito}"><span class="t-title">Eu Capacito</span><span class="t-desc">Cursos</span></div>
-              <div class="task-card c-tech" data-link="${links.coddy}"><span class="t-title">Coddy.tech</span><span class="t-desc">Problemas</span></div>
-              <div class="task-card c-lang" data-link="${links.libras}"><span class="t-title">Libras</span><span class="t-desc">Prática</span></div>
-              <div class="task-card c-relax" data-link="${links.xadrez}"><span class="t-title">♟️ Xadrez</span><span class="t-desc">Análise</span></div>
-            </div>
-          </div>
-
-          <!-- SÁBADO -->
-          <div class="day-column">
-            <div class="day-label">Sábado</div>
-            <div class="day-tasks">
-              <div class="task-card c-tech" data-link="#"><span class="t-title">💻 Eng. Software</span><span class="t-desc">Projetos/Portfólio</span></div>
-              <div class="task-card c-tech" data-link="${links.educa}"><span class="t-title">Cursos Educa</span><span class="t-desc">Pessoal</span></div>
-              <div class="task-card c-music" data-link="#"><span class="t-title">🎹 Piano</span><span class="t-desc">Prática Livre</span></div>
-              <div class="task-card c-lang" data-link="#"><span class="t-title">Imersão</span><span class="t-desc">Filmes/Séries</span></div>
-            </div>
-          </div>
-
-          <!-- DOMINGO -->
-          <div class="day-column">
-            <div class="day-label">Domingo</div>
-            <div class="day-tasks">
-              <div class="task-card c-spirit" data-link="${links.biblia}"><span class="t-title">Bíblia</span><span class="t-desc">Estudo</span></div>
-              <div class="task-card c-relax" data-link="#"><span class="t-title">Planejamento</span><span class="t-desc">Agenda</span></div>
-            </div>
-          </div>
+          ${dayColumns}
         </div>
       </section>
 
       <div class="action-footer">
         <button class="btn-primary" id="btnSalvar">📸 Salvar Painel em JPG</button>
       </div>
-
     </div>
   `;
 }
+
 
 export function mountRotina() {
   // Clock logic
@@ -274,10 +246,18 @@ export function mountRotina() {
     });
   }
 
-  // Task interaction
+  // Task interaction & Persistence
   const tasks = document.querySelectorAll('.task-card');
   const completedEl = document.getElementById('completed-count');
   const totalEl = document.getElementById('total-count');
+
+  function getCompleted() {
+    return JSON.parse(localStorage.getItem('zen-routine-completed')) || [];
+  }
+
+  function saveCompleted(completed) {
+    localStorage.setItem('zen-routine-completed', JSON.stringify(completed));
+  }
 
   function updateProgress() {
     const total = tasks.length;
@@ -287,7 +267,6 @@ export function mountRotina() {
   }
 
   tasks.forEach(task => {
-    // Click to open link
     task.addEventListener('click', (e) => {
       const link = task.getAttribute('data-link');
       if (link && link !== '#') {
@@ -295,10 +274,18 @@ export function mountRotina() {
       }
     });
 
-    // Double click or Right click to mark as done
     const markDone = (e) => {
       e.preventDefault();
+      const taskId = task.getAttribute('data-id');
       task.classList.toggle('done');
+      
+      let completed = getCompleted();
+      if (task.classList.contains('done')) {
+        if (!completed.includes(taskId)) completed.push(taskId);
+      } else {
+        completed = completed.filter(id => id !== taskId);
+      }
+      saveCompleted(completed);
       updateProgress();
     };
 
@@ -307,6 +294,128 @@ export function mountRotina() {
   });
 
   updateProgress();
+
+  // Edit Routine Logic
+  const editBtn = document.getElementById('btn-edit-routine');
+  if (editBtn) {
+    editBtn.addEventListener('click', () => {
+      const currentRoutine = JSON.parse(localStorage.getItem('zen-routine-data')) || DEFAULT_ROUTINE;
+      
+      // Create Modal Backdrop
+      const modal = document.createElement('div');
+      modal.className = 'routine-modal-backdrop';
+      
+      let daysHtml = Object.entries(currentRoutine).map(([day, tasks]) => {
+        const tasksHtml = tasks.map((t, i) => `
+          <div class="edit-task-row" data-day="${day}" data-index="${i}">
+            <input type="text" value="${t.title}" class="edit-t-title" placeholder="Título">
+            <input type="text" value="${t.desc}" class="edit-t-desc" placeholder="Descrição">
+            <input type="text" value="${t.link}" class="edit-t-link" placeholder="Link (URL)">
+            <select class="edit-t-color">
+               <option value="c-tech" ${t.color==='c-tech'?'selected':''}>Tecnologia</option>
+               <option value="c-lang" ${t.color==='c-lang'?'selected':''}>Línguas</option>
+               <option value="c-music" ${t.color==='c-music'?'selected':''}>Música</option>
+               <option value="c-math" ${t.color==='c-math'?'selected':''}>Matemática</option>
+               <option value="c-talks" ${t.color==='c-talks'?'selected':''}>Conversação</option>
+               <option value="c-relax" ${t.color==='c-relax'?'selected':''}>Relax / Lazer</option>
+               <option value="c-spirit" ${t.color==='c-spirit'?'selected':''}>Espiritual</option>
+            </select>
+            <button class="remove-task-btn"><i class="fas fa-trash"></i></button>
+          </div>
+        `).join('');
+        
+        return `
+          <div class="edit-day-section">
+            <h3>${day}</h3>
+            <div class="day-tasks-edit" id="edit-tasks-${day}">
+              ${tasksHtml}
+            </div>
+            <button class="add-task-btn" data-day="${day}"><i class="fas fa-plus"></i> Adicionar Tarefa</button>
+          </div>
+        `;
+      }).join('');
+
+      modal.innerHTML = `
+        <div class="routine-modal glass-panel">
+          <div class="modal-header">
+            <h2>Gerenciar Cronograma</h2>
+            <button id="close-modal"><i class="fas fa-times"></i></button>
+          </div>
+          <div class="modal-body">
+            ${daysHtml}
+          </div>
+          <div class="modal-footer">
+            <button id="reset-routine" class="btn-secondary">Restaurar Padrão</button>
+            <button id="save-routine" class="btn-primary">Salvar Alterações</button>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(modal);
+
+      // Modal interactions
+      modal.querySelector('#close-modal').onclick = () => modal.remove();
+      
+      modal.querySelectorAll('.remove-task-btn').forEach(btn => {
+        btn.onclick = () => btn.parentElement.remove();
+      });
+
+      modal.querySelectorAll('.add-task-btn').forEach(btn => {
+        btn.onclick = () => {
+          const day = btn.getAttribute('data-day');
+          const container = modal.querySelector(`#edit-tasks-${day}`);
+          const row = document.createElement('div');
+          row.className = 'edit-task-row';
+          row.innerHTML = `
+            <input type="text" value="" class="edit-t-title" placeholder="Título">
+            <input type="text" value="" class="edit-t-desc" placeholder="Descrição">
+            <input type="text" value="#" class="edit-t-link" placeholder="Link (URL)">
+            <select class="edit-t-color">
+               <option value="c-tech">Tecnologia</option>
+               <option value="c-lang">Línguas</option>
+               <option value="c-music">Música</option>
+               <option value="c-math">Matemática</option>
+               <option value="c-talks">Conversação</option>
+               <option value="c-relax">Relax / Lazer</option>
+               <option value="c-spirit">Espiritual</option>
+            </select>
+            <button class="remove-task-btn"><i class="fas fa-trash"></i></button>
+          `;
+          row.querySelector('.remove-task-btn').onclick = () => row.remove();
+          container.appendChild(row);
+        };
+      });
+
+      modal.querySelector('#reset-routine').onclick = () => {
+        if (confirm('Tem certeza que deseja restaurar a rotina original?')) {
+          localStorage.removeItem('zen-routine-data');
+          localStorage.removeItem('zen-routine-completed');
+          location.reload();
+        }
+      };
+
+      modal.querySelector('#save-routine').onclick = () => {
+        const newRoutine = {};
+        const days = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
+        
+        days.forEach(day => {
+          newRoutine[day] = [];
+          const rows = modal.querySelectorAll(`#edit-tasks-${day} .edit-task-row`);
+          rows.forEach(row => {
+            newRoutine[day].push({
+              title: row.querySelector('.edit-t-title').value,
+              desc: row.querySelector('.edit-t-desc').value,
+              link: row.querySelector('.edit-t-link').value,
+              color: row.querySelector('.edit-t-color').value
+            });
+          });
+        });
+
+        localStorage.setItem('zen-routine-data', JSON.stringify(newRoutine));
+        location.reload();
+      };
+    });
+  }
 
   // Save as JPG
   const btnSalvar = document.getElementById('btnSalvar');
@@ -328,3 +437,4 @@ export function mountRotina() {
     });
   }
 }
+
