@@ -28,7 +28,10 @@ export function renderRotina() {
         </div>
         <div class="quote-box glass-panel">
           <i class="fas fa-quote-left"></i>
-          <p id="motivational-quote">"A disciplina é a ponte entre metas e realizações."</p>
+          <div>
+            <p id="motivational-quote">"A disciplina é a ponte entre metas e realizações."</p>
+            <span id="quote-author">Jim Rohn</span>
+          </div>
         </div>
         <div class="clock-box glass-panel">
           <div id="digital-clock">00:00:00</div>
@@ -201,16 +204,19 @@ export function mountRotina() {
 
   // Quote rotation
   const quotes = [
-    "A disciplina é a ponte entre metas e realizações.",
-    "O sucesso é a soma de pequenos esforços repetidos dia após dia.",
-    "Não espere por motivação, crie disciplina.",
-    "Sua única limitação é aquela que você impõe em sua própria mente.",
-    "Grandes coisas nunca vêm de zonas de conforto.",
-    "O melhor momento para plantar uma árvore foi há 20 anos. O segundo melhor é agora."
+    { text: "A disciplina é a ponte entre metas e realizações.", author: "Jim Rohn" },
+    { text: "O sucesso é a soma de pequenos esforços repetidos dia após dia.", author: "Robert Collier" },
+    { text: "Não espere por motivação, crie disciplina.", author: "Jocko Willink" },
+    { text: "Sua única limitação é aquela que você impõe em sua própria mente.", author: "Napoleon Hill" },
+    { text: "Grandes coisas nunca vêm de zonas de conforto.", author: "Anônimo" },
+    { text: "O melhor momento para plantar uma árvore foi há 20 anos. O segundo melhor é agora.", author: "Provérbio Chinês" }
   ];
   const quoteEl = document.getElementById('motivational-quote');
-  if (quoteEl) {
-    quoteEl.innerText = `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
+  const authorEl = document.getElementById('quote-author');
+  if (quoteEl && authorEl) {
+    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+    quoteEl.innerText = `"${randomQuote.text}"`;
+    authorEl.innerText = randomQuote.author;
   }
 
   // Pomodoro logic

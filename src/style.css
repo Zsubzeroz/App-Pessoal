@@ -259,6 +259,7 @@ input:focus, select:focus, textarea:focus {
 .quote-box { flex: 1; padding: 20px 32px !important; display: flex; align-items: center; gap: 20px; max-width: 500px; }
 .quote-box i { font-size: 1.5rem; color: var(--accent); opacity: 0.3; }
 .quote-box p { font-style: italic; font-size: 0.95rem; line-height: 1.4; color: var(--text-main); margin: 0; }
+#quote-author { display: block; font-size: 0.7rem; font-weight: 700; color: var(--accent); margin-top: 8px; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.8; }
 
 .clock-box { padding: 16px 32px !important; border-radius: 20px !important; display: flex; align-items: center; justify-content: center; min-width: 180px; }
 #digital-clock { font-family: 'Inter', monospace; font-size: 2.2rem; font-weight: 800; color: var(--accent); letter-spacing: -0.02em; }
