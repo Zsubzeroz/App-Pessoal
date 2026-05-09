@@ -3,7 +3,6 @@ import { pipeline, env } from '@huggingface/transformers';
 // Configurações para ambiente Electron/Browser
 env.allowLocalModels = false;
 env.useBrowserCache = true;
-env.remoteHost = 'hf://'; // Usa nosso túnel privado do processo principal
 
 let assistant = null;
 
@@ -14,8 +13,8 @@ self.onmessage = async (event) => {
     try {
       self.postMessage({ type: 'status', message: 'Conectando ao cérebro da IA...' });
       
-      // Usando o modelo da comunidade ONNX, que é mais compatível com a v3
-      assistant = await pipeline('text2text-generation', 'onnx-community/LaMini-Flan-T5-78M', {
+      // Usando um modelo testado e verificado que sabemos que existe no Hugging Face
+      assistant = await pipeline('text2text-generation', 'Xenova/flan-t5-small', {
         device: 'webgpu', // Tenta usar a placa de vídeo se disponível
         progress_callback: (p) => {
           self.postMessage({ type: 'progress', data: p });
@@ -27,7 +26,7 @@ self.onmessage = async (event) => {
       console.error("Erro no load:", error);
       // Fallback para CPU se o WebGPU falhar
       try {
-        assistant = await pipeline('text2text-generation', 'onnx-community/LaMini-Flan-T5-78M', {
+        assistant = await pipeline('text2text-generation', 'Xenova/flan-t5-small', {
           device: 'wasm',
           progress_callback: (p) => {
             self.postMessage({ type: 'progress', data: p });

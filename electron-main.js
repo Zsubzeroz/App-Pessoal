@@ -62,32 +62,9 @@ app.on('ready', () => {
   createWindow();
 });
 
-// Túnel de IA: Invisibilidade Total com Seguimento de Redirecionamento
+// Tudo resolvido: o problema não era o Electron, mas sim o modelo que não existia mais!
 app.whenReady().then(() => {
-  protocol.handle('hf', async (request) => {
-    const follow = async (url) => {
-      return new Promise((resolve) => {
-        https.get(url, {
-          headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/121.0.0.0' }
-        }, (res) => {
-          // Se for redirecionamento (301 ou 302), segue o novo local
-          if ((res.statusCode === 301 || res.statusCode === 302) && res.headers.location) {
-            resolve(follow(res.headers.location));
-          } else {
-            resolve(new Response(res, { 
-              status: res.statusCode, 
-              headers: { ...res.headers, 'Access-Control-Allow-Origin': '*' } 
-            }));
-          }
-        }).on('error', (e) => {
-          resolve(new Response('Erro de Conexão: ' + e.message, { status: 500 }));
-        });
-      });
-    };
-
-    const targetUrl = request.url.replace('hf://', 'https://huggingface.co/');
-    return follow(targetUrl);
-  });
+  // Pronto para rodar
 });
 
 app.on('window-all-closed', () => {
