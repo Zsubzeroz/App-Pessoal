@@ -80,6 +80,19 @@ export function mountIA() {
         sendBtn.disabled = false;
       }
 
+      if (type === 'ollama_missing') {
+        statusText.innerHTML = '<span style="color:var(--c-danger)">●</span> Motor Nativo Offline';
+        const installMsg = `
+          Para ter uma IA 100% offline, ultra-rápida e inteligente, instale o motor nativo <strong>Ollama</strong>.<br><br>
+          1. Abra seu terminal e rode:<br>
+          <code style="background:#222; padding:4px 8px; border-radius:4px; display:inline-block; margin-top:5px; color:#0f0">curl -fsSL https://ollama.com/install.sh | sh</code><br><br>
+          2. Depois, baixe o cérebro da IA (Llama 3) rodando:<br>
+          <code style="background:#222; padding:4px 8px; border-radius:4px; display:inline-block; margin-top:5px; color:#0f0">ollama run llama3.2</code><br><br>
+          Após baixar, reinicie a Central Luan e aproveite!
+        `;
+        addMessage(installMsg, 'bot');
+      }
+
       if (type === 'error') {
         statusText.innerText = `Erro: ${error}`;
         addMessage(`Houve um erro: ${error}`, 'bot');

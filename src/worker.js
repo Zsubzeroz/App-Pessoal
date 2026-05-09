@@ -1,64 +1,58 @@
-import { pipeline, env } from '@huggingface/transformers';
-
-// Configurações para ambiente Electron/Browser
-env.allowLocalModels = false;
-env.useBrowserCache = true;
-// Configurar WASM para usar múltiplos núcleos do processador (Deixa a IA mais rápida na CPU)
-env.backends.onnx.wasm.numThreads = 4;
-
-let assistant = null;
+// Worker para conexão com Ollama (Motor de IA Nativo)
+const OLLAMA_URL = 'http://localhost:11434/api/generate';
+const MODEL_NAME = 'llama3.2'; // O modelo mais moderno e rápido da Meta para rodar localmente
 
 self.onmessage = async (event) => {
   const { type, text } = event.data;
 
   if (type === 'load') {
+    self.postMessage({ type: 'status', message: 'Buscando motor de IA nativo na máquina...' });
     try {
-      self.postMessage({ type: 'status', message: 'Conectando ao cérebro da IA...' });
-      
-      // Usando o Qwen 0.5B de forma 100% segura no Processador (WASM Turbo)
-      assistant = await pipeline('text-generation', 'Xenova/Qwen1.5-0.5B-Chat', {
-        device: 'wasm', 
-        dtype: 'q4',
-        progress_callback: (p) => {
-          self.postMessage({ type: 'progress', data: p });
-        }
-      });
-      
-      self.postMessage({ type: 'ready' });
-    } catch (error) {
-      console.error("Erro no load:", error);
-      self.postMessage({ type: 'error', error: error.message });
+      // Faz um "ping" silencioso para ver se o Ollama está rodando no background
+      const res = await fetch('http://localhost:11434/');
+      if (res.ok) {
+        self.postMessage({ type: 'ready' });
+      } else {
+        throw new Error('Serviço indisponível');
+      }
+    } catch (e) {
+      // Se der erro de fetch, o Ollama não está instalado/rodando
+      self.postMessage({ type: 'ollama_missing' });
     }
   }
 
-  if (type === 'chat' && assistant) {
+  if (type === 'chat') {
     try {
-      // Formata a mensagem no padrão de chat do Qwen
-      const messages = [
-        { role: 'system', content: 'Você é a Zen AI, uma assistente virtual focada em produtividade e Engenharia de Software. Responda APENAS em Português do Brasil. NUNCA use palavras em outros idiomas ou caracteres chineses. Seja direta e didática.' },
-        { role: 'user', content: text }
-      ];
-      
-      // Passamos o array de mensagens diretamente para a v3 da biblioteca
-      // Ela cuida do template e retorna apenas a nova mensagem
-      const output = await assistant(messages, {
-        max_new_tokens: 400,
-        temperature: 0.3, // Temperatura baixa deixa a IA focada e impede alucinações (como falar chinês)
-        repetition_penalty: 1.1,
-        do_sample: true,
+      // Dispara a pergunta para o motor nativo (usa 100% da velocidade real do PC)
+      const response = await fetch(OLLAMA_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: MODEL_NAME,
+          prompt: text,
+          system: 'Você é a Zen AI, uma assistente virtual focada em produtividade e Engenharia de Software. Responda sempre em Português do Brasil, de forma clara e profissional.',
+          stream: false // Pede a resposta de uma vez (instantâneo para modelos rápidos)
+        })
       });
-      
-      // Extrai apenas a resposta gerada (no v3 com array, ele já filtra o histórico)
-      let generatedText = output[0].generated_text;
-      
-      // Fallback de segurança caso a biblioteca retorne em formato de array de mensagens
-      if (Array.isArray(generatedText)) {
-        generatedText = generatedText[generatedText.length - 1].content;
+
+      if (!response.ok) {
+        if (response.status === 404) {
+             throw new Error(`Modelo não baixado. Abra o terminal e rode:\nollama run ${MODEL_NAME}`);
+        }
+        throw new Error(`Erro interno do Ollama (${response.status})`);
       }
-      
-      self.postMessage({ type: 'response', text: generatedText.trim() });
+
+      const data = await response.json();
+      self.postMessage({ type: 'response', text: data.response });
+
     } catch (error) {
-      self.postMessage({ type: 'error', error: error.message });
+      console.error("Erro na conexão com IA Nativa:", error);
+      if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+        self.postMessage({ type: 'ollama_missing' });
+      } else {
+        self.postMessage({ type: 'error', error: error.message });
+      }
     }
   }
 };
+

@@ -6,11 +6,6 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Habilitar aceleração de hardware (Placa de Vídeo / WebGPU) para a IA ficar ultra-rápida
-app.commandLine.appendSwitch('enable-unsafe-webgpu');
-app.commandLine.appendSwitch('ignore-gpu-blocklist');
-app.commandLine.appendSwitch('enable-features', 'Vulkan');
-
 // Registrar privilégios ANTES do app estar pronto
 protocol.registerSchemesAsPrivileged([
   { scheme: 'hf', privileges: { secure: true, standard: true, supportFetchAPI: true, corsEnabled: true } }
