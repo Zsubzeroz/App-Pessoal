@@ -204,12 +204,18 @@ export function mountRotina() {
 
   // Quote rotation
   const quotes = [
-    { text: "A disciplina é a ponte entre metas e realizações.", author: "Jim Rohn" },
-    { text: "O sucesso é a soma de pequenos esforços repetidos dia após dia.", author: "Robert Collier" },
-    { text: "Não espere por motivação, crie disciplina.", author: "Jocko Willink" },
-    { text: "Sua única limitação é aquela que você impõe em sua própria mente.", author: "Napoleon Hill" },
-    { text: "Grandes coisas nunca vêm de zonas de conforto.", author: "Anônimo" },
-    { text: "O melhor momento para plantar uma árvore foi há 20 anos. O segundo melhor é agora.", author: "Provérbio Chinês" }
+    { text: "Amai-vos uns aos outros como eu vos amei.", author: "Jesus" },
+    { text: "A verdade vos libertará.", author: "Jesus" },
+    { text: "Só sei que nada sei.", author: "Sócrates" },
+    { text: "Uma vida não examinada não vale a pena ser vivida.", author: "Sócrates" },
+    { text: "O universo é harmonia e número.", author: "Pitágoras" },
+    { text: "Eduquem as crianças e não será necessário castigar os homens.", author: "Pitágoras" },
+    { text: "A simplicidade é o último grau de sofisticação.", author: "Leonardo da Vinci" },
+    { text: "Aprender é a única coisa de que a mente nunca se cansa.", author: "Leonardo da Vinci" },
+    { text: "Quando se desenha, não se deve contar, deve-se desenhar.", author: "Raphael" },
+    { text: "A arte é a expressão da alma.", author: "Donatello" },
+    { text: "Eu vi o anjo no mármore e esculpi até libertá-lo.", author: "Michelangelo" },
+    { text: "Ainda estou aprendendo.", author: "Michelangelo" }
   ];
   const quoteEl = document.getElementById('motivational-quote');
   const authorEl = document.getElementById('quote-author');
