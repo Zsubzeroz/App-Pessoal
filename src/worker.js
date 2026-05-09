@@ -14,8 +14,8 @@ self.onmessage = async (event) => {
     try {
       self.postMessage({ type: 'status', message: 'Iniciando IA local...' });
       
-      // Usando um modelo de teste ultra-leve para verificar a conexão
-      assistant = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2', {
+      // Agora que a conexão está OK, voltamos para o modelo de chat real
+      assistant = await pipeline('text2text-generation', 'Xenova/LaMini-Flan-T5-78M', {
         progress_callback: (p) => {
           self.postMessage({ type: 'progress', data: p });
         }
