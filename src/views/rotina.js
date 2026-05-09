@@ -1,5 +1,4 @@
 export function renderRotina() {
-  // Objeto central de links atualizado
   const links = {
     coddy: "https://coddy.tech/",
     littleLanguage: "https://littlelanguagelessons.com/",
@@ -13,295 +12,337 @@ export function renderRotina() {
     educa: "https://www.cursosonlineeduca.com.br/",
     euCapacito: "https://eucapacito.com.br/",
     fluency: "https://academy.fluency.io/",
-    fluencyTalks: "https://talks.fluency.io/", // Novo Link
+    fluencyTalks: "https://talks.fluency.io/",
     xadrez: "https://www.chess.com/pt-BR",
-    piano: "#",
     abaco: "https://www.geogebra.org/m/S97v79S5"
   };
 
   return `
-    <style>
-      .r-container { 
-        max-width: 1200px; margin: 0 auto; font-family: 'Inter', sans-serif;
-        background-color: #0a0a0a; padding: 20px; border-radius: 15px; color: #fff;
-      }
-      .r-header { text-align: center; margin-bottom: 30px; }
-      .r-header h1 { font-size: 26px; margin-bottom: 5px; color: #fff; }
-      .r-header p { color: #888; font-size: 13px; }
-      
-      /* Habits */
-      .habits-container { 
-        display: flex; justify-content: center; gap: 12px; margin-bottom: 30px; flex-wrap: wrap; 
-      }
-      .habit { 
-        background-color: #121212; padding: 10px 16px; border-radius: 10px; 
-        display: flex; align-items: center; gap: 8px; font-size: 12px; 
-        color: #e0e0e0; text-decoration: none; border: 1px solid #222; transition: 0.2s;
-      }
-      .habit:hover { border-color: #444; background: #1a1a1a; transform: translateY(-2px); }
-
-      /* Grid */
-      .grid-board { 
-        display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; 
-      }
-      @media (max-width: 1100px) { .grid-board { grid-template-columns: repeat(3, 1fr); } }
-      @media (max-width: 850px) { .grid-board { grid-template-columns: repeat(2, 1fr); } }
-      @media (max-width: 550px) { .grid-board { grid-template-columns: 1fr; } }
-      
-      /* Day Cards */
-      .day-card { 
-        background-color: #161616; border-radius: 12px; padding: 15px; 
-        display: flex; flex-direction: column; gap: 10px; border: 1px solid #222;
-      }
-      .day-title { 
-        font-size: 11px; font-weight: 800; color: #666; text-transform: uppercase; 
-        letter-spacing: 1px; margin-bottom: 5px;
-      }
-      
-      /* Task Items */
-      .task-link { text-decoration: none; display: block; }
-      .task { 
-        background-color: #1f1f1f; border-radius: 8px; padding: 12px; 
-        display: flex; flex-direction: column; gap: 4px; border-left: 4px solid #333;
-        transition: 0.2s; position: relative;
-      }
-      .task:hover { background-color: #282828; }
-      .task.done { opacity: 0.3; filter: grayscale(1); }
-      .task.done::after { content: '✓'; position: absolute; right: 10px; top: 10px; color: #1dd1a1; font-weight: bold; }
-      
-      .task-title { font-size: 13px; font-weight: 700; color: #eee; }
-      .task-desc { font-size: 11px; color: #888; }
-      
-      /* Cores */
-      .c-tech { border-left-color: #00d2d3; } 
-      .c-lang { border-left-color: #9b59b6; } 
-      .c-music { border-left-color: #ff9f43; } 
-      .c-math { border-left-color: #ee5253; } 
-      .c-relax { border-left-color: #1dd1a1; } 
-      .c-spirit { border-left-color: #feca57; }
-      .c-talks { border-left-color: #54a0ff; } /* Cor específica para conversação */
-
-      .r-btn { 
-        border: 1px solid #333; background: #1a1a1a; color: #fff; padding: 10px 20px; 
-        border-radius: 8px; cursor: pointer; margin-top: 30px; font-size: 13px;
-      }
-    </style>
-    
-    <div class="r-container" id="capture-area">
-      <div class="r-header">
-        <h1>Painel de Estudos Integrado</h1>
-        <p>Clique nos cards para abrir os portais | Botão direito ou clique duplo para concluir</p>
-      </div>
-
-      <div class="habits-container">
-        <a href="${links.biblia}" target="_blank" class="habit">📖 Bíblia</a>
-        <a href="${links.duolingo}" target="_blank" class="habit">🦉 Duolingo</a>
-        <a href="${links.libras}" target="_blank" class="habit">✋ Libras</a>
-        <a href="${links.xadrez}" target="_blank" class="habit">♟️ Xadrez</a>
-        <a href="${links.abaco}" target="_blank" class="habit">🧮 Ábaco</a>
-      </div>
-
-      <div class="grid-board">
-        <!-- SEGUNDA -->
-        <div class="day-card">
-          <div class="day-title">Segunda-feira</div>
-          <a href="${links.piano}" target="_blank" class="task-link"><div class="task c-music"><span class="task-title">🎹 Piano</span><span class="task-desc">Aula e Prática</span></div></a>
-          <a href="${links.unicesumar}" target="_blank" class="task-link"><div class="task c-tech"><span class="task-title">Unicesumar</span><span class="task-desc">Studeo / Atividades</span></div></a>
-          <a href="${links.mate}" target="_blank" class="task-link"><div class="task c-tech"><span class="task-title">Mate Academy</span><span class="task-desc">Code / Frontend</span></div></a>
-          <a href="${links.fluency}" target="_blank" class="task-link"><div class="task c-lang"><span class="task-title">Fluency Academy</span><span class="task-desc">Listening Practice</span></div></a>
+    <div class="r-page-wrapper" id="capture-area">
+      <!-- Header with Clock and Greeting -->
+      <header class="dashboard-header">
+        <div class="greeting-box">
+          <h1 id="greeting-text">Olá, Luan</h1>
+          <p id="current-date">Aguardando data...</p>
         </div>
-        
-        <!-- TERÇA -->
-        <div class="day-card">
-          <div class="day-title">Terça-feira</div>
-          <a href="${links.fluencyTalks}" target="_blank" class="task-link"><div class="task c-talks"><span class="task-title">🗣️ Fluency Talks</span><span class="task-desc">Sessão de Conversação</span></div></a>
-          <a href="${links.cisco}" target="_blank" class="task-link"><div class="task c-tech"><span class="task-title">Cisco NetAcad</span><span class="task-desc">Networking / Infra</span></div></a>
-          <a href="${links.seda}" target="_blank" class="task-link"><div class="task c-lang"><span class="task-title">SEDA College</span><span class="task-desc">Brasil Bilíngue</span></div></a>
-          <a href="${links.abaco}" target="_blank" class="task-link"><div class="task c-math"><span class="task-title">🧮 Ábaco Mental</span><span class="task-desc">Matemática Oriental</span></div></a>
+        <div class="clock-box">
+          <div id="digital-clock">00:00:00</div>
         </div>
+      </header>
 
-        <!-- QUARTA -->
-        <div class="day-card">
-          <div class="day-title">Quarta-feira</div>
-          <a href="${links.coddy}" target="_blank" class="task-link"><div class="task c-tech"><span class="task-title">Coddy.tech</span><span class="task-desc">Python Fundamentals</span></div></a>
-          <a href="${links.mate}" target="_blank" class="task-link"><div class="task c-tech"><span class="task-title">Mate Academy</span><span class="task-desc">Projetos em Grupo</span></div></a>
-          <a href="${links.littleLanguage}" target="_blank" class="task-link"><div class="task c-lang"><span class="task-title">Little Language</span><span class="task-desc">Daily Lessons</span></div></a>
-          <a href="${links.unicesumar}" target="_blank" class="task-link"><div class="task c-tech"><span class="task-title">Unicesumar</span><span class="task-desc">Fórum e Teoria</span></div></a>
-        </div>
-
-        <!-- QUINTA -->
-        <div class="day-card">
-          <div class="day-title">Quinta-feira</div>
-          <a href="${links.fluencyTalks}" target="_blank" class="task-link"><div class="task c-talks"><span class="task-title">🗣️ Fluency Talks</span><span class="task-desc">Sessão de Conversação</span></div></a>
-          <a href="${links.cisco}" target="_blank" class="task-link"><div class="task c-tech"><span class="task-title">Cisco NetAcad</span><span class="task-desc">Labs / Packet Tracer</span></div></a>
-          <a href="${links.fluency}" target="_blank" class="task-link"><div class="task c-lang"><span class="task-title">Fluency Academy</span><span class="task-desc">Memorização / Anki</span></div></a>
-          <a href="#" target="_blank" class="task-link"><div class="task c-music"><span class="task-title">🎼 Teoria Musical</span><span class="task-desc">Solfejo e Partitura</span></div></a>
-        </div>
-
-        <!-- SEXTA -->
-        <div class="day-card">
-          <div class="day-title">Sexta-feira</div>
-          <a href="${links.euCapacito}" target="_blank" class="task-link"><div class="task c-tech"><span class="task-title">Eu Capacito</span><span class="task-desc">Cursos e Certificados</span></div></a>
-          <a href="${links.coddy}" target="_blank" class="task-link"><div class="task c-tech"><span class="task-title">Coddy.tech</span><span class="task-desc">Resolução de Problemas</span></div></a>
-          <a href="${links.libras}" target="_blank" class="task-link"><div class="task c-lang"><span class="task-title">Libras Básico</span><span class="task-desc">Prática de Sinais</span></div></a>
-          <a href="${links.xadrez}" target="_blank" class="task-link"><div class="task c-relax"><span class="task-title">♟️ Xadrez</span><span class="task-desc">Análise de Partidas</span></div></a>
-        </div>
-
-        <!-- SÁBADO -->
-        <div class="day-card">
-          <div class="day-title">Sábado</div>
-          <a href="${links.educa}" target="_blank" class="task-link"><div class="task c-tech"><span class="task-title">Cursos Educa</span><span class="task-desc">Desenvolvimento Pessoal</span></div></a>
-          <a href="${links.piano}" target="_blank" class="task-link"><div class="task c-music"><span class="task-title">🎹 Piano</span><span class="task-desc">Prática Livre / Música</span></div></a>
-          <a href="${links.fluency}" target="_blank" class="task-link"><div class="task c-lang"><span class="task-title">Imersão Inglês</span><span class="task-desc">Filmes / Séries</span></div></a>
-        </div>
-
-        <!-- DOMINGO -->
-        <div class="day-card">
-          <div class="day-title">Domingo</div>
-          <a href="${links.biblia}" target="_blank" class="task-link"><div class="task c-spirit"><span class="task-title">Bíblia Ilustrada</span><span class="task-desc">Renovação e Estudo</span></div></a>
-          <a href="#" class="task-link"><div class="task c-relax"><span class="task-title">Planejamento</span><span class="task-desc">Organizar próxima semana</span></div></a>
-        </div>
-      </div>
-      
-      <div class="productivity-methods">
-        <header class="methods-header">
-          <h2>Métodos de Produtividade</h2>
-          <p>O "padrão ouro" para rotinas intensas</p>
-        </header>
-
-        <div class="methods-grid">
-          <div class="method-card">
-            <div class="method-icon"><i class="fas fa-inbox"></i></div>
-            <h3>1. Capture Tudo (GTD)</h3>
-            <p>Tire a pressão do cérebro. Anote tudo em uma "caixa de entrada" única (Todoist, Google Keep).</p>
-            <div class="method-tip">Não decida na hora: Apenas capture. Processe depois no planejamento.</div>
+      <!-- Top Widgets Row -->
+      <div class="widgets-row">
+        <!-- Pomodoro Timer -->
+        <div class="widget-card pomodoro-widget">
+          <div class="widget-header">
+            <i class="fas fa-stopwatch"></i>
+            <span>Foco Pomodoro</span>
           </div>
-
-          <div class="method-card">
-            <div class="method-icon"><i class="fas fa-list-ol"></i></div>
-            <h3>2. Regra 1-3-5</h3>
-            <p>Limite suas tarefas para evitar paralisia por ansiedade:</p>
-            <ul class="method-list">
-              <li><strong>1 Tarefa Grande:</strong> 2 a 4 horas (Foco principal).</li>
-              <li><strong>3 Tarefas Médias:</strong> 30 a 90 min (Manter movimento).</li>
-              <li><strong>5 Tarefas Pequenas:</strong> Até 20 min (Administrativo).</li>
-            </ul>
-          </div>
-
-          <div class="method-card">
-            <div class="method-icon"><i class="fas fa-clock"></i></div>
-            <h3>3. Time Blocking</h3>
-            <p>Proteja seu tempo no calendário contra interrupções:</p>
-            <ul class="method-list">
-              <li><strong>Congele o indispensável:</strong> Horários fixos.</li>
-              <li><strong>Blocos de Foco:</strong> Picos de energia para a tarefa grande.</li>
-              <li><strong>Buffers:</strong> Intervalos de 15-30 min para imprevistos.</li>
-            </ul>
+          <div class="pomodoro-display" id="pomo-timer">25:00</div>
+          <div class="pomodoro-controls">
+            <button id="pomo-start" class="pomo-btn"><i class="fas fa-play"></i></button>
+            <button id="pomo-pause" class="pomo-btn"><i class="fas fa-pause"></i></button>
+            <button id="pomo-reset" class="pomo-btn"><i class="fas fa-undo"></i></button>
           </div>
         </div>
 
-        <div class="tips-box">
-          <h3>Dicas Práticas de Manutenção:</h3>
-          <ul>
-            <li><strong>Planeje na noite anterior:</strong> 10 min para clareza matinal.</li>
-            <li><strong>Regra dos 2 minutos:</strong> Se for rápido, faça na hora.</li>
-            <li><strong>Rituais de revisão:</strong> Diária para agenda, semanal (domingos) para ajuste de rota.</li>
-          </ul>
+        <!-- Today's Progress -->
+        <div class="widget-card progress-widget">
+          <div class="widget-header">
+            <i class="fas fa-chart-line"></i>
+            <span>Progresso Diário</span>
+          </div>
+          <div class="progress-circle-container">
+             <div class="progress-stats">
+                <span id="completed-count">0</span>/<span id="total-count">0</span>
+                <small>Tarefas</small>
+             </div>
+          </div>
         </div>
+
+        <!-- Quick Habits -->
+        <div class="widget-card habits-widget">
+          <div class="widget-header">
+            <i class="fas fa-star"></i>
+            <span>Hábitos Rápidos</span>
+          </div>
+          <div class="habits-list">
+            <a href="${links.biblia}" target="_blank" class="habit-mini">📖</a>
+            <a href="${links.duolingo}" target="_blank" class="habit-mini">🦉</a>
+            <a href="${links.libras}" target="_blank" class="habit-mini">✋</a>
+            <a href="${links.xadrez}" target="_blank" class="habit-mini">♟️</a>
+            <a href="${links.abaco}" target="_blank" class="habit-mini">🧮</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weekly Planner Grid -->
+      <section class="planner-section">
+        <div class="section-header">
+          <h2 class="section-title">Cronograma de Estudos</h2>
+          <p class="section-desc">Clique para abrir o link | Botão direito ou clique duplo para concluir</p>
+        </div>
+
+        <div class="planner-grid">
+          <!-- SEGUNDA -->
+          <div class="day-column">
+            <div class="day-label">Segunda</div>
+            <div class="day-tasks">
+              <div class="task-card c-music" data-link="#"><span class="t-title">🎹 Piano</span><span class="t-desc">Aula e Prática</span></div>
+              <div class="task-card c-tech" data-link="${links.unicesumar}"><span class="t-title">Unicesumar</span><span class="t-desc">Studeo / Atividades</span></div>
+              <div class="task-card c-tech" data-link="${links.mate}"><span class="t-title">Mate Academy</span><span class="t-desc">Frontend</span></div>
+              <div class="task-card c-lang" data-link="${links.fluency}"><span class="t-title">Fluency</span><span class="t-desc">Listening</span></div>
+            </div>
+          </div>
+          
+          <!-- TERÇA -->
+          <div class="day-column">
+            <div class="day-label">Terça</div>
+            <div class="day-tasks">
+              <div class="task-card c-talks" data-link="${links.fluencyTalks}"><span class="t-title">🗣️ Conversação</span><span class="t-desc">Fluency Talks</span></div>
+              <div class="task-card c-tech" data-link="${links.cisco}"><span class="t-title">Cisco NetAcad</span><span class="t-desc">Networking</span></div>
+              <div class="task-card c-lang" data-link="${links.seda}"><span class="t-title">SEDA College</span><span class="t-desc">Inglês</span></div>
+              <div class="task-card c-math" data-link="${links.abaco}"><span class="t-title">🧮 Ábaco Mental</span><span class="t-desc">Matemática</span></div>
+            </div>
+          </div>
+
+          <!-- QUARTA -->
+          <div class="day-column">
+            <div class="day-label">Quarta</div>
+            <div class="day-tasks">
+              <div class="task-card c-tech" data-link="${links.coddy}"><span class="t-title">Coddy.tech</span><span class="t-desc">Python</span></div>
+              <div class="task-card c-tech" data-link="${links.mate}"><span class="t-title">Mate Academy</span><span class="t-desc">Projetos</span></div>
+              <div class="task-card c-lang" data-link="${links.littleLanguage}"><span class="t-title">Little Lang</span><span class="t-desc">Daily Lessons</span></div>
+              <div class="task-card c-tech" data-link="${links.unicesumar}"><span class="t-title">Unicesumar</span><span class="t-desc">Fórum</span></div>
+            </div>
+          </div>
+
+          <!-- QUINTA -->
+          <div class="day-column">
+            <div class="day-label">Quinta</div>
+            <div class="day-tasks">
+              <div class="task-card c-talks" data-link="${links.fluencyTalks}"><span class="t-title">🗣️ Conversação</span><span class="t-desc">Fluency Talks</span></div>
+              <div class="task-card c-tech" data-link="${links.cisco}"><span class="t-title">Cisco NetAcad</span><span class="t-desc">Labs</span></div>
+              <div class="task-card c-lang" data-link="${links.fluency}"><span class="t-title">Fluency</span><span class="t-desc">Anki</span></div>
+              <div class="task-card c-music" data-link="#"><span class="t-title">🎼 Teoria</span><span class="t-desc">Partitura</span></div>
+            </div>
+          </div>
+
+          <!-- SEXTA -->
+          <div class="day-column">
+            <div class="day-label">Sexta</div>
+            <div class="day-tasks">
+              <div class="task-card c-tech" data-link="${links.euCapacito}"><span class="t-title">Eu Capacito</span><span class="t-desc">Cursos</span></div>
+              <div class="task-card c-tech" data-link="${links.coddy}"><span class="t-title">Coddy.tech</span><span class="t-desc">Problemas</span></div>
+              <div class="task-card c-lang" data-link="${links.libras}"><span class="t-title">Libras</span><span class="t-desc">Prática</span></div>
+              <div class="task-card c-relax" data-link="${links.xadrez}"><span class="t-title">♟️ Xadrez</span><span class="t-desc">Análise</span></div>
+            </div>
+          </div>
+
+          <!-- SÁBADO -->
+          <div class="day-column">
+            <div class="day-label">Sábado</div>
+            <div class="day-tasks">
+              <div class="task-card c-tech" data-link="${links.educa}"><span class="t-title">Cursos Educa</span><span class="t-desc">Pessoal</span></div>
+              <div class="task-card c-music" data-link="#"><span class="t-title">🎹 Piano</span><span class="t-desc">Prática Livre</span></div>
+              <div class="task-card c-lang" data-link="#"><span class="t-title">Imersão</span><span class="t-desc">Filmes/Séries</span></div>
+            </div>
+          </div>
+
+          <!-- DOMINGO -->
+          <div class="day-column">
+            <div class="day-label">Domingo</div>
+            <div class="day-tasks">
+              <div class="task-card c-spirit" data-link="${links.biblia}"><span class="t-title">Bíblia</span><span class="t-desc">Estudo</span></div>
+              <div class="task-card c-relax" data-link="#"><span class="t-title">Planejamento</span><span class="t-desc">Agenda</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="action-footer">
+        <button class="btn-primary" id="btnSalvar">📸 Salvar Painel em JPG</button>
       </div>
 
       <style>
-        .productivity-methods {
-          margin-top: 50px;
-          border-top: 1px solid #222;
-          padding-top: 40px;
-          text-align: left;
-        }
-        .methods-header { margin-bottom: 30px; }
-        .methods-header h2 { color: #fff; font-size: 24px; }
-        .methods-header p { color: #888; font-size: 14px; }
+        .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+        .greeting-box h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.05em; margin: 0; }
+        .greeting-box p { color: var(--text-muted); margin-top: 4px; }
+        .clock-box { background: var(--bg-card); padding: 12px 24px; border-radius: 16px; border: 1px solid var(--border); }
+        #digital-clock { font-family: 'Monaco', monospace; font-size: 2rem; font-weight: 700; color: var(--accent); }
 
-        .methods-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-          gap: 20px;
-          margin-bottom: 30px;
-        }
+        .widgets-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 40px; }
+        .widget-card { background: var(--bg-card); border-radius: 20px; padding: 24px; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 15px; }
+        .widget-header { display: flex; align-items: center; gap: 10px; color: var(--text-muted); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+        .widget-header i { color: var(--accent); }
 
-        .method-card {
-          background: #161616;
-          border: 1px solid #222;
-          border-radius: 12px;
-          padding: 20px;
-          transition: 0.3s;
-        }
-        .method-card:hover { border-color: #00b4d8; background: #1a1a1a; }
+        .pomodoro-display { font-size: 3rem; font-weight: 800; text-align: center; font-variant-numeric: tabular-nums; }
+        .pomodoro-controls { display: flex; justify-content: center; gap: 10px; }
+        .pomo-btn { background: rgba(255,255,255,0.05); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; transition: 0.2s; }
+        .pomo-btn:hover { background: var(--accent); }
 
-        .method-icon {
-          font-size: 24px;
-          color: #00b4d8;
-          margin-bottom: 15px;
-        }
-        .method-card h3 { font-size: 18px; margin-bottom: 10px; color: #eee; }
-        .method-card p { font-size: 14px; color: #aaa; line-height: 1.5; }
+        .progress-circle-container { flex: 1; display: flex; align-items: center; justify-content: center; }
+        .progress-stats { font-size: 2.5rem; font-weight: 800; text-align: center; line-height: 1; }
+        .progress-stats small { display: block; font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; margin-top: 4px; }
 
-        .method-list { list-style: none; padding: 0; margin-top: 15px; }
-        .method-list li { font-size: 13px; color: #ccc; margin-bottom: 8px; padding-left: 15px; position: relative; }
-        .method-list li::before { content: "•"; color: #00b4d8; position: absolute; left: 0; }
+        .habits-list { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+        .habit-mini { background: var(--bg-input); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 14px; font-size: 1.5rem; text-decoration: none; border: 1px solid var(--border); transition: 0.2s; }
+        .habit-mini:hover { transform: translateY(-3px); border-color: var(--accent); background: rgba(14, 165, 233, 0.1); }
 
-        .method-tip {
-          margin-top: 15px;
-          padding: 10px;
-          background: rgba(0, 180, 216, 0.1);
-          border-left: 3px solid #00b4d8;
-          font-size: 12px;
-          color: #00b4d8;
-        }
+        .planner-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+        .day-label { font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; padding-left: 4px; }
+        .day-tasks { display: flex; flex-direction: column; gap: 10px; }
+        
+        .task-card { background: var(--bg-card); padding: 16px; border-radius: 14px; border: 1px solid var(--border); border-left: 4px solid #333; cursor: pointer; transition: 0.2s; }
+        .task-card:hover { transform: scale(1.02); background: #1f1f23; border-color: rgba(255,255,255,0.1); }
+        .task-card.done { opacity: 0.2; filter: grayscale(1); }
+        .t-title { display: block; font-size: 0.9rem; font-weight: 700; margin-bottom: 2px; }
+        .t-desc { display: block; font-size: 0.75rem; color: var(--text-muted); }
 
-        .tips-box {
-          background: #111;
-          border-radius: 12px;
-          padding: 25px;
-          border: 1px dashed #333;
+        .c-tech { border-left-color: #0ea5e9; }
+        .c-lang { border-left-color: #a855f7; }
+        .c-music { border-left-color: #f97316; }
+        .c-math { border-left-color: #ef4444; }
+        .c-talks { border-left-color: #3b82f6; }
+        .c-relax { border-left-color: #10b981; }
+        .c-spirit { border-left-color: #eab308; }
+
+        .action-footer { margin-top: 40px; text-align: center; }
+
+        @media (max-width: 768px) {
+          .widgets-row { grid-template-columns: 1fr; }
+          .greeting-box h1 { font-size: 1.8rem; }
+          .clock-box { display: none; }
         }
-        .tips-box h3 { font-size: 18px; margin-bottom: 15px; color: #fff; }
-        .tips-box ul { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
-        .tips-box li { font-size: 14px; color: #bbb; line-height: 1.4; padding-left: 20px; position: relative; }
-        .tips-box li::before { content: "➜"; color: #00b4d8; position: absolute; left: 0; }
       </style>
-
-      <div style="text-align: center;">
-        <button class="r-btn" id="btnSalvar">📸 Salvar Painel em JPG</button>
-      </div>
     </div>
   `;
 }
 
 export function mountRotina() {
-  document.querySelectorAll('.task').forEach(task => {
-    task.addEventListener('contextmenu', function (e) {
-      e.preventDefault();
-      this.classList.toggle('done');
+  // Clock logic
+  function updateClock() {
+    const now = new Date();
+    const clockEl = document.getElementById('digital-clock');
+    const dateEl = document.getElementById('current-date');
+    const greetingEl = document.getElementById('greeting-text');
+
+    if (clockEl) clockEl.innerText = now.toLocaleTimeString('pt-BR');
+    
+    if (dateEl) {
+      const options = { weekday: 'long', day: 'numeric', month: 'long' };
+      dateEl.innerText = now.toLocaleDateString('pt-BR', options);
+    }
+
+    if (greetingEl) {
+      const hour = now.getHours();
+      let greeting = "Boa noite, Luan";
+      if (hour >= 5 && hour < 12) greeting = "Bom dia, Luan";
+      else if (hour >= 12 && hour < 18) greeting = "Boa tarde, Luan";
+      greetingEl.innerText = greeting;
+    }
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+
+  // Pomodoro logic
+  let pomoTime = 25 * 60;
+  let pomoInterval = null;
+  const pomoDisplay = document.getElementById('pomo-timer');
+  
+  function updatePomoDisplay() {
+    if (!pomoDisplay) return;
+    const mins = Math.floor(pomoTime / 60);
+    const secs = pomoTime % 60;
+    pomoDisplay.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  }
+
+  const startBtn = document.getElementById('pomo-start');
+  const pauseBtn = document.getElementById('pomo-pause');
+  const resetBtn = document.getElementById('pomo-reset');
+
+  if (startBtn) {
+    startBtn.addEventListener('click', () => {
+      if (pomoInterval) return;
+      pomoInterval = setInterval(() => {
+        if (pomoTime > 0) {
+          pomoTime--;
+          updatePomoDisplay();
+        } else {
+          clearInterval(pomoInterval);
+          pomoInterval = null;
+          alert('Pomodoro concluído!');
+        }
+      }, 1000);
+    });
+  }
+
+  if (pauseBtn) {
+    pauseBtn.addEventListener('click', () => {
+      clearInterval(pomoInterval);
+      pomoInterval = null;
+    });
+  }
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      clearInterval(pomoInterval);
+      pomoInterval = null;
+      pomoTime = 25 * 60;
+      updatePomoDisplay();
+    });
+  }
+
+  // Task interaction
+  const tasks = document.querySelectorAll('.task-card');
+  const completedEl = document.getElementById('completed-count');
+  const totalEl = document.getElementById('total-count');
+
+  function updateProgress() {
+    const total = tasks.length;
+    const completed = document.querySelectorAll('.task-card.done').length;
+    if (completedEl) completedEl.innerText = completed;
+    if (totalEl) totalEl.innerText = total;
+  }
+
+  tasks.forEach(task => {
+    // Click to open link
+    task.addEventListener('click', (e) => {
+      const link = task.getAttribute('data-link');
+      if (link && link !== '#') {
+        window.open(link, '_blank');
+      }
     });
 
-    task.addEventListener('dblclick', function (e) {
+    // Double click or Right click to mark as done
+    const markDone = (e) => {
       e.preventDefault();
-      this.classList.toggle('done');
-    });
+      task.classList.toggle('done');
+      updateProgress();
+    };
+
+    task.addEventListener('dblclick', markDone);
+    task.addEventListener('contextmenu', markDone);
   });
 
-  const btn = document.getElementById('btnSalvar');
-  if (btn) {
-    btn.addEventListener('click', () => {
-      btn.style.display = 'none';
+  updateProgress();
+
+  // Save as JPG
+  const btnSalvar = document.getElementById('btnSalvar');
+  if (btnSalvar) {
+    btnSalvar.addEventListener('click', () => {
+      btnSalvar.style.display = 'none';
       html2canvas(document.getElementById('capture-area'), {
-        backgroundColor: '#0a0a0a', scale: 2
+        backgroundColor: '#09090b',
+        scale: 2,
+        logging: false,
+        useCORS: true
       }).then(canvas => {
         const link = document.createElement('a');
-        link.download = 'Minha_Rotina_Links.jpg';
-        link.href = canvas.toDataURL('image/jpeg');
+        link.download = 'Minha_Rotina_Central.jpg';
+        link.href = canvas.toDataURL('image/jpeg', 0.9);
         link.click();
-        btn.style.display = 'inline-block';
+        btnSalvar.style.display = 'inline-block';
       });
     });
   }
