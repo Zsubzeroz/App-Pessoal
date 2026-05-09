@@ -22,6 +22,9 @@ const createWindow = () => {
     icon: path.join(__dirname, 'public/favicon.ico'),
   });
 
+  // Forçar User-Agent de navegador comum para evitar bloqueios do Hugging Face
+  mainWindow.webContents.setUserAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36");
+
   const isDev = process.env.NODE_ENV === 'development';
 
   if (isDev) {

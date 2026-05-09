@@ -3,6 +3,8 @@ import { pipeline, env } from '@xenova/transformers';
 // Skip local check to download from Hub on first run
 env.allowLocalModels = false;
 env.useBrowserCache = true;
+env.remoteHost = 'https://huggingface.co';
+env.remotePathTemplate = '{model}/resolve/{revision}/{file}';
 
 let assistant = null;
 
@@ -14,8 +16,8 @@ self.onmessage = async (event) => {
     try {
       self.postMessage({ type: 'status', message: 'Iniciando IA local...' });
       
-      // Using a slightly more robust model: phi-1_5
-      assistant = await pipeline('text2text-generation', 'Xenova/phi-1_5', {
+      // Using a very small and fast model: LaMini-Flan-T5-78M
+      assistant = await pipeline('text2text-generation', 'Xenova/LaMini-Flan-T5-78M', {
         progress_callback: (p) => {
           self.postMessage({ type: 'progress', data: p });
         }
