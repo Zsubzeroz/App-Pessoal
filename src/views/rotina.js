@@ -206,7 +206,7 @@ export function mountRotina() {
   const quotes = [
     { text: "Amai-vos uns aos outros como eu vos amei.", author: "Jesus" },
     { text: "A verdade vos libertará.", author: "Jesus" },
-    { text: "Só sei que nada sei.", author: "Sócrates" },
+    { text: "Conhece-te a ti mesmo.", author: "Sócrates" },
     { text: "Uma vida não examinada não vale a pena ser vivida.", author: "Sócrates" },
     { text: "O universo é harmonia e número.", author: "Pitágoras" },
     { text: "Eduquem as crianças e não será necessário castigar os homens.", author: "Pitágoras" },
