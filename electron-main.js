@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu } from 'electron';
+import { app, BrowserWindow, Menu, session } from 'electron';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -45,7 +45,6 @@ const createWindow = () => {
 
 app.on('ready', () => {
   // Configura cabeçalhos globais para evitar bloqueios de IA
-  const { session } = require('electron');
   session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
     details.requestHeaders['User-Agent'] = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
     callback({ cancel: false, requestHeaders: details.requestHeaders });
