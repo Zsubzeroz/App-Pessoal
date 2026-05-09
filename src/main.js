@@ -3,6 +3,7 @@ import { renderRotina, mountRotina } from './views/rotina.js';
 import { renderBiblia, mountBiblia } from './views/biblia.js';
 import { renderVagas, mountVagas } from './views/vagas.js';
 import { renderCurriculo, mountCurriculo } from './views/curriculo.js';
+import { renderIA, mountIA } from './views/ia.js';
 
 const appContent = document.getElementById('app-content');
 const navItems = document.querySelectorAll('.nav-item');
@@ -11,7 +12,8 @@ const views = {
   rotina: { render: renderRotina, mount: mountRotina },
   biblia: { render: renderBiblia, mount: mountBiblia },
   vagas: { render: renderVagas, mount: mountVagas },
-  curriculo: { render: renderCurriculo, mount: mountCurriculo }
+  curriculo: { render: renderCurriculo, mount: mountCurriculo },
+  ia: { render: renderIA, mount: mountIA }
 };
 
 function switchView(target) {

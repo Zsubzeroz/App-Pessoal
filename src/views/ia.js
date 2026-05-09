@@ -1,0 +1,116 @@
+export function renderIA() {
+  return `
+    <div class="ia-container">
+      <header class="view-header">
+        <h1 class="section-title">✨ Zen AI Assistant</h1>
+        <p class="section-desc">Sua inteligência artificial privada e 100% offline.</p>
+      </header>
+
+      <div class="ia-workspace glass-panel">
+        <div id="ia-status-bar" class="ia-status-bar">
+          <span id="ia-status-text">IA pronta para baixar (necessário internet na primeira vez)</span>
+          <div id="ia-progress-bg" class="ia-progress-bg" style="display:none;">
+            <div id="ia-progress-fill" class="ia-progress-fill"></div>
+          </div>
+        </div>
+
+        <div id="ia-chat-box" class="ia-chat-box">
+          <div class="ia-msg bot">
+            <div class="msg-bubble">
+              Olá! Eu sou sua IA local. Posso te ajudar com reflexões sobre o plano bíblico, dicas de estudos ou melhorias no seu currículo. 
+              <strong>Note:</strong> Na primeira vez, precisarei carregar meus dados (cerca de 150MB).
+            </div>
+          </div>
+        </div>
+
+        <div class="ia-input-area">
+          <input type="text" id="ia-input" placeholder="Pergunte qualquer coisa..." disabled>
+          <button id="ia-send" class="pomo-btn" disabled><i class="fas fa-paper-plane"></i></button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+export function mountIA() {
+  const chatBox = document.getElementById('ia-chat-box');
+  const input = document.getElementById('ia-input');
+  const sendBtn = document.getElementById('ia-send');
+  const statusText = document.getElementById('ia-status-text');
+  const progressBg = document.getElementById('ia-progress-bg');
+  const progressFill = document.getElementById('ia-progress-fill');
+
+  let worker = null;
+
+  // Initialize Worker
+  try {
+    worker = new Worker(new URL('../worker.js', import.meta.url), { type: 'module' });
+    
+    // Automatically try to load
+    worker.postMessage({ type: 'load' });
+
+    worker.onmessage = (e) => {
+      const { type, message, data, text, error } = e.data;
+
+      if (type === 'status') {
+        statusText.innerText = message;
+      }
+
+      if (type === 'progress') {
+        progressBg.style.display = 'block';
+        if (data.status === 'progress') {
+          progressFill.style.width = `${data.progress}%`;
+          statusText.innerText = `Carregando conhecimento: ${Math.round(data.progress)}%`;
+        }
+        if (data.status === 'done') {
+           progressBg.style.display = 'none';
+        }
+      }
+
+      if (type === 'ready') {
+        statusText.innerHTML = '<span style="color:var(--c-success)">●</span> Sistema Offline Pronto';
+        input.disabled = false;
+        sendBtn.disabled = false;
+        input.placeholder = "Escreva sua mensagem...";
+      }
+
+      if (type === 'response') {
+        addMessage(text, 'bot');
+        input.disabled = false;
+        sendBtn.disabled = false;
+      }
+
+      if (type === 'error') {
+        statusText.innerText = `Erro: ${error}`;
+        addMessage(`Houve um erro: ${error}`, 'bot');
+      }
+    };
+  } catch (err) {
+    console.error("Worker error:", err);
+  }
+
+  function addMessage(msg, sender) {
+    const div = document.createElement('div');
+    div.className = `ia-msg ${sender}`;
+    div.innerHTML = `<div class="msg-bubble">${msg}</div>`;
+    chatBox.appendChild(div);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+
+  function handleSend() {
+    const text = input.value.trim();
+    if (!text) return;
+
+    addMessage(text, 'user');
+    input.value = '';
+    input.disabled = true;
+    sendBtn.disabled = true;
+
+    worker.postMessage({ type: 'chat', text });
+  }
+
+  sendBtn.addEventListener('click', handleSend);
+  input.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') handleSend();
+  });
+}
