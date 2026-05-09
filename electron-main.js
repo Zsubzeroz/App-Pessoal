@@ -52,6 +52,9 @@ app.on('ready', () => {
   // Configura cabeçalhos globais para evitar bloqueios de IA
   session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
     details.requestHeaders['User-Agent'] = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+    // Deleta cabeçalhos que revelam que a requisição vem de um app local
+    delete details.requestHeaders['Origin'];
+    delete details.requestHeaders['Referer'];
     callback({ cancel: false, requestHeaders: details.requestHeaders });
   });
 
@@ -66,8 +69,7 @@ app.whenReady().then(() => {
       return await net.fetch(url, {
         method: request.method,
         headers: { 
-          'User-Agent': 'curl/7.68.0', // Se identifica como uma ferramenta de terminal (mais aceita)
-          'Accept': '*/*'
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36'
         },
         redirect: 'follow'
       });
