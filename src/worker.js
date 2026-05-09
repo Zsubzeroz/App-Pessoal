@@ -35,7 +35,7 @@ self.onmessage = async (event) => {
     try {
       // Formata a mensagem no padrão de chat do Qwen
       const messages = [
-        { role: 'system', content: 'Você é a Zen AI, uma assistente virtual inteligente e prestativa integrada à Central Luan. Você fala Português do Brasil fluentemente e responde de forma clara e direta.' },
+        { role: 'system', content: 'Você é a Zen AI, uma assistente virtual focada em produtividade e Engenharia de Software. Responda APENAS em Português do Brasil. NUNCA use palavras em outros idiomas ou caracteres chineses. Seja direta e didática.' },
         { role: 'user', content: text }
       ];
       
@@ -43,7 +43,7 @@ self.onmessage = async (event) => {
       // Ela cuida do template e retorna apenas a nova mensagem
       const output = await assistant(messages, {
         max_new_tokens: 400,
-        temperature: 0.7,
+        temperature: 0.3, // Temperatura baixa deixa a IA focada e impede alucinações (como falar chinês)
         repetition_penalty: 1.1,
         do_sample: true,
       });
