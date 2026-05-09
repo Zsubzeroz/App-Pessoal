@@ -3,6 +3,7 @@ import { pipeline, env } from '@huggingface/transformers';
 // Configurações para ambiente Electron/Browser
 env.allowLocalModels = false;
 env.useBrowserCache = true;
+env.remoteHost = 'hf://'; // Usa nosso túnel privado do processo principal
 
 let assistant = null;
 

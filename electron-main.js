@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, session } from 'electron';
+import { app, BrowserWindow, Menu, session, protocol, net } from 'electron';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -51,6 +51,16 @@ app.on('ready', () => {
   });
 
   createWindow();
+});
+
+// Túnel de IA: Ignora bloqueios de rede do navegador
+app.whenReady().then(() => {
+  protocol.handle('hf', (request) => {
+    const url = request.url.replace('hf://', 'https://huggingface.co/');
+    return net.fetch(url, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36' }
+    });
+  });
 });
 
 app.on('window-all-closed', () => {
