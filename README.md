@@ -41,6 +41,22 @@ npm install
 *   `npm run electron-dev`: Inicia o ambiente de desenvolvimento.
 *   `npm run electron-build`: Gera os executáveis para Windows e Linux.
 
+## 🔄 Manutenção e Gestão
+
+### Como Atualizar
+Se houver novas atualizações no repositório, use:
+```bash
+git pull origin master
+```
+
+### Como Desinstalar
+*   **Linux**:
+    1. Remova a pasta do projeto: `rm -rf ~/Dev/Projetos/App-Pessoal-master`
+    2. Remova o atalho do menu: `rm ~/.local/share/applications/central-luan.desktop`
+*   **Windows**:
+    1. Delete a pasta do projeto.
+    2. Delete o atalho criado na Área de Trabalho.
+
 ## 📁 Estrutura Organizada
 ```
 App-Pessoal/
