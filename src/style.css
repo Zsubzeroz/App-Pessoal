@@ -565,3 +565,122 @@ input:focus, select:focus, textarea:focus {
   align-items: center;
   justify-content: center;
 }
+
+/* Notas View */
+.notas-container, .checklist-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.notas-workspace {
+  flex: 1;
+  display: flex;
+  padding: 0 !important;
+  overflow: hidden;
+  border-radius: 24px !important;
+}
+
+#notas-editor {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #fff;
+  padding: 30px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+  font-family: inherit;
+}
+
+/* Checklist View */
+.checklist-workspace {
+  flex: 1;
+  padding: 30px !important;
+  overflow-y: auto;
+}
+
+.checklist-input-group {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.checklist-input-group input {
+  flex: 1;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  padding: 14px 20px;
+  border-radius: 12px;
+  color: #fff;
+  outline: none;
+  font-size: 1rem;
+}
+
+.checklist-input-group input:focus {
+  border-color: var(--accent);
+}
+
+.checklist-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.checklist-item {
+  background: var(--bg-card);
+  padding: 16px 20px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: 0.2s;
+}
+
+.checklist-item:hover {
+  border-color: var(--accent);
+  background: #ffffff05;
+}
+
+.checklist-item .item-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.checklist-item input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: var(--accent);
+}
+
+.checklist-item span {
+  font-size: 1rem;
+}
+
+.checklist-item.done span {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.checklist-item.done {
+  opacity: 0.6;
+}
+
+.delete-btn {
+  background: transparent;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  padding: 5px;
+  transition: 0.2s;
+}
+
+.delete-btn:hover {
+  color: #ef4444;
+}

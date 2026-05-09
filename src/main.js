@@ -4,6 +4,8 @@ import { renderBiblia, mountBiblia } from './views/biblia.js';
 import { renderVagas, mountVagas } from './views/vagas.js';
 import { renderCurriculo, mountCurriculo } from './views/curriculo.js';
 import { renderIA, mountIA } from './views/ia.js';
+import { renderNotas, mountNotas } from './views/notas.js';
+import { renderChecklist, mountChecklist } from './views/checklist.js';
 
 const appContent = document.getElementById('app-content');
 const navItems = document.querySelectorAll('.nav-item');
@@ -13,7 +15,9 @@ const views = {
   biblia: { render: renderBiblia, mount: mountBiblia },
   vagas: { render: renderVagas, mount: mountVagas },
   curriculo: { render: renderCurriculo, mount: mountCurriculo },
-  ia: { render: renderIA, mount: mountIA }
+  ia: { render: renderIA, mount: mountIA },
+  notas: { render: renderNotas, mount: mountNotas },
+  checklist: { render: renderChecklist, mount: mountChecklist }
 };
 
 function switchView(target) {

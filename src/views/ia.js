@@ -3,7 +3,7 @@ export function renderIA() {
     <div class="ia-container">
       <header class="view-header">
         <h1 class="section-title">✨ Zen AI Assistant</h1>
-        <p class="section-desc">Sua inteligência artificial privada e 100% offline.</p>
+        <p class="section-desc">Assistente inteligente para projetos e estudos.</p>
       </header>
 
       <div class="ia-workspace glass-panel">
@@ -17,8 +17,11 @@ export function renderIA() {
         <div id="ia-chat-box" class="ia-chat-box">
           <div class="ia-msg bot">
             <div class="msg-bubble">
-              Olá! Eu sou sua IA local. Posso te ajudar com reflexões sobre o plano bíblico, dicas de estudos ou melhorias no seu currículo. 
-              <strong>Note:</strong> Na primeira vez, precisarei carregar meus dados (cerca de 150MB).
+              <h3>✨ Bem-vindo à Zen AI</h3>
+              <p>Sua assistente focada em Produtividade e Engenharia de Software.</p>
+              <p>Estou pronta para te ajudar com desenvolvimento de projetos, estruturação do seu currículo e rotinas de estudos avançados.</p>
+              <br>
+              <small style="color:var(--text-muted);">⚡ Motor Nativo: Llama 3.2 (Ativo)</small>
             </div>
           </div>
         </div>
