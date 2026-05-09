@@ -30,9 +30,15 @@ self.onmessage = async (event) => {
 
   if (type === 'chat' && assistant) {
     try {
-      const output = await assistant(text, {
-        max_new_tokens: 100,
+      // Adiciona uma instrução para ajudar o modelo a focar na resposta em Português
+      const prompt = `Responda de forma curta e clara em Português: ${text}`;
+      
+      const output = await assistant(prompt, {
+        max_new_tokens: 150,
         temperature: 0.7,
+        repetition_penalty: 1.5, // Impede o modelo de repetir "nie nie nie"
+        no_repeat_ngram_size: 2, // Impede repetição de sílabas ("e o e o")
+        do_sample: true,
       });
       
       self.postMessage({ type: 'response', text: output[0].generated_text });
