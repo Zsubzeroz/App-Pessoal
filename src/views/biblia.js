@@ -1,3 +1,5 @@
+import { planoBiblico } from '../data/plano-biblico.js';
+
 export function renderBiblia() {
   return `
     <div class="b-page-wrapper">
@@ -67,10 +69,7 @@ export function mountBiblia() {
     const tr = document.createElement('tr');
     if (isChecked) tr.classList.add('completed');
     
-    let leitura = "";
-    if(i <= 50) leitura = `Gênesis ${i*2 - 1} - ${i*2 + 1}`;
-    else if(i <= 90) leitura = `Êxodo ${i-50} - ${i-48}`;
-    else leitura = `Estudo Bíblico: Leitura do Dia ${i}`;
+    const leitura = planoBiblico[i - 1] || `Leitura do Dia ${i}`;
 
     tr.innerHTML = `
       <td style="text-align: center;">
