@@ -15,7 +15,7 @@ self.onmessage = async (event) => {
       
       // Usando um modelo testado e verificado que sabemos que existe no Hugging Face
       assistant = await pipeline('text2text-generation', 'Xenova/flan-t5-small', {
-        device: 'webgpu', // Tenta usar a placa de vídeo se disponível
+        device: 'wasm', // Usa o processador para compatibilidade máxima em qualquer PC
         progress_callback: (p) => {
           self.postMessage({ type: 'progress', data: p });
         }
@@ -24,18 +24,7 @@ self.onmessage = async (event) => {
       self.postMessage({ type: 'ready' });
     } catch (error) {
       console.error("Erro no load:", error);
-      // Fallback para CPU se o WebGPU falhar
-      try {
-        assistant = await pipeline('text2text-generation', 'Xenova/flan-t5-small', {
-          device: 'wasm',
-          progress_callback: (p) => {
-            self.postMessage({ type: 'progress', data: p });
-          }
-        });
-        self.postMessage({ type: 'ready' });
-      } catch (innerError) {
-        self.postMessage({ type: 'error', error: innerError.message });
-      }
+      self.postMessage({ type: 'error', error: error.message });
     }
   }
 
