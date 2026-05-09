@@ -14,13 +14,24 @@ self.onmessage = async (event) => {
       self.postMessage({ type: 'status', message: 'Conectando ao cérebro da IA...' });
       
       // Usando o Qwen 0.5B: um modelo que realmente entende Português e conversa de verdade
-      assistant = await pipeline('text-generation', 'Xenova/Qwen1.5-0.5B-Chat', {
-        device: 'wasm', // Usa o processador para compatibilidade máxima em qualquer PC
-        dtype: 'q4', // Especifica o arquivo exato (model_q4.onnx) disponível no servidor
-        progress_callback: (p) => {
-          self.postMessage({ type: 'progress', data: p });
-        }
-      });
+      try {
+        assistant = await pipeline('text-generation', 'Xenova/Qwen1.5-0.5B-Chat', {
+          device: 'webgpu', // Tenta usar a Placa de Vídeo primeiro (Ultra-rápido)
+          dtype: 'q4',
+          progress_callback: (p) => {
+            self.postMessage({ type: 'progress', data: p });
+          }
+        });
+      } catch (gpuError) {
+        console.warn("Placa de vídeo indisponível, usando processador...", gpuError);
+        assistant = await pipeline('text-generation', 'Xenova/Qwen1.5-0.5B-Chat', {
+          device: 'wasm', // Fallback automático para CPU
+          dtype: 'q4',
+          progress_callback: (p) => {
+            self.postMessage({ type: 'progress', data: p });
+          }
+        });
+      }
       
       self.postMessage({ type: 'ready' });
     } catch (error) {
