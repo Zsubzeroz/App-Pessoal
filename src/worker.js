@@ -3,6 +3,8 @@ import { pipeline, env } from '@huggingface/transformers';
 // Configurações para ambiente Electron/Browser
 env.allowLocalModels = false;
 env.useBrowserCache = true;
+// Configurar WASM para usar múltiplos núcleos do processador (Deixa a IA mais rápida na CPU)
+env.backends.onnx.wasm.numThreads = 4;
 
 let assistant = null;
 
@@ -13,25 +15,14 @@ self.onmessage = async (event) => {
     try {
       self.postMessage({ type: 'status', message: 'Conectando ao cérebro da IA...' });
       
-      // Usando o Qwen 0.5B: um modelo que realmente entende Português e conversa de verdade
-      try {
-        assistant = await pipeline('text-generation', 'Xenova/Qwen1.5-0.5B-Chat', {
-          device: 'webgpu', // Tenta usar a Placa de Vídeo primeiro (Ultra-rápido)
-          dtype: 'q4',
-          progress_callback: (p) => {
-            self.postMessage({ type: 'progress', data: p });
-          }
-        });
-      } catch (gpuError) {
-        console.warn("Placa de vídeo indisponível, usando processador...", gpuError);
-        assistant = await pipeline('text-generation', 'Xenova/Qwen1.5-0.5B-Chat', {
-          device: 'wasm', // Fallback automático para CPU
-          dtype: 'q4',
-          progress_callback: (p) => {
-            self.postMessage({ type: 'progress', data: p });
-          }
-        });
-      }
+      // Usando o Qwen 0.5B de forma 100% segura no Processador (WASM Turbo)
+      assistant = await pipeline('text-generation', 'Xenova/Qwen1.5-0.5B-Chat', {
+        device: 'wasm', 
+        dtype: 'q4',
+        progress_callback: (p) => {
+          self.postMessage({ type: 'progress', data: p });
+        }
+      });
       
       self.postMessage({ type: 'ready' });
     } catch (error) {
