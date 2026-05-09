@@ -2,7 +2,7 @@ import './style.css';
 import { renderRotina, mountRotina } from './views/rotina.js';
 import { renderBiblia, mountBiblia } from './views/biblia.js';
 import { renderVagas, mountVagas } from './views/vagas.js';
-import { renderCurriculo } from './views/curriculo.js';
+import { renderCurriculo, mountCurriculo } from './views/curriculo.js';
 
 const appContent = document.getElementById('app-content');
 const navItems = document.querySelectorAll('.nav-item');
@@ -33,7 +33,7 @@ function switchView(target) {
   } else if (target === 'curriculo') {
     viewContainer.innerHTML = renderCurriculo();
     appContent.appendChild(viewContainer);
-    // Curriculo doesn't have JS to mount, it's just pure HTML.
+    mountCurriculo();
   }
 }
 

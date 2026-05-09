@@ -163,6 +163,113 @@ export function renderRotina() {
         </div>
       </div>
       
+      <div class="productivity-methods">
+        <header class="methods-header">
+          <h2>Métodos de Produtividade</h2>
+          <p>O "padrão ouro" para rotinas intensas</p>
+        </header>
+
+        <div class="methods-grid">
+          <div class="method-card">
+            <div class="method-icon"><i class="fas fa-inbox"></i></div>
+            <h3>1. Capture Tudo (GTD)</h3>
+            <p>Tire a pressão do cérebro. Anote tudo em uma "caixa de entrada" única (Todoist, Google Keep).</p>
+            <div class="method-tip">Não decida na hora: Apenas capture. Processe depois no planejamento.</div>
+          </div>
+
+          <div class="method-card">
+            <div class="method-icon"><i class="fas fa-list-ol"></i></div>
+            <h3>2. Regra 1-3-5</h3>
+            <p>Limite suas tarefas para evitar paralisia por ansiedade:</p>
+            <ul class="method-list">
+              <li><strong>1 Tarefa Grande:</strong> 2 a 4 horas (Foco principal).</li>
+              <li><strong>3 Tarefas Médias:</strong> 30 a 90 min (Manter movimento).</li>
+              <li><strong>5 Tarefas Pequenas:</strong> Até 20 min (Administrativo).</li>
+            </ul>
+          </div>
+
+          <div class="method-card">
+            <div class="method-icon"><i class="fas fa-clock"></i></div>
+            <h3>3. Time Blocking</h3>
+            <p>Proteja seu tempo no calendário contra interrupções:</p>
+            <ul class="method-list">
+              <li><strong>Congele o indispensável:</strong> Horários fixos.</li>
+              <li><strong>Blocos de Foco:</strong> Picos de energia para a tarefa grande.</li>
+              <li><strong>Buffers:</strong> Intervalos de 15-30 min para imprevistos.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tips-box">
+          <h3>Dicas Práticas de Manutenção:</h3>
+          <ul>
+            <li><strong>Planeje na noite anterior:</strong> 10 min para clareza matinal.</li>
+            <li><strong>Regra dos 2 minutos:</strong> Se for rápido, faça na hora.</li>
+            <li><strong>Rituais de revisão:</strong> Diária para agenda, semanal (domingos) para ajuste de rota.</li>
+          </ul>
+        </div>
+      </div>
+
+      <style>
+        .productivity-methods {
+          margin-top: 50px;
+          border-top: 1px solid #222;
+          padding-top: 40px;
+          text-align: left;
+        }
+        .methods-header { margin-bottom: 30px; }
+        .methods-header h2 { color: #fff; font-size: 24px; }
+        .methods-header p { color: #888; font-size: 14px; }
+
+        .methods-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 20px;
+          margin-bottom: 30px;
+        }
+
+        .method-card {
+          background: #161616;
+          border: 1px solid #222;
+          border-radius: 12px;
+          padding: 20px;
+          transition: 0.3s;
+        }
+        .method-card:hover { border-color: #00b4d8; background: #1a1a1a; }
+
+        .method-icon {
+          font-size: 24px;
+          color: #00b4d8;
+          margin-bottom: 15px;
+        }
+        .method-card h3 { font-size: 18px; margin-bottom: 10px; color: #eee; }
+        .method-card p { font-size: 14px; color: #aaa; line-height: 1.5; }
+
+        .method-list { list-style: none; padding: 0; margin-top: 15px; }
+        .method-list li { font-size: 13px; color: #ccc; margin-bottom: 8px; padding-left: 15px; position: relative; }
+        .method-list li::before { content: "•"; color: #00b4d8; position: absolute; left: 0; }
+
+        .method-tip {
+          margin-top: 15px;
+          padding: 10px;
+          background: rgba(0, 180, 216, 0.1);
+          border-left: 3px solid #00b4d8;
+          font-size: 12px;
+          color: #00b4d8;
+        }
+
+        .tips-box {
+          background: #111;
+          border-radius: 12px;
+          padding: 25px;
+          border: 1px dashed #333;
+        }
+        .tips-box h3 { font-size: 18px; margin-bottom: 15px; color: #fff; }
+        .tips-box ul { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
+        .tips-box li { font-size: 14px; color: #bbb; line-height: 1.4; padding-left: 20px; position: relative; }
+        .tips-box li::before { content: "➜"; color: #00b4d8; position: absolute; left: 0; }
+      </style>
+
       <div style="text-align: center;">
         <button class="r-btn" id="btnSalvar">📸 Salvar Painel em JPG</button>
       </div>
