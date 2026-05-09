@@ -18,7 +18,6 @@ export function renderIA() {
           <div class="ia-msg bot">
             <div class="msg-bubble">
               <h3>Bem-vindo à Zen AI</h3>
-              <p>Como posso te ajudar hoje?</p>
             </div>
           </div>
         </div>
