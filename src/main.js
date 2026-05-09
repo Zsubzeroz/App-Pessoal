@@ -7,34 +7,32 @@ import { renderCurriculo, mountCurriculo } from './views/curriculo.js';
 const appContent = document.getElementById('app-content');
 const navItems = document.querySelectorAll('.nav-item');
 
-function switchView(target) {
-  // Update Active Nav
-  navItems.forEach(btn => btn.classList.remove('active'));
-  document.querySelector(`[data-target="${target}"]`).classList.add('active');
+const views = {
+  rotina: { render: renderRotina, mount: mountRotina },
+  biblia: { render: renderBiblia, mount: mountBiblia },
+  vagas: { render: renderVagas, mount: mountVagas },
+  curriculo: { render: renderCurriculo, mount: mountCurriculo }
+};
 
-  // Clear previous content
+function switchView(target) {
+  if (!views[target]) return;
+
+  // Update Active Nav
+  navItems.forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-target') === target);
+  });
+
+  // Clear and Transition
   appContent.innerHTML = '';
   const viewContainer = document.createElement('div');
   viewContainer.className = 'view-container';
-
-  // Inject New View
-  if (target === 'rotina') {
-    viewContainer.innerHTML = renderRotina();
-    appContent.appendChild(viewContainer);
-    mountRotina();
-  } else if (target === 'biblia') {
-    viewContainer.innerHTML = renderBiblia();
-    appContent.appendChild(viewContainer);
-    mountBiblia();
-  } else if (target === 'vagas') {
-    viewContainer.innerHTML = renderVagas();
-    appContent.appendChild(viewContainer);
-    mountVagas();
-  } else if (target === 'curriculo') {
-    viewContainer.innerHTML = renderCurriculo();
-    appContent.appendChild(viewContainer);
-    mountCurriculo();
-  }
+  
+  // Inject
+  viewContainer.innerHTML = views[target].render();
+  appContent.appendChild(viewContainer);
+  
+  // Initialize View Logic
+  views[target].mount();
 }
 
 // Event Listeners for Nav

@@ -74,41 +74,6 @@ export function renderVagas() {
         </div>
       </div>
 
-      <style>
-        .v-grid { display: grid; grid-template-columns: 350px 1fr; gap: 30px; }
-        .v-form-panel h3 { margin-bottom: 20px; font-size: 1.1rem; }
-        .v-input-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
-        .v-input-group label { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); }
-        .v-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .w-full { width: 100%; }
-
-        .v-list-header { margin-bottom: 20px; }
-        .v-search-box { position: relative; max-width: 400px; }
-        .v-search-box i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
-        .v-search-box input { width: 100%; padding-left: 40px; }
-
-        .v-table-container { padding: 0; overflow: hidden; }
-        .v-table { width: 100%; border-collapse: collapse; }
-        .v-table th { text-align: left; padding: 16px; background: rgba(255,255,255,0.02); color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); }
-        .v-table td { padding: 16px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
-        .v-table tr:last-child td { border-bottom: none; }
-        .v-table tr:hover { background: rgba(255,255,255,0.01); }
-
-        .v-link-btn { color: var(--accent); text-decoration: none; font-size: 1.1rem; margin-right: 12px; }
-        .v-link-btn:hover { color: var(--accent-hover); }
-        .v-del-btn { color: var(--c-error); background: transparent; border: none; cursor: pointer; font-size: 1rem; opacity: 0.6; transition: 0.2s; }
-        .v-del-btn:hover { opacity: 1; transform: scale(1.1); }
-
-        .status-pill { padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
-        .status-pill.candidatado { background: rgba(14, 165, 233, 0.1); color: #0ea5e9; }
-        .status-pill.entrevista { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
-        .status-pill.aprovado { background: rgba(16, 185, 129, 0.1); color: #10b981; }
-        .status-pill.rejeitado { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
-
-        @media (max-width: 1100px) {
-          .v-grid { grid-template-columns: 1fr; }
-        }
-      </style>
     </div>
   `;
 }

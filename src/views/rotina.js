@@ -164,57 +164,6 @@ export function renderRotina() {
         <button class="btn-primary" id="btnSalvar">📸 Salvar Painel em JPG</button>
       </div>
 
-      <style>
-        .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
-        .greeting-box h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.05em; margin: 0; }
-        .greeting-box p { color: var(--text-muted); margin-top: 4px; }
-        .clock-box { background: var(--bg-card); padding: 12px 24px; border-radius: 16px; border: 1px solid var(--border); }
-        #digital-clock { font-family: 'Monaco', monospace; font-size: 2rem; font-weight: 700; color: var(--accent); }
-
-        .widgets-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 40px; }
-        .widget-card { background: var(--bg-card); border-radius: 20px; padding: 24px; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 15px; }
-        .widget-header { display: flex; align-items: center; gap: 10px; color: var(--text-muted); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-        .widget-header i { color: var(--accent); }
-
-        .pomodoro-display { font-size: 3rem; font-weight: 800; text-align: center; font-variant-numeric: tabular-nums; }
-        .pomodoro-controls { display: flex; justify-content: center; gap: 10px; }
-        .pomo-btn { background: rgba(255,255,255,0.05); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; transition: 0.2s; }
-        .pomo-btn:hover { background: var(--accent); }
-
-        .progress-circle-container { flex: 1; display: flex; align-items: center; justify-content: center; }
-        .progress-stats { font-size: 2.5rem; font-weight: 800; text-align: center; line-height: 1; }
-        .progress-stats small { display: block; font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; margin-top: 4px; }
-
-        .habits-list { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-        .habit-mini { background: var(--bg-input); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 14px; font-size: 1.5rem; text-decoration: none; border: 1px solid var(--border); transition: 0.2s; }
-        .habit-mini:hover { transform: translateY(-3px); border-color: var(--accent); background: rgba(14, 165, 233, 0.1); }
-
-        .planner-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
-        .day-label { font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; padding-left: 4px; }
-        .day-tasks { display: flex; flex-direction: column; gap: 10px; }
-        
-        .task-card { background: var(--bg-card); padding: 16px; border-radius: 14px; border: 1px solid var(--border); border-left: 4px solid #333; cursor: pointer; transition: 0.2s; }
-        .task-card:hover { transform: scale(1.02); background: #1f1f23; border-color: rgba(255,255,255,0.1); }
-        .task-card.done { opacity: 0.2; filter: grayscale(1); }
-        .t-title { display: block; font-size: 0.9rem; font-weight: 700; margin-bottom: 2px; }
-        .t-desc { display: block; font-size: 0.75rem; color: var(--text-muted); }
-
-        .c-tech { border-left-color: #0ea5e9; }
-        .c-lang { border-left-color: #a855f7; }
-        .c-music { border-left-color: #f97316; }
-        .c-math { border-left-color: #ef4444; }
-        .c-talks { border-left-color: #3b82f6; }
-        .c-relax { border-left-color: #10b981; }
-        .c-spirit { border-left-color: #eab308; }
-
-        .action-footer { margin-top: 40px; text-align: center; }
-
-        @media (max-width: 768px) {
-          .widgets-row { grid-template-columns: 1fr; }
-          .greeting-box h1 { font-size: 1.8rem; }
-          .clock-box { display: none; }
-        }
-      </style>
     </div>
   `;
 }
