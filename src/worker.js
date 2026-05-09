@@ -37,21 +37,24 @@ self.onmessage = async (event) => {
         { role: 'user', content: text }
       ];
       
-      // O apply_chat_template aplica o formato correto automaticamente
-      const textToGenerate = assistant.tokenizer.apply_chat_template(messages, { tokenize: false, add_generation_prompt: true });
-
-      const output = await assistant(textToGenerate, {
-        max_new_tokens: 250,
+      // Passamos o array de mensagens diretamente para a v3 da biblioteca
+      // Ela cuida do template e retorna apenas a nova mensagem
+      const output = await assistant(messages, {
+        max_new_tokens: 400,
         temperature: 0.7,
         repetition_penalty: 1.1,
         do_sample: true,
       });
       
-      // O modelo retorna o prompt inteiro + a resposta, então precisamos extrair só a resposta nova
-      const generatedText = output[0].generated_text;
-      const responseOnly = generatedText.replace(textToGenerate, '').trim();
+      // Extrai apenas a resposta gerada (no v3 com array, ele já filtra o histórico)
+      let generatedText = output[0].generated_text;
       
-      self.postMessage({ type: 'response', text: responseOnly });
+      // Fallback de segurança caso a biblioteca retorne em formato de array de mensagens
+      if (Array.isArray(generatedText)) {
+        generatedText = generatedText[generatedText.length - 1].content;
+      }
+      
+      self.postMessage({ type: 'response', text: generatedText.trim() });
     } catch (error) {
       self.postMessage({ type: 'error', error: error.message });
     }

@@ -151,6 +151,7 @@ export function renderRotina() {
           <div class="day-column">
             <div class="day-label">Sábado</div>
             <div class="day-tasks">
+              <div class="task-card c-tech" data-link="#"><span class="t-title">💻 Eng. Software</span><span class="t-desc">Projetos/Portfólio</span></div>
               <div class="task-card c-tech" data-link="${links.educa}"><span class="t-title">Cursos Educa</span><span class="t-desc">Pessoal</span></div>
               <div class="task-card c-music" data-link="#"><span class="t-title">🎹 Piano</span><span class="t-desc">Prática Livre</span></div>
               <div class="task-card c-lang" data-link="#"><span class="t-title">Imersão</span><span class="t-desc">Filmes/Séries</span></div>
