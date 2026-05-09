@@ -22,10 +22,15 @@ export function renderRotina() {
       <!-- Header with Clock and Greeting -->
       <header class="dashboard-header">
         <div class="greeting-box">
+          <div class="status-indicator"><span class="pulse"></span> Online e Focado</div>
           <h1 id="greeting-text">Olá, Luan</h1>
           <p id="current-date">Aguardando data...</p>
         </div>
-        <div class="clock-box">
+        <div class="quote-box glass-panel">
+          <i class="fas fa-quote-left"></i>
+          <p id="motivational-quote">"A disciplina é a ponte entre metas e realizações."</p>
+        </div>
+        <div class="clock-box glass-panel">
           <div id="digital-clock">00:00:00</div>
         </div>
       </header>
@@ -33,7 +38,7 @@ export function renderRotina() {
       <!-- Top Widgets Row -->
       <div class="widgets-row">
         <!-- Pomodoro Timer -->
-        <div class="widget-card pomodoro-widget">
+        <div class="widget-card glass-panel pomodoro-widget">
           <div class="widget-header">
             <i class="fas fa-stopwatch"></i>
             <span>Foco Pomodoro</span>
@@ -193,6 +198,20 @@ export function mountRotina() {
   }
   setInterval(updateClock, 1000);
   updateClock();
+
+  // Quote rotation
+  const quotes = [
+    "A disciplina é a ponte entre metas e realizações.",
+    "O sucesso é a soma de pequenos esforços repetidos dia após dia.",
+    "Não espere por motivação, crie disciplina.",
+    "Sua única limitação é aquela que você impõe em sua própria mente.",
+    "Grandes coisas nunca vêm de zonas de conforto.",
+    "O melhor momento para plantar uma árvore foi há 20 anos. O segundo melhor é agora."
+  ];
+  const quoteEl = document.getElementById('motivational-quote');
+  if (quoteEl) {
+    quoteEl.innerText = `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
+  }
 
   // Pomodoro logic
   let pomoTime = 25 * 60;
