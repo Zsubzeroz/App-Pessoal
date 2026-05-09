@@ -18,10 +18,7 @@ export function renderIA() {
           <div class="ia-msg bot">
             <div class="msg-bubble">
               <h3>✨ Bem-vindo à Zen AI</h3>
-              <p>Sua assistente focada em Produtividade e Engenharia de Software.</p>
-              <p>Estou pronta para te ajudar com desenvolvimento de projetos, estruturação do seu currículo e rotinas de estudos avançados.</p>
-              <br>
-              <small style="color:var(--text-muted);">⚡ Motor Nativo: Llama 3.2 (Ativo)</small>
+              <p>Como posso te ajudar hoje?</p>
             </div>
           </div>
         </div>
