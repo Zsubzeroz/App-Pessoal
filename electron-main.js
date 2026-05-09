@@ -60,11 +60,22 @@ app.on('ready', () => {
 
 // Túnel de IA: Ignora bloqueios de rede do navegador
 app.whenReady().then(() => {
-  protocol.handle('hf', (request) => {
+  protocol.handle('hf', async (request) => {
     const url = request.url.replace('hf://', 'https://huggingface.co/');
-    return net.fetch(url, {
-      headers: { 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36' }
-    });
+    try {
+      return await net.fetch(url, {
+        method: request.method,
+        headers: { 
+          'User-Agent': 'curl/7.68.0', // Se identifica como uma ferramenta de terminal (mais aceita)
+          'Accept': '*/*'
+        },
+        redirect: 'follow'
+      });
+    } catch (e) {
+      // Fallback para mirror se o oficial falhar no túnel
+      const mirrorUrl = request.url.replace('hf://', 'https://hf-mirror.com/');
+      return net.fetch(mirrorUrl);
+    }
   });
 });
 
