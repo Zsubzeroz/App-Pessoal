@@ -1,4 +1,5 @@
 import { app, BrowserWindow, Menu, session, protocol, net } from 'electron';
+import https from 'https';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -61,23 +62,26 @@ app.on('ready', () => {
   createWindow();
 });
 
-// Túnel de IA: Ignora bloqueios de rede do navegador
+// Túnel de IA: Invisibilidade Total usando Node.js puro
 app.whenReady().then(() => {
   protocol.handle('hf', async (request) => {
     const url = request.url.replace('hf://', 'https://huggingface.co/');
-    try {
-      return await net.fetch(url, {
-        method: request.method,
-        headers: { 
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36'
-        },
-        redirect: 'follow'
+    
+    return new Promise((resolve) => {
+      https.get(url, {
+        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/121.0.0.0' }
+      }, (res) => {
+        // Se der erro de autorização no oficial, tenta o mirror
+        if (res.statusCode === 401 || res.statusCode === 403) {
+          const mirrorUrl = url.replace('huggingface.co', 'hf-mirror.com');
+          https.get(mirrorUrl, (mRes) => resolve(new Response(mRes, { status: mRes.statusCode, headers: mRes.headers })));
+        } else {
+          resolve(new Response(res, { status: res.statusCode, headers: res.headers }));
+        }
+      }).on('error', () => {
+        resolve(new Response('Erro de Conexão', { status: 500 }));
       });
-    } catch (e) {
-      // Fallback para mirror se o oficial falhar no túnel
-      const mirrorUrl = request.url.replace('hf://', 'https://hf-mirror.com/');
-      return net.fetch(mirrorUrl);
-    }
+    });
   });
 });
 
