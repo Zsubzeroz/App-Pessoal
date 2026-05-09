@@ -2,7 +2,7 @@ export function renderIA() {
   return `
     <div class="ia-container">
       <header class="view-header">
-        <h1 class="section-title">✨ Zen AI Assistant</h1>
+        <h1 class="section-title">Zen AI Assistant</h1>
         <p class="section-desc">Assistente inteligente para projetos e estudos.</p>
       </header>
 
@@ -17,7 +17,7 @@ export function renderIA() {
         <div id="ia-chat-box" class="ia-chat-box">
           <div class="ia-msg bot">
             <div class="msg-bubble">
-              <h3>✨ Bem-vindo à Zen AI</h3>
+              <h3>Bem-vindo à Zen AI</h3>
               <p>Como posso te ajudar hoje?</p>
             </div>
           </div>
