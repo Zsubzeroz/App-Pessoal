@@ -8,10 +8,8 @@ export function renderIA() {
 
       <div class="ia-workspace glass-panel">
         <div id="ia-status-bar" class="ia-status-bar">
-          <span id="ia-status-text">IA pronta para baixar (necessário internet na primeira vez)</span>
-          <div id="ia-progress-bg" class="ia-progress-bg" style="display:none;">
-            <div id="ia-progress-fill" class="ia-progress-fill"></div>
-          </div>
+          <span id="ia-status-text">Verificando motor de IA nativo...</span>
+
         </div>
 
         <div id="ia-chat-box" class="ia-chat-box">
@@ -36,8 +34,7 @@ export function mountIA() {
   const input = document.getElementById('ia-input');
   const sendBtn = document.getElementById('ia-send');
   const statusText = document.getElementById('ia-status-text');
-  const progressBg = document.getElementById('ia-progress-bg');
-  const progressFill = document.getElementById('ia-progress-fill');
+
 
   let worker = null;
 
@@ -55,16 +52,7 @@ export function mountIA() {
         statusText.innerText = message;
       }
 
-      if (type === 'progress') {
-        progressBg.style.display = 'block';
-        if (data.status === 'progress') {
-          progressFill.style.width = `${data.progress}%`;
-          statusText.innerText = `Carregando conhecimento: ${Math.round(data.progress)}%`;
-        }
-        if (data.status === 'done') {
-           progressBg.style.display = 'none';
-        }
-      }
+
 
       if (type === 'ready') {
         statusText.innerHTML = '<span style="color:var(--c-success)">●</span> Sistema Offline Pronto';

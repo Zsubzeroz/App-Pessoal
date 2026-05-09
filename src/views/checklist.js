@@ -9,7 +9,8 @@ export function renderChecklist() {
       <div class="checklist-workspace glass-panel">
         <div class="checklist-input-group">
           <input type="text" id="checklist-new-item" placeholder="Nova tarefa...">
-          <button id="checklist-add-btn" class="pomo-btn"><i class="fas fa-plus"></i></button>
+          <button id="checklist-add-btn" class="pomo-btn" title="Adicionar"><i class="fas fa-plus"></i></button>
+          <button id="checklist-clear-btn" class="pomo-btn" style="background:#ef444426; color:#ef4444;" title="Limpar concluídos"><i class="fas fa-broom"></i></button>
         </div>
         
         <ul id="checklist-list" class="checklist-list">
@@ -24,14 +25,23 @@ export function mountChecklist() {
   const listEl = document.getElementById('checklist-list');
   const inputEl = document.getElementById('checklist-new-item');
   const addBtn = document.getElementById('checklist-add-btn');
+  const clearBtn = document.getElementById('checklist-clear-btn');
 
-  if (!listEl || !inputEl || !addBtn) return;
+  if (!listEl || !inputEl || !addBtn || !clearBtn) return;
 
   let items = JSON.parse(localStorage.getItem('zen-checklist-items') || '[]');
 
   function saveItems() {
     localStorage.setItem('zen-checklist-items', JSON.stringify(items));
   }
+
+  clearBtn.addEventListener('click', () => {
+    if (confirm('Deseja remover todas as tarefas concluídas?')) {
+      items = items.filter(item => !item.done);
+      saveItems();
+      renderItems();
+    }
+  });
 
   function renderItems() {
     listEl.innerHTML = '';
