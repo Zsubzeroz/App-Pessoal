@@ -3,8 +3,6 @@ import { pipeline, env } from '@xenova/transformers';
 // Skip local check to download from Hub on first run
 env.allowLocalModels = false;
 env.useBrowserCache = true;
-env.remoteHost = 'https://huggingface.co';
-env.remotePathTemplate = '{model}/resolve/{revision}/{file}';
 
 let assistant = null;
 
