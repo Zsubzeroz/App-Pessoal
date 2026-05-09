@@ -62,26 +62,31 @@ app.on('ready', () => {
   createWindow();
 });
 
-// Túnel de IA: Invisibilidade Total usando Node.js puro
+// Túnel de IA: Invisibilidade Total com Seguimento de Redirecionamento
 app.whenReady().then(() => {
   protocol.handle('hf', async (request) => {
-    const url = request.url.replace('hf://', 'https://huggingface.co/');
-    
-    return new Promise((resolve) => {
-      https.get(url, {
-        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/121.0.0.0' }
-      }, (res) => {
-        // Se der erro de autorização no oficial, tenta o mirror
-        if (res.statusCode === 401 || res.statusCode === 403) {
-          const mirrorUrl = url.replace('huggingface.co', 'hf-mirror.com');
-          https.get(mirrorUrl, (mRes) => resolve(new Response(mRes, { status: mRes.statusCode, headers: mRes.headers })));
-        } else {
-          resolve(new Response(res, { status: res.statusCode, headers: res.headers }));
-        }
-      }).on('error', () => {
-        resolve(new Response('Erro de Conexão', { status: 500 }));
+    const follow = async (url) => {
+      return new Promise((resolve) => {
+        https.get(url, {
+          headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/121.0.0.0' }
+        }, (res) => {
+          // Se for redirecionamento (301 ou 302), segue o novo local
+          if ((res.statusCode === 301 || res.statusCode === 302) && res.headers.location) {
+            resolve(follow(res.headers.location));
+          } else {
+            resolve(new Response(res, { 
+              status: res.statusCode, 
+              headers: { ...res.headers, 'Access-Control-Allow-Origin': '*' } 
+            }));
+          }
+        }).on('error', (e) => {
+          resolve(new Response('Erro de Conexão: ' + e.message, { status: 500 }));
+        });
       });
-    });
+    };
+
+    const targetUrl = request.url.replace('hf://', 'https://huggingface.co/');
+    return follow(targetUrl);
   });
 });
 
