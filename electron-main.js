@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, session, protocol, net } from 'electron';
+import { app, BrowserWindow, Menu, session, protocol, net, shell } from 'electron';
 import https from 'https';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -41,8 +41,19 @@ const createWindow = () => {
     mainWindow.loadFile(path.join(__dirname, 'dist/index.html'));
   }
 
-  // Descomente abaixo para ver os logs do DevTools caso haja algum erro em produção
-  mainWindow.webContents.openDevTools();
+  // Abrir todos os links externos no navegador do sistema
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    shell.openExternal(url);
+    return { action: 'deny' };
+  });
+
+  mainWindow.webContents.on('will-navigate', (event, url) => {
+    const appUrl = isDev ? 'http://localhost:5173' : 'file://';
+    if (!url.startsWith(appUrl)) {
+      event.preventDefault();
+      shell.openExternal(url);
+    }
+  });
 
   mainWindow.on('closed', () => {
     mainWindow = null;

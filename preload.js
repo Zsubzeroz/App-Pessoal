@@ -1,5 +1,5 @@
-const { contextBridge } = require('electron');
+const { contextBridge, shell } = require('electron');
 
 contextBridge.exposeInMainWorld('electron', {
-  // Você pode adicionar APIs aqui se precisar comunicar com o processo principal
+  openExternal: (url) => shell.openExternal(url)
 });

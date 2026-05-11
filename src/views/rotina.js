@@ -248,8 +248,22 @@ export function mountRotina() {
 
   // Task interaction & Persistence
   const tasks = document.querySelectorAll('.task-card');
+  const habitLinks = document.querySelectorAll('.habit-mini');
   const completedEl = document.getElementById('completed-count');
   const totalEl = document.getElementById('total-count');
+
+  function openLink(link) {
+    console.log('Tentando abrir link:', link);
+    if (!link || link === '#') return;
+    window.open(link, '_blank');
+  }
+
+  habitLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      openLink(link.href);
+    });
+  });
 
   function getCompleted() {
     return JSON.parse(localStorage.getItem('zen-routine-completed')) || [];
@@ -269,9 +283,8 @@ export function mountRotina() {
   tasks.forEach(task => {
     task.addEventListener('click', (e) => {
       const link = task.getAttribute('data-link');
-      if (link && link !== '#') {
-        window.open(link, '_blank');
-      }
+      console.log('Task clicada:', link);
+      openLink(link);
     });
 
     const markDone = (e) => {
