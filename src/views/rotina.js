@@ -300,6 +300,7 @@ export function mountRotina() {
                <option value="c-talks" ${t.color==='c-talks'?'selected':''}>Conversação</option>
                <option value="c-relax" ${t.color==='c-relax'?'selected':''}>Relax / Lazer</option>
                <option value="c-spirit" ${t.color==='c-spirit'?'selected':''}>Espiritual</option>
+               <option value="c-sports" ${t.color==='c-sports'?'selected':''}>Sports 🏃</option>
             </select>
             <button class="remove-task-btn"><i class="fas fa-trash"></i></button>
           </div>
@@ -359,6 +360,7 @@ export function mountRotina() {
                <option value="c-talks">Conversação</option>
                <option value="c-relax">Relax / Lazer</option>
                <option value="c-spirit">Espiritual</option>
+               <option value="c-sports">Sports 🏃</option>
             </select>
             <button class="remove-task-btn"><i class="fas fa-trash"></i></button>
           `;
