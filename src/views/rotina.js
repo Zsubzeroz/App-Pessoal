@@ -1,45 +1,13 @@
 const DEFAULT_ROUTINE = {
-  Segunda: [
-    { title: "🎹 Piano", desc: "Aula e Prática", link: "#", color: "c-music" },
-    { title: "Unicesumar", desc: "Studeo / Atividades", link: "https://studeo.unicesumar.edu.br/", color: "c-tech" },
-    { title: "Mate Academy", desc: "Frontend", link: "https://mate.academy/pt-br/home", color: "c-tech" },
-    { title: "Fluency", desc: "Listening", link: "https://academy.fluency.io/", color: "c-lang" }
-  ],
-  Terça: [
-    { title: "🗣️ Conversação", desc: "Fluency Talks", link: "https://talks.fluency.io/", color: "c-talks" },
-    { title: "Cisco NetAcad", desc: "Networking", link: "https://www.netacad.com/", color: "c-tech" },
-    { title: "SEDA College", desc: "Inglês", link: "https://sedacollegeonline.com/", color: "c-lang" },
-    { title: "🧮 Ábaco Mental", desc: "Matemática", link: "https://www.geogebra.org/m/S97v79S5", color: "c-math" }
-  ],
-  Quarta: [
-    { title: "Coddy.tech", desc: "Python", link: "https://coddy.tech/", color: "c-tech" },
-    { title: "Mate Academy", desc: "Projetos", link: "https://mate.academy/pt-br/home", color: "c-tech" },
-    { title: "Little Lang", desc: "Daily Lessons", link: "https://littlelanguagelessons.com/", color: "c-lang" },
-    { title: "Unicesumar", desc: "Fórum", link: "https://studeo.unicesumar.edu.br/", color: "c-tech" }
-  ],
-  Quinta: [
-    { title: "🗣️ Conversação", desc: "Fluency Talks", link: "https://talks.fluency.io/", color: "c-talks" },
-    { title: "Cisco NetAcad", desc: "Labs", link: "https://www.netacad.com/", color: "c-tech" },
-    { title: "Fluency", desc: "Anki", link: "https://academy.fluency.io/", color: "c-lang" },
-    { title: "🎼 Teoria", desc: "Partitura", link: "#", color: "c-music" }
-  ],
-  Sexta: [
-    { title: "Eu Capacito", desc: "Cursos", link: "https://eucapacito.com.br/", color: "c-tech" },
-    { title: "Coddy.tech", desc: "Problemas", link: "https://coddy.tech/", color: "c-tech" },
-    { title: "Libras", desc: "Prática", link: "https://www.handtalk.me/br/libras/", color: "c-lang" },
-    { title: "♟️ Xadrez", desc: "Análise", link: "https://www.chess.com/pt-BR", color: "c-relax" }
-  ],
-  Sábado: [
-    { title: "💻 Eng. Software", desc: "Projetos/Portfólio", link: "#", color: "c-tech" },
-    { title: "Cursos Educa", desc: "Pessoal", link: "https://www.cursosonlineeduca.com.br/", color: "c-tech" },
-    { title: "🎹 Piano", desc: "Prática Livre", link: "#", color: "c-music" },
-    { title: "Imersão", desc: "Filmes/Séries", link: "#", color: "c-lang" }
-  ],
-  Domingo: [
-    { title: "Bíblia", desc: "Estudo", link: "https://www.bibliaonline.com.br/", color: "c-spirit" },
-    { title: "Planejamento", desc: "Agenda", link: "#", color: "c-relax" }
-  ]
+  Segunda: [],
+  Terça: [],
+  Quarta: [],
+  Quinta: [],
+  Sexta: [],
+  Sábado: [],
+  Domingo: []
 };
+
 
 export function renderRotina() {
   const currentRoutine = JSON.parse(localStorage.getItem('zen-routine-data')) || DEFAULT_ROUTINE;
