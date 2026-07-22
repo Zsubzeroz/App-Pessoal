@@ -1,51 +1,43 @@
 const DEFAULT_ROUTINE = {
   Segunda: [
-    { title: "Gestão de Carreira", desc: "Revisar e-mails, status das vagas e follow-up no LinkedIn", link: "#", color: "c-career", tempo: "30min" },
-    { title: "UniCesumar", desc: "Disciplinas acadêmicas e trabalhos (Foco na nota 9,7)", link: "#", color: "c-tech", tempo: "1h30" },
-    { title: "Estácio", desc: "Defesa Cibernética - Aulas virtuais de segurança/redes", link: "#", color: "c-tech", tempo: "1h" },
-    { title: "Mate Academy", desc: "Foco total: Terminar Python Tech Check", link: "#", color: "c-tech", tempo: "1h30" },
-    { title: "Piano", desc: "Prática focada (Treino de precisão de Clean Code)", link: "#", color: "c-music", tempo: "1h" },
-    { title: "Jiu-Jitsu", desc: "Treino físico e descompressão", link: "#", color: "c-sports", tempo: "1h30" }
+    { title: "Carreira & Inglês", desc: "30 min Gestão de Vagas + 30 min SEDA College", link: "#", color: "c-career", tempo: "1h" },
+    { title: "Mate Academy", desc: "Foco absoluto: Superar o Python Tech Check", link: "#", color: "c-tech", tempo: "2h" },
+    { title: "UniCesumar", desc: "Disciplinas acadêmicas de Engenharia de Software", link: "#", color: "c-tech", tempo: "1h30" },
+    { title: "Leitura Diária", desc: "Estudo devocional da Bíblia + leitura de livro", link: "#", color: "c-spirit", tempo: "30min" }
   ],
   Terça: [
-    { title: "Gestão de Carreira", desc: "Prospecção de vagas e envio do CV Master", link: "#", color: "c-career", tempo: "30min" },
-    { title: "Cisco NetAcad", desc: "Teoria de Redes e Protocolos", link: "#", color: "c-tech", tempo: "1h30" },
-    { title: "SEDA College", desc: "Inglês Ativo (Gramática e Estruturação)", link: "#", color: "c-lang", tempo: "1h30" },
-    { title: "Fluency Talk", desc: "Treino prático de conversação baseado na SEDA", link: "#", color: "c-talks", tempo: "1h" },
-    { title: "Libras Básico", desc: "Estudo contínuo cognitivo", link: "#", color: "c-tech", tempo: "1h" }
+    { title: "Carreira & Inglês", desc: "30 min Gestão de Vagas + 30 min SEDA College", link: "#", color: "c-career", tempo: "1h" },
+    { title: "Cisco NetAcad", desc: "Estudo de Redes, Conectividade e Protocolos", link: "#", color: "c-tech", tempo: "2h" },
+    { title: "Estácio", desc: "Disciplinas acadêmicas de Defesa Cibernética", link: "#", color: "c-tech", tempo: "1h30" },
+    { title: "Leitura Diária", desc: "Estudo devocional da Bíblia + leitura de livro", link: "#", color: "c-spirit", tempo: "30min" }
   ],
   Quarta: [
-    { title: "Gestão de Carreira", desc: "Pesquisa de empresas e acompanhamento de contatos", link: "#", color: "c-career", tempo: "30min" },
-    { title: "Coddy.tech", desc: "Lógica de programação rápida em Python", link: "#", color: "c-tech", tempo: "1h" },
-    { title: "Mate Academy", desc: "Foco total: Iniciar Módulo de Qualidade / QA", link: "#", color: "c-tech", tempo: "1h30" },
-    { title: "UniCesumar / Estácio", desc: "Fóruns acadêmicos e Little Lang Daily", link: "#", color: "c-tech", tempo: "1h" },
-    { title: "Jiu-Jitsu", desc: "Treino físico e descompressão", link: "#", color: "c-sports", tempo: "1h30" }
+    { title: "Carreira & Inglês", desc: "30 min Gestão de Vagas + 30 min SEDA College", link: "#", color: "c-career", tempo: "1h" },
+    { title: "Mate Academy", desc: "Foco absoluto: Superar o Python Tech Check", link: "#", color: "c-tech", tempo: "2h" },
+    { title: "UniCesumar", desc: "Disciplinas acadêmicas de Engenharia de Software", link: "#", color: "c-tech", tempo: "1h30" },
+    { title: "Leitura Diária", desc: "Estudo devocional da Bíblia + leitura de livro", link: "#", color: "c-spirit", tempo: "30min" }
   ],
   Quinta: [
-    { title: "Gestão de Carreira", desc: "Atualização do Gerenciador de Vagas", link: "#", color: "c-career", tempo: "30min" },
-    { title: "Cisco NetAcad", desc: "Laboratórios práticos no Packet Tracer", link: "#", color: "c-tech", tempo: "1h30" },
-    { title: "SEDA College", desc: "Conversação e Leitura Técnica em Inglês", link: "#", color: "c-lang", tempo: "1h30" },
-    { title: "Anki + Revisão", desc: "Revisão ativa de vocabulário de tecnologia", link: "#", color: "c-lang", tempo: "1h" },
-    { title: "Teoria da Música", desc: "Leitura de partitura e estudo fixo", link: "#", color: "c-music", tempo: "1h" }
+    { title: "Carreira & Inglês", desc: "30 min Gestão de Vagas + 30 min SEDA College", link: "#", color: "c-career", tempo: "1h" },
+    { title: "Cisco NetAcad", desc: "Laboratórios práticos de rede no Packet Tracer", link: "#", color: "c-tech", tempo: "2h" },
+    { title: "Estácio", desc: "Disciplinas acadêmicas de Defesa Cibernética", link: "#", color: "c-tech", tempo: "1h30" },
+    { title: "Leitura Diária", desc: "Estudo devocional da Bíblia + leitura de livro", link: "#", color: "c-spirit", tempo: "30min" }
   ],
   Sexta: [
-    { title: "Gestão de Carreira", desc: "Preparação para entrevistas e follow-ups", link: "#", color: "c-career", tempo: "30min" },
-    { title: "Eu Capacito / Cloud", desc: "AWS Foundations & IA Generativa (Foco no Fellowship)", link: "#", color: "c-tech", tempo: "1h30" },
-    { title: "Estácio", desc: "Revisão de laboratórios de Defesa Cibernética", link: "#", color: "c-tech", tempo: "1h" },
-    { title: "Coddy.tech", desc: "Desafios avançados / Lógica", link: "#", color: "c-tech", tempo: "1h" },
-    { title: "Xadrez ou Libras", desc: "Prática cognitiva estratégica", link: "#", color: "c-math", tempo: "1h" },
-    { title: "Jiu-Jitsu", desc: "Treino e fechamento da semana", link: "#", color: "c-sports", tempo: "1h30" }
+    { title: "Carreira & Inglês", desc: "30 min Gestão de Vagas + 30 min SEDA College", link: "#", color: "c-career", tempo: "1h" },
+    { title: "AWS & IA Generativa", desc: "AWS Foundations e trilhas do Fellowship", link: "#", color: "c-tech", tempo: "2h" },
+    { title: "Revisão Acadêmica", desc: "Fechamento de pendências UniCesumar e Estácio", link: "#", color: "c-tech", tempo: "1h" },
+    { title: "Leitura Diária", desc: "Estudo devocional da Bíblia + leitura de livro", link: "#", color: "c-spirit", tempo: "30min" }
   ],
   Sábado: [
-    { title: "Engenharia de Software", desc: "Deep Work: Foco total na criação de projetos para o GitHub", link: "#", color: "c-tech", tempo: "3h" },
-    { title: "Cursos Online / Mate", desc: "Módulo de Qualidade / Testes práticos no portfólio", link: "#", color: "c-tech", tempo: "1h30" },
-    { title: "Piano", desc: "Prática livre e recreativa", link: "#", color: "c-music", tempo: "1h" },
-    { title: "Imersão", desc: "Filmes/Séries em inglês sem legenda", link: "#", color: "c-lang", tempo: "1h" }
+    { title: "Deep Work - Portfólio", desc: "Desenvolvimento focado e livre de projetos no GitHub", link: "#", color: "c-tech", tempo: "3h" },
+    { title: "Mate Academy", desc: "Foco absoluto: Superar o Python Tech Check", link: "#", color: "c-tech", tempo: "1h30" },
+    { title: "Leitura Diária", desc: "Estudo devocional da Bíblia + leitura de livro", link: "#", color: "c-spirit", tempo: "30min" }
   ],
   Domingo: [
-    { title: "Bíblia Ilustrada", desc: "Estudo e devocional", link: "#", color: "c-spirit", tempo: "1h" },
-    { title: "Planejamento", desc: "Ajustar as metas e a rotina da semana seguinte no Dashboard", link: "#", color: "c-career", tempo: "30min" },
-    { title: "Descansar", desc: "Zero linhas de código. Lazer e descanso total para consolidação da memória", link: "#", color: "c-relax", tempo: "Lazer" }
+    { title: "Planejamento", desc: "Organizar as metas e a rotina da semana seguinte", link: "#", color: "c-career", tempo: "30min" },
+    { title: "Leitura Diária", desc: "Estudo devocional da Bíblia + leitura de livro", link: "#", color: "c-spirit", tempo: "30min" },
+    { title: "Descansar", desc: "Lazer completo, leitura livre e descanso", link: "#", color: "c-relax", tempo: "Lazer" }
   ]
 };
 
@@ -123,19 +115,7 @@ export function renderRotina() {
           </div>
         </div>
 
-        <div class="widget-card habits-widget">
-          <div class="widget-header">
-            <i class="fas fa-star"></i>
-            <span>Hábitos Rápidos</span>
-          </div>
-          <div class="habits-list">
-            <a href="https://www.bibliaonline.com.br/" target="_blank" class="habit-mini">📖</a>
-            <a href="https://www.duolingo.com/" target="_blank" class="habit-mini">🦉</a>
-            <a href="https://www.handtalk.me/br/libras/" target="_blank" class="habit-mini">✋</a>
-            <a href="https://www.chess.com/pt-BR" target="_blank" class="habit-mini">♟️</a>
-            <a href="https://www.geogebra.org/m/S97v79S5" target="_blank" class="habit-mini">🧮</a>
-          </div>
-        </div>
+
       </div>
 
       <section class="planner-section">
@@ -259,7 +239,6 @@ export function mountRotina() {
 
   // Task interaction & Persistence
   const tasks = document.querySelectorAll('.task-card');
-  const habitLinks = document.querySelectorAll('.habit-mini');
   const completedEl = document.getElementById('completed-count');
   const totalEl = document.getElementById('total-count');
 
@@ -268,13 +247,6 @@ export function mountRotina() {
     if (!link || link === '#') return;
     window.open(link, '_blank');
   }
-
-  habitLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      openLink(link.href);
-    });
-  });
 
   function getCompleted() {
     return JSON.parse(localStorage.getItem('zen-routine-completed')) || [];

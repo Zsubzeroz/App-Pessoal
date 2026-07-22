@@ -264,7 +264,7 @@ input:focus, select:focus, textarea:focus {
 .clock-box { padding: 16px 32px !important; border-radius: 20px !important; display: flex; align-items: center; justify-content: center; min-width: 180px; }
 #digital-clock { font-family: 'Inter', monospace; font-size: 2.2rem; font-weight: 800; color: var(--accent); letter-spacing: -0.02em; }
 
-.widgets-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 48px; }
+.widgets-row { display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; margin-bottom: 48px; }
 .widget-card { border-radius: 24px !important; padding: 32px !important; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
 .widget-card:hover { transform: translateY(-8px); border-color: var(--accent); }
 .widget-header { display: flex; align-items: center; gap: 10px; color: var(--text-muted); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
@@ -278,10 +278,6 @@ input:focus, select:focus, textarea:focus {
 .progress-circle-container { flex: 1; display: flex; align-items: center; justify-content: center; }
 .progress-stats { font-size: 2.5rem; font-weight: 800; text-align: center; line-height: 1; }
 .progress-stats small { display: block; font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; margin-top: 4px; }
-
-.habits-list { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-.habit-mini { background: var(--bg-input); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 14px; font-size: 1.5rem; text-decoration: none; border: 1px solid var(--border); transition: 0.2s; }
-.habit-mini:hover { transform: translateY(-3px); border-color: var(--accent); background: rgba(14, 165, 233, 0.1); }
 
 .planner-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
 .day-label { font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; padding-left: 4px; }
@@ -686,6 +682,62 @@ input:focus, select:focus, textarea:focus {
 
 .delete-btn:hover {
   color: #ef4444;
+}
+
+/* Checklist - Daily Habits Section */
+.checklist-section-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
+  padding-left: 4px;
+}
+
+.checklist-section-label i {
+  color: var(--accent);
+  font-size: 0.8rem;
+}
+
+.checklist-list--fixed {
+  border: 1px dashed rgba(14, 165, 233, 0.2);
+  border-radius: 16px;
+  padding: 12px;
+  background: rgba(14, 165, 233, 0.03);
+}
+
+.checklist-item--fixed {
+  border-left: 3px solid var(--accent) !important;
+  background: rgba(14, 165, 233, 0.04) !important;
+}
+
+.checklist-item--fixed:hover {
+  background: rgba(14, 165, 233, 0.08) !important;
+}
+
+.habit-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(14, 165, 233, 0.15);
+  color: var(--accent);
+  border: 1px solid rgba(14, 165, 233, 0.2);
+  margin-left: 8px;
+}
+
+.checklist-item--fixed.done .habit-badge {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--c-success);
+  border-color: rgba(16, 185, 129, 0.2);
 }
 
 /* Routine Modal */
