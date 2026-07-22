@@ -290,6 +290,7 @@ input:focus, select:focus, textarea:focus {
 .task-card { background: var(--bg-card); padding: 16px; border-radius: 14px; border: 1px solid var(--border); border-left: 4px solid #333; cursor: pointer; transition: 0.2s; }
 .task-card:hover { transform: scale(1.02); background: #1f1f23; border-color: rgba(255,255,255,0.1); }
 .task-card.done { opacity: 0.2; filter: grayscale(1); }
+.t-time { display: inline-block; font-size: 0.65rem; font-weight: 700; color: var(--accent); background: rgba(14, 165, 233, 0.1); padding: 2px 8px; border-radius: 6px; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
 .t-title { display: block; font-size: 0.9rem; font-weight: 700; margin-bottom: 2px; }
 .t-desc { display: block; font-size: 0.75rem; color: var(--text-muted); }
 
@@ -301,6 +302,7 @@ input:focus, select:focus, textarea:focus {
 .c-relax { border-left-color: #10b981; }
 .c-spirit { border-left-color: #eab308; }
 .c-sports { border-left-color: #f43f5e; }
+.c-career { border-left-color: #06b6d4; }
 
 .action-footer { margin-top: 40px; text-align: center; }
 

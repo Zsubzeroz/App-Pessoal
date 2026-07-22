@@ -1,11 +1,52 @@
 const DEFAULT_ROUTINE = {
-  Segunda: [],
-  Terça: [],
-  Quarta: [],
-  Quinta: [],
-  Sexta: [],
-  Sábado: [],
-  Domingo: []
+  Segunda: [
+    { title: "Gestão de Carreira", desc: "Revisar e-mails, status das vagas e follow-up no LinkedIn", link: "#", color: "c-career", tempo: "30min" },
+    { title: "UniCesumar", desc: "Disciplinas acadêmicas e trabalhos (Foco na nota 9,7)", link: "#", color: "c-tech", tempo: "1h30" },
+    { title: "Estácio", desc: "Defesa Cibernética - Aulas virtuais de segurança/redes", link: "#", color: "c-tech", tempo: "1h" },
+    { title: "Mate Academy", desc: "Foco total: Terminar Python Tech Check", link: "#", color: "c-tech", tempo: "1h30" },
+    { title: "Piano", desc: "Prática focada (Treino de precisão de Clean Code)", link: "#", color: "c-music", tempo: "1h" },
+    { title: "Jiu-Jitsu", desc: "Treino físico e descompressão", link: "#", color: "c-sports", tempo: "1h30" }
+  ],
+  Terça: [
+    { title: "Gestão de Carreira", desc: "Prospecção de vagas e envio do CV Master", link: "#", color: "c-career", tempo: "30min" },
+    { title: "Cisco NetAcad", desc: "Teoria de Redes e Protocolos", link: "#", color: "c-tech", tempo: "1h30" },
+    { title: "SEDA College", desc: "Inglês Ativo (Gramática e Estruturação)", link: "#", color: "c-lang", tempo: "1h30" },
+    { title: "Fluency Talk", desc: "Treino prático de conversação baseado na SEDA", link: "#", color: "c-talks", tempo: "1h" },
+    { title: "Libras Básico", desc: "Estudo contínuo cognitivo", link: "#", color: "c-tech", tempo: "1h" }
+  ],
+  Quarta: [
+    { title: "Gestão de Carreira", desc: "Pesquisa de empresas e acompanhamento de contatos", link: "#", color: "c-career", tempo: "30min" },
+    { title: "Coddy.tech", desc: "Lógica de programação rápida em Python", link: "#", color: "c-tech", tempo: "1h" },
+    { title: "Mate Academy", desc: "Foco total: Iniciar Módulo de Qualidade / QA", link: "#", color: "c-tech", tempo: "1h30" },
+    { title: "UniCesumar / Estácio", desc: "Fóruns acadêmicos e Little Lang Daily", link: "#", color: "c-tech", tempo: "1h" },
+    { title: "Jiu-Jitsu", desc: "Treino físico e descompressão", link: "#", color: "c-sports", tempo: "1h30" }
+  ],
+  Quinta: [
+    { title: "Gestão de Carreira", desc: "Atualização do Gerenciador de Vagas", link: "#", color: "c-career", tempo: "30min" },
+    { title: "Cisco NetAcad", desc: "Laboratórios práticos no Packet Tracer", link: "#", color: "c-tech", tempo: "1h30" },
+    { title: "SEDA College", desc: "Conversação e Leitura Técnica em Inglês", link: "#", color: "c-lang", tempo: "1h30" },
+    { title: "Anki + Revisão", desc: "Revisão ativa de vocabulário de tecnologia", link: "#", color: "c-lang", tempo: "1h" },
+    { title: "Teoria da Música", desc: "Leitura de partitura e estudo fixo", link: "#", color: "c-music", tempo: "1h" }
+  ],
+  Sexta: [
+    { title: "Gestão de Carreira", desc: "Preparação para entrevistas e follow-ups", link: "#", color: "c-career", tempo: "30min" },
+    { title: "Eu Capacito / Cloud", desc: "AWS Foundations & IA Generativa (Foco no Fellowship)", link: "#", color: "c-tech", tempo: "1h30" },
+    { title: "Estácio", desc: "Revisão de laboratórios de Defesa Cibernética", link: "#", color: "c-tech", tempo: "1h" },
+    { title: "Coddy.tech", desc: "Desafios avançados / Lógica", link: "#", color: "c-tech", tempo: "1h" },
+    { title: "Xadrez ou Libras", desc: "Prática cognitiva estratégica", link: "#", color: "c-math", tempo: "1h" },
+    { title: "Jiu-Jitsu", desc: "Treino e fechamento da semana", link: "#", color: "c-sports", tempo: "1h30" }
+  ],
+  Sábado: [
+    { title: "Engenharia de Software", desc: "Deep Work: Foco total na criação de projetos para o GitHub", link: "#", color: "c-tech", tempo: "3h" },
+    { title: "Cursos Online / Mate", desc: "Módulo de Qualidade / Testes práticos no portfólio", link: "#", color: "c-tech", tempo: "1h30" },
+    { title: "Piano", desc: "Prática livre e recreativa", link: "#", color: "c-music", tempo: "1h" },
+    { title: "Imersão", desc: "Filmes/Séries em inglês sem legenda", link: "#", color: "c-lang", tempo: "1h" }
+  ],
+  Domingo: [
+    { title: "Bíblia Ilustrada", desc: "Estudo e devocional", link: "#", color: "c-spirit", tempo: "1h" },
+    { title: "Planejamento", desc: "Ajustar as metas e a rotina da semana seguinte no Dashboard", link: "#", color: "c-career", tempo: "30min" },
+    { title: "Descansar", desc: "Zero linhas de código. Lazer e descanso total para consolidação da memória", link: "#", color: "c-relax", tempo: "Lazer" }
+  ]
 };
 
 
@@ -17,8 +58,10 @@ export function renderRotina() {
     const taskCards = tasks.map((task, idx) => {
       const taskId = `${day}-${idx}`;
       const isDone = completedTasks.includes(taskId);
+      const timeBadge = task.tempo ? `<span class="t-time">${task.tempo}</span>` : '';
       return `
         <div class="task-card ${task.color} ${isDone ? 'done' : ''}" data-id="${taskId}" data-link="${task.link}">
+          ${timeBadge}
           <span class="t-title">${task.title}</span>
           <span class="t-desc">${task.desc}</span>
         </div>
@@ -301,6 +344,7 @@ export function mountRotina() {
                <option value="c-relax" ${t.color==='c-relax'?'selected':''}>Relax / Lazer</option>
                <option value="c-spirit" ${t.color==='c-spirit'?'selected':''}>Espiritual</option>
                <option value="c-sports" ${t.color==='c-sports'?'selected':''}>Sports 🏃</option>
+               <option value="c-career" ${t.color==='c-career'?'selected':''}>Carreira</option>
             </select>
             <button class="remove-task-btn"><i class="fas fa-trash"></i></button>
           </div>
@@ -361,6 +405,7 @@ export function mountRotina() {
                <option value="c-relax">Relax / Lazer</option>
                <option value="c-spirit">Espiritual</option>
                <option value="c-sports">Sports 🏃</option>
+               <option value="c-career">Carreira</option>
             </select>
             <button class="remove-task-btn"><i class="fas fa-trash"></i></button>
           `;

@@ -29,13 +29,28 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build Electron App
-        run: npm run electron-build
+      - name: Build Electron App (Windows)
+        if: runner.os == 'Windows'
+        run: npm run electron-build:win
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload Artifacts
+      - name: Build Electron App (Linux)
+        if: runner.os == 'Linux'
+        run: npm run electron-build:linux
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Artifacts (Windows)
+        if: runner.os == 'Windows'
         uses: actions/upload-artifact@v4
         with:
-          name: executables-${{ matrix.os }}
-          path: dist/*portable.exe, dist/*.AppImage
+          name: executables-windows
+          path: dist/*portable.exe
+
+      - name: Upload Artifacts (Linux)
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v4
+        with:
+          name: executables-linux
+          path: dist/*.AppImage

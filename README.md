@@ -9,6 +9,15 @@ Uma central de produtividade premium desenvolvida com **Electron + Vite**, proje
 *   **💼 Gerenciador de Vagas**: Rastreie suas candidaturas, status e links de oportunidades em tempo real.
 *   **📝 Editor de Currículo Live**: Edite seu currículo em HTML/CSS com visualização instantânea e exportação para PDF.
 
+## 🌐 Acesso Online (GitHub Pages)
+
+Acesse a Central Luan diretamente no navegador, sem instalar nada:
+
+**🔗 [Central Luan - GitHub Pages](https://zsubzeroz.github.io/App-Pessoal/)**
+
+> [!NOTE]
+> A Zen AI (Ollama) só funciona na versão desktop, pois requer motor local.
+
 ## 📦 Downloads (Executáveis Universais)
 
 Para facilitar o uso sem a necessidade de instalar ferramentas de desenvolvimento, você pode baixar a versão mais recente diretamente da aba **Releases** do GitHub:
