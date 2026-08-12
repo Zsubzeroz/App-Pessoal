@@ -7,6 +7,17 @@ import { renderIA, mountIA } from './views/ia.js';
 import { renderNotas, mountNotas } from './views/notas.js';
 import { renderChecklist, mountChecklist } from './views/checklist.js';
 
+const APP_VERSION = '2.1.0';
+const storedVersion = localStorage.getItem('central-app-version');
+
+if (storedVersion !== APP_VERSION) {
+  localStorage.removeItem('zen-routine-data');
+  localStorage.removeItem('zen-routine-completed');
+  localStorage.removeItem('zen-checklist-items');
+  localStorage.removeItem('zen-checklist-last-reset');
+  localStorage.setItem('central-app-version', APP_VERSION);
+}
+
 const appContent = document.getElementById('app-content');
 const navItems = document.querySelectorAll('.nav-item');
 
