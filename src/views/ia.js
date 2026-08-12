@@ -49,13 +49,14 @@ export function mountIA() {
       const { type, message, data, text, error } = e.data;
 
       if (type === 'status') {
-        statusText.innerText = message;
+        statusText.textContent = message;
       }
 
 
 
       if (type === 'ready') {
-        statusText.innerHTML = '<span style="color:var(--c-success)">●</span> Sistema Offline Pronto';
+        statusText.textContent = '● Sistema Offline Pronto';
+        statusText.style.color = 'var(--c-success)';
         input.disabled = false;
         sendBtn.disabled = false;
         input.placeholder = "Escreva sua mensagem...";
@@ -68,20 +69,13 @@ export function mountIA() {
       }
 
       if (type === 'ollama_missing') {
-        statusText.innerHTML = '<span style="color:var(--c-danger)">●</span> Motor Nativo Offline';
-        const installMsg = `
-          Para ter uma IA 100% offline, ultra-rápida e inteligente, instale o motor nativo <strong>Ollama</strong>.<br><br>
-          1. Abra seu terminal e rode:<br>
-          <code style="background:#222; padding:4px 8px; border-radius:4px; display:inline-block; margin-top:5px; color:#0f0">curl -fsSL https://ollama.com/install.sh | sh</code><br><br>
-          2. Depois, baixe o cérebro da IA (Llama 3) rodando:<br>
-          <code style="background:#222; padding:4px 8px; border-radius:4px; display:inline-block; margin-top:5px; color:#0f0">ollama run llama3.2</code><br><br>
-          Após baixar, reinicie o app e aproveite!
-        `;
-        addMessage(installMsg, 'bot');
+        statusText.textContent = '● Motor Nativo Offline';
+        statusText.style.color = 'var(--c-danger)';
+        addMessage('Para ter uma IA 100% offline, instale o Ollama:\n1. curl -fsSL https://ollama.com/install.sh | sh\n2. ollama run llama3.2\nApós baixar, reinicie o app.', 'bot');
       }
 
       if (type === 'error') {
-        statusText.innerText = `Erro: ${error}`;
+        statusText.textContent = `Erro: ${error}`;
         addMessage(`Houve um erro: ${error}`, 'bot');
       }
     };
@@ -92,7 +86,10 @@ export function mountIA() {
   function addMessage(msg, sender) {
     const div = document.createElement('div');
     div.className = `ia-msg ${sender}`;
-    div.innerHTML = `<div class="msg-bubble">${msg}</div>`;
+    const bubble = document.createElement('div');
+    bubble.className = 'msg-bubble';
+    bubble.textContent = msg;
+    div.appendChild(bubble);
     chatBox.appendChild(div);
     chatBox.scrollTop = chatBox.scrollHeight;
   }

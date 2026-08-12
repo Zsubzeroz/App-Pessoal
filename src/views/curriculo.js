@@ -18,13 +18,13 @@ export function renderCurriculo() {
             <textarea id="cp-html-editor" spellcheck="false"><!-- Estrutura do Currículo -->
 <div class="cv-page">
   <header>
-    <h1>LUAN ESTIFER</h1>
-    <p>Engenharia de Software | Full Stack Python</p>
+    <h1>SEU NOME</h1>
+    <p>Sua Área | Especialidade</p>
   </header>
 
   <section>
     <h2>Resumo</h2>
-    <p>Especialista em automação e dados com foco em eficiência.</p>
+    <p>Profissional dedicado com foco em eficiência e resultados.</p>
   </section>
 
   <div class="cv-grid">
@@ -32,8 +32,8 @@ export function renderCurriculo() {
       <section>
         <h2>Experiência</h2>
         <div class="cv-item">
-          <strong>Ecoflora Brasil</strong> | 2025 - Presente
-          <p>Liderança em digitalização e automação AppSheet/Python.</p>
+          <strong>Empresa Anterior</strong> | 2022 - 2024
+          <p>Desenvolvimento e manutenção de sistemas.</p>
         </div>
       </section>
     </div>
@@ -41,8 +41,8 @@ export function renderCurriculo() {
       <section>
         <h2>Skills</h2>
         <ul>
-          <li>Python / Django</li>
-          <li>SQL / Protheus</li>
+          <li>JavaScript / TypeScript</li>
+          <li>React / Node.js</li>
           <li>Docker / Linux</li>
         </ul>
       </section>

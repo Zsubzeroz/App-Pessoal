@@ -1,3 +1,5 @@
+import { escapeHtml, escapeAttr } from '../utils.js';
+
 const DEFAULT_ROUTINE = {
   Segunda: [
     { title: "Carreira & Inglês", desc: "30 min Gestão de Vagas + 30 min SEDA College", link: "#", color: "c-career", tempo: "1h" },
@@ -50,12 +52,16 @@ export function renderRotina() {
     const taskCards = tasks.map((task, idx) => {
       const taskId = `${day}-${idx}`;
       const isDone = completedTasks.includes(taskId);
-      const timeBadge = task.tempo ? `<span class="t-time">${task.tempo}</span>` : '';
+      const safeTitle = escapeHtml(task.title);
+      const safeDesc = escapeHtml(task.desc);
+      const safeLink = escapeAttr(task.link || '#');
+      const safeColor = escapeAttr(task.color || 'c-tech');
+      const timeBadge = task.tempo ? `<span class="t-time">${escapeHtml(task.tempo)}</span>` : '';
       return `
-        <div class="task-card ${task.color} ${isDone ? 'done' : ''}" data-id="${taskId}" data-link="${task.link}">
+        <div class="task-card ${safeColor} ${isDone ? 'done' : ''}" data-id="${escapeAttr(taskId)}" data-link="${safeLink}">
           ${timeBadge}
-          <span class="t-title">${task.title}</span>
-          <span class="t-desc">${task.desc}</span>
+          <span class="t-title">${safeTitle}</span>
+          <span class="t-desc">${safeDesc}</span>
         </div>
       `;
     }).join('');
@@ -303,10 +309,10 @@ export function mountRotina() {
       
       let daysHtml = Object.entries(currentRoutine).map(([day, tasks]) => {
         const tasksHtml = tasks.map((t, i) => `
-          <div class="edit-task-row" data-day="${day}" data-index="${i}">
-            <input type="text" value="${t.title}" class="edit-t-title" placeholder="Título">
-            <input type="text" value="${t.desc}" class="edit-t-desc" placeholder="Descrição">
-            <input type="text" value="${t.link}" class="edit-t-link" placeholder="Link (URL)">
+          <div class="edit-task-row" data-day="${escapeAttr(day)}" data-index="${i}">
+            <input type="text" value="${escapeAttr(t.title)}" class="edit-t-title" placeholder="Título">
+            <input type="text" value="${escapeAttr(t.desc)}" class="edit-t-desc" placeholder="Descrição">
+            <input type="text" value="${escapeAttr(t.link)}" class="edit-t-link" placeholder="Link (URL)">
             <select class="edit-t-color">
                <option value="c-tech" ${t.color==='c-tech'?'selected':''}>Tecnologia</option>
                <option value="c-lang" ${t.color==='c-lang'?'selected':''}>Línguas</option>
@@ -324,11 +330,11 @@ export function mountRotina() {
         
         return `
           <div class="edit-day-section">
-            <h3>${day}</h3>
-            <div class="day-tasks-edit" id="edit-tasks-${day}">
+            <h3>${escapeHtml(day)}</h3>
+            <div class="day-tasks-edit" id="edit-tasks-${escapeAttr(day)}">
               ${tasksHtml}
             </div>
-            <button class="add-task-btn" data-day="${day}"><i class="fas fa-plus"></i> Adicionar Tarefa</button>
+            <button class="add-task-btn" data-day="${escapeAttr(day)}"><i class="fas fa-plus"></i> Adicionar Tarefa</button>
           </div>
         `;
       }).join('');

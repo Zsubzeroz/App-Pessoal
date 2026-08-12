@@ -6,9 +6,6 @@ import { renderCurriculo, mountCurriculo } from './views/curriculo.js';
 import { renderIA, mountIA } from './views/ia.js';
 import { renderNotas, mountNotas } from './views/notas.js';
 import { renderChecklist, mountChecklist } from './views/checklist.js';
-import { renderDesafio, mountDesafio } from './views/desafio.js';
-import { renderCiclo, mountCiclo } from './views/ciclo.js';
-import { renderReferencia, mountReferencia } from './views/referencia.js';
 
 const appContent = document.getElementById('app-content');
 const navItems = document.querySelectorAll('.nav-item');
@@ -20,10 +17,7 @@ const views = {
   curriculo: { render: renderCurriculo, mount: mountCurriculo },
   ia: { render: renderIA, mount: mountIA },
   notas: { render: renderNotas, mount: mountNotas },
-  checklist: { render: renderChecklist, mount: mountChecklist },
-  desafio: { render: renderDesafio, mount: mountDesafio },
-  ciclo: { render: renderCiclo, mount: mountCiclo },
-  referencia: { render: renderReferencia, mount: mountReferencia }
+  checklist: { render: renderChecklist, mount: mountChecklist }
 };
 
 function switchView(target) {
