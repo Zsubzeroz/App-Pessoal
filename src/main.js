@@ -1,5 +1,5 @@
 import './style.css';
-import { getLoggedUser, initGoogleAuth, logout } from './auth.js';
+import { getLoggedUser, login, register, logout } from './auth.js';
 import { exportToTxt } from './utils.js';
 import { renderRotina, mountRotina } from './views/rotina.js';
 import { renderBiblia, mountBiblia } from './views/biblia.js';
@@ -9,10 +9,17 @@ import { renderIA, mountIA } from './views/ia.js';
 import { renderNotas, mountNotas } from './views/notas.js';
 import { renderChecklist, mountChecklist } from './views/checklist.js';
 
-const CLIENT_ID = 'SEU_CLIENT_ID_AQUI.apps.googleusercontent.com';
+let isRegisterMode = false;
 
-const isConfigured = CLIENT_ID && !CLIENT_ID.includes('SEU_CLIENT_ID');
 const loginScreen = document.getElementById('login-screen');
+const loginTitle = document.getElementById('login-title');
+const loginSubtitle = document.getElementById('login-subtitle');
+const loginForm = document.getElementById('login-form');
+const loginUsername = document.getElementById('login-username');
+const loginPassword = document.getElementById('login-password');
+const loginSubmit = document.getElementById('login-submit');
+const loginToggle = document.getElementById('login-toggle');
+const loginError = document.getElementById('login-error');
 const appLayout = document.getElementById('app-layout');
 const userAvatar = document.getElementById('user-avatar');
 const userName = document.getElementById('user-name');
@@ -50,10 +57,8 @@ function startApp(user) {
   loginScreen.style.display = 'none';
   appLayout.style.display = 'flex';
 
-  if (user.picture) {
-    userAvatar.src = user.picture;
-    userAvatar.style.display = 'block';
-  }
+  const initials = (user.name || user.email || '?').charAt(0).toUpperCase();
+  userAvatar.textContent = initials;
   userName.textContent = user.name || user.email;
 
   navItems.forEach(btn => {
@@ -65,27 +70,68 @@ function startApp(user) {
   switchView('rotina');
 }
 
-function showConfigError() {
-  loginScreen.innerHTML = `
-    <div class="login-card">
-      <div class="login-logo"><i class="fas fa-cog" style="animation: spin 3s linear infinite;"></i></div>
-      <h1>Configuração Necessária</h1>
-      <p>O <strong>Google Client ID</strong> ainda não foi configurado.<br><br>
-      Siga os passos abaixo para ativar o login:</p>
-      <div style="text-align:left; background:#131924; padding:16px; border-radius:12px; margin:16px 0; font-size:0.8rem; color:#8d97a8; line-height:1.8;">
-        <strong style="color:#4fc3ff;">1.</strong> Acesse <a href="https://console.cloud.google.com/" target="_blank" style="color:#4fc3ff;">console.cloud.google.com</a><br>
-        <strong style="color:#4fc3ff;">2.</strong> Crie um projeto ou selecione um existente<br>
-        <strong style="color:#4fc3ff;">3.</strong> Ative o <strong style="color:#fff;">Google Identity Services</strong><br>
-        <strong style="color:#4fc3ff;">4.</strong> Crie um <strong style="color:#fff;">OAuth 2.0 Client ID</strong> (tipo: Web application)<br>
-        <strong style="color:#4fc3ff;">5.</strong> Adicione o domínio do GitHub Pages<br>
-        <strong style="color:#4fc3ff;">6.</strong> Cole o Client ID em <code style="background:#0a0d13; padding:2px 6px; border-radius:4px; color:#34e0a1;">src/main.js</code>
-      </div>
-      <p style="font-size:0.75rem; color:#5c6577;">Após configurar, faça um novo deploy.</p>
-    </div>
-  `;
+function showError(msg) {
+  loginError.textContent = msg;
+  loginError.style.display = 'block';
 }
 
-onUserLogin = (user) => startApp(user);
+function clearError() {
+  loginError.style.display = 'none';
+}
+
+function toggleMode() {
+  isRegisterMode = !isRegisterMode;
+  clearError();
+  loginUsername.value = '';
+  loginPassword.value = '';
+
+  if (isRegisterMode) {
+    loginTitle.textContent = 'Criar Conta';
+    loginSubtitle.textContent = 'Preencha para criar sua conta.';
+    loginSubmit.textContent = 'Criar Conta';
+    loginToggle.textContent = 'Já tem conta? Entrar';
+  } else {
+    loginTitle.textContent = 'Entrar';
+    loginSubtitle.textContent = 'Acesse sua conta para continuar.';
+    loginSubmit.textContent = 'Entrar';
+    loginToggle.textContent = 'Não tem conta? Criar conta';
+  }
+}
+
+loginToggle.addEventListener('click', toggleMode);
+
+loginForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  clearError();
+
+  const username = loginUsername.value.trim();
+  const password = loginPassword.value;
+
+  if (!username || !password) {
+    showError('Preencha todos os campos.');
+    return;
+  }
+
+  loginSubmit.disabled = true;
+  loginSubmit.textContent = isRegisterMode ? 'Criando...' : 'Entrando...';
+
+  try {
+    const result = isRegisterMode
+      ? await register(username, password)
+      : await login(username, password);
+
+    if (result.ok) {
+      startApp(result.user);
+    } else {
+      showError(result.error);
+    }
+  } catch (err) {
+    showError('Erro inesperado: ' + err.message);
+  } finally {
+    loginSubmit.disabled = false;
+    loginSubmit.textContent = isRegisterMode ? 'Criar Conta' : 'Entrar';
+  }
+});
 
 if (btnExport) {
   btnExport.addEventListener('click', exportToTxt);
@@ -103,8 +149,4 @@ if (btnLogout) {
 const user = getLoggedUser();
 if (user) {
   startApp(user);
-} else if (isConfigured) {
-  initGoogleAuth(onUserLogin);
-} else {
-  showConfigError();
 }

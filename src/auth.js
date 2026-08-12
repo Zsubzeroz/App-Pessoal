@@ -1,7 +1,31 @@
-let googleClientId = '';
+const USERS_KEY = 'central-users';
 
-export function setClientId(id) {
-  googleClientId = id;
+function getUsers() {
+  try {
+    return JSON.parse(localStorage.getItem(USERS_KEY) || '{}');
+  } catch {
+    return {};
+  }
+}
+
+function saveUsers(users) {
+  localStorage.setItem(USERS_KEY, JSON.stringify(users));
+}
+
+async function hashPassword(password) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password);
+  const hash = await crypto.subtle.digest('SHA-256', data);
+  return bufToBase64(hash);
+}
+
+function bufToBase64(buffer) {
+  const bytes = new Uint8Array(buffer);
+  let binary = '';
+  for (let i = 0; i < bytes.byteLength; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary);
 }
 
 export function getLoggedUser() {
@@ -13,51 +37,53 @@ export function getLoggedUser() {
   }
 }
 
-function onGoogleLogin(response) {
-  try {
-    const payload = JSON.parse(atob(response.credential.split('.')[1]));
-    const user = {
-      email: payload.email,
-      name: payload.name,
-      picture: payload.picture,
-      sub: payload.sub
-    };
-    localStorage.setItem('central-user', JSON.stringify(user));
-    if (typeof window.__onUserLogin === 'function') {
-      window.__onUserLogin(user);
-    }
-  } catch (err) {
-    console.error('Erro no login Google:', err);
+export async function register(username, password) {
+  const users = getUsers();
+  const key = username.toLowerCase().trim();
+
+  if (users[key]) {
+    return { ok: false, error: 'Usuário já existe.' };
   }
+
+  if (key.length < 3) {
+    return { ok: false, error: 'Usuário deve ter pelo menos 3 caracteres.' };
+  }
+
+  if (password.length < 4) {
+    return { ok: false, error: 'Senha deve ter pelo menos 4 caracteres.' };
+  }
+
+  const hash = await hashPassword(password);
+  users[key] = { username: key, hash, createdAt: new Date().toISOString() };
+  saveUsers(users);
+
+  const user = { email: key, name: username, picture: '', sub: key };
+  localStorage.setItem('central-user', JSON.stringify(user));
+
+  return { ok: true, user };
 }
 
-export function initGoogleAuth(onLogin) {
-  window.__onUserLogin = onLogin;
+export async function login(username, password) {
+  const users = getUsers();
+  const key = username.toLowerCase().trim();
+  const user = users[key];
 
-  function tryInit() {
-    if (typeof google === 'undefined' || !google.accounts) {
-      setTimeout(tryInit, 200);
-      return;
-    }
-
-    google.accounts.id.initialize({
-      client_id: googleClientId,
-      callback: onGoogleLogin
-    });
-
-    google.accounts.id.renderButton(
-      document.getElementById('google-login-btn'),
-      { theme: 'outline', size: 'large', text: 'signin_with', width: 300 }
-    );
+  if (!user) {
+    return { ok: false, error: 'Usuário não encontrado.' };
   }
 
-  tryInit();
+  const hash = await hashPassword(password);
+  if (hash !== user.hash) {
+    return { ok: false, error: 'Senha incorreta.' };
+  }
+
+  const loggedUser = { email: key, name: user.username, picture: '', sub: key };
+  localStorage.setItem('central-user', JSON.stringify(loggedUser));
+
+  return { ok: true, user: loggedUser };
 }
 
 export function logout() {
-  if (typeof google !== 'undefined' && google.accounts) {
-    google.accounts.id.disableAutoSelect();
-  }
   localStorage.removeItem('central-user');
   location.reload();
 }
