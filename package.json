@@ -1,8 +1,8 @@
 {
   "name": "central-produtividade",
-  "version": "2.0.0",
-  "description": "Central de Produtividade",
-  "author": "Desenvolvedor",
+  "version": "2.2.0",
+  "description": "Central de Produtividade - Organize sua rotina, estudos e carreira",
+  "author": "Luan Estifer Rodrigues Pereira",
   "private": true,
   "type": "module",
   "homepage": "./",
@@ -17,7 +17,7 @@
     "deploy": "npm run build"
   },
   "devDependencies": {
-    "vite": "^5.0.12"
-  },
-  "dependencies": {}
+    "vite": "^5.0.12",
+    "vite-plugin-pwa": "^1.3.0"
+  }
 }

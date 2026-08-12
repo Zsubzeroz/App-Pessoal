@@ -1270,3 +1270,130 @@ button:disabled {
   padding: 16px 20px 6px;
   font-weight: 600;
 }
+
+/* Sidebar Action Buttons */
+.sidebar-action-btn {
+  width: 100%;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s ease;
+  margin-bottom: 6px;
+}
+
+.sidebar-action-btn i {
+  font-size: 0.9rem;
+  width: 20px;
+  text-align: center;
+}
+
+.export-btn {
+  background: rgba(79, 195, 255, 0.1);
+  color: #4fc3ff;
+  border: 1px solid rgba(79, 195, 255, 0.2);
+}
+.export-btn:hover {
+  background: rgba(79, 195, 255, 0.2);
+  border-color: #4fc3ff;
+}
+
+.logout-btn {
+  background: rgba(239, 68, 68, 0.08);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.15);
+}
+.logout-btn:hover {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: #ef4444;
+}
+
+.sidebar-version {
+  font-size: 0.6rem;
+  color: #3a4252;
+  text-align: left;
+  letter-spacing: 0.03em;
+  padding: 8px 0 0;
+}
+
+/* Profile Image */
+.profile-img {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  border: 2px solid #212a38;
+  margin-bottom: 12px;
+  object-fit: cover;
+}
+
+/* Mobile Topbar */
+.mobile-topbar {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background: #0d1119;
+  border-bottom: 1px solid #212a38;
+  z-index: 100;
+  padding: 0 16px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mobile-menu-btn {
+  background: none;
+  border: none;
+  color: #f4f4f5;
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.mobile-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .mobile-topbar {
+    display: flex;
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
+    width: 280px;
+    z-index: 200;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding-top: 56px;
+  }
+
+  .view-container {
+    padding: 24px 16px;
+  }
+
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 150;
+  }
+
+  .sidebar-overlay.open {
+    display: block;
+  }
+}

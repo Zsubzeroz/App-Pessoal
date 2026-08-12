@@ -3,6 +3,49 @@
   Atualizado em: 12/08/2026
 ========================================
 
+--- v2.2.0 (12/08/2026) ---
+
+[FEAT] Login Google (Google Identity Services)
+  - Tela de login com botão Google oficial
+  - Autenticação client-side sem backend
+  - Dados isolados por conta de email
+  - Foto e nome do usuário na sidebar
+  - Botão de logout na sidebar
+
+[FEAT] Exportação TXT Criptografado
+  - Botão "Exportar Dados" no menu lateral
+  - Arquivo .enc.txt com AES-256-GCM
+  - Criptografado com ID da conta Google (sub)
+  - Verificação de duplicata (sobrescreve ou cancela)
+  - Formato: rotina, checklist, notas, vagas, bíblia
+
+[FEAT] PWA (Progressive Web App)
+  - App instalável no mobile e desktop
+  - Service Worker com cache de assets
+  - Funciona offline após 1ª visita
+  - Modo standalone (sem barra do navegador)
+  - Ícones SVG para manifest
+
+[FEAT] Storage por Usuário
+  - localStorage particionado por email
+  - Cada usuário só vê seus próprios dados
+  - Migração automática na 1ª versão
+
+[CHORE] Créditos atualizados
+  - "Desenvolvido por Luan Estifer Rodrigues Pereira (Software Engineer)"
+
+[CHORE] README atualizado
+  - Documentação completa das funcionalidades
+  - Instruções de configuração Google OAuth
+  - Estrutura de arquivos atualizada
+
+[TECH] Stack atualizada
+  - Auth: Google Identity Services (client-side)
+  - Criptografia: Web Crypto API (AES-256-GCM, PBKDF2)
+  - PWA: vite-plugin-pwa + Workbox
+  - Storage: localStorage com prefixo por usuário
+
+
 --- v2.1.0 (12/08/2026) ---
 
 [CHORE] Remove dados pessoais

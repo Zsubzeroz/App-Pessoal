@@ -2,22 +2,78 @@
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Central de Produtividade</title>
-    <!-- Font Awesome -->
+
+    <meta name="description" content="Central de Produtividade - Organize sua rotina, estudos e carreira." />
+    <meta name="theme-color" content="#0a0d13" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Central" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+    <link rel="manifest" href="/manifest.json" />
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font-family: 'Inter', sans-serif; background: #0a0d13; color: #f4f4f5; }
+
+      /* Login Screen */
+      .login-screen {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background: radial-gradient(circle at 50% 30%, rgba(79,195,255,0.06), transparent 50%);
+      }
+      .login-card {
+        background: #0d1119;
+        border: 1px solid #212a38;
+        border-radius: 24px;
+        padding: 48px;
+        text-align: center;
+        max-width: 420px;
+        width: 90%;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      }
+      .login-logo {
+        width: 64px; height: 64px;
+        background: linear-gradient(135deg, #4fc3ff, #34e0a1);
+        border-radius: 18px;
+        display: flex; align-items: center; justify-content: center;
+        margin: 0 auto 24px;
+        font-size: 28px;
+      }
+      .login-card h1 { font-size: 1.5rem; font-weight: 800; margin-bottom: 8px; }
+      .login-card p { color: #8d97a8; font-size: 0.9rem; margin-bottom: 32px; line-height: 1.5; }
+      #google-login-btn { display: flex; justify-content: center; }
+      .login-footer { margin-top: 24px; font-size: 0.7rem; color: #5c6577; }
+
+      /* App Layout */
+      .app-layout { display: flex; min-height: 100vh; }
+    </style>
   </head>
   <body>
-    <div class="app-layout">
-      <!-- Sidebar Navigation -->
+
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-screen">
+      <div class="login-card">
+        <div class="login-logo"><i class="fas fa-bolt"></i></div>
+        <h1>Central de Produtividade</h1>
+        <p>Organize sua rotina, estudos e carreira.<br>Entre com sua conta Google para começar.</p>
+        <div id="google-login-btn"></div>
+          <div class="login-footer">Desenvolvido por Luan Estifer Rodrigues Pereira (Software Engineer)</div>
+      </div>
+    </div>
+
+    <!-- App Principal -->
+    <div id="app-layout" class="app-layout" style="display:none;">
       <aside class="sidebar">
         <div class="sidebar-header">
-          <div class="profile-img-placeholder">
-            <i class="fas fa-bolt"></i>
-          </div>
-          <h2>Central</h2>
+          <img id="user-avatar" class="profile-img" src="" alt="" onerror="this.style.display='none'">
+          <h2 id="user-name">Usuário</h2>
           <p>Produtividade & Carreira</p>
         </div>
         <nav class="sidebar-nav">
@@ -31,17 +87,20 @@
           <button class="nav-item" data-target="curriculo"><i class="fas fa-file-alt"></i> <span>Currículo</span></button>
         </nav>
         <div class="sidebar-footer">
-          v2.0.0 • Desenvolvedor: Luan Estifer R Pereira
+          <button id="btn-export" class="sidebar-action-btn export-btn" title="Exportar dados criptografados">
+            <i class="fas fa-download"></i> <span>Exportar Dados</span>
+          </button>
+          <button id="btn-logout" class="sidebar-action-btn logout-btn" title="Sair da conta">
+            <i class="fas fa-sign-out-alt"></i> <span>Sair</span>
+          </button>
+          <div class="sidebar-version">Desenvolvido por Luan Estifer Rodrigues Pereira (Software Engineer)</div>
         </div>
       </aside>
-
-      <!-- Main Content Area -->
-      <main class="main-content" id="app-content">
-        <!-- Views will be injected here -->
-      </main>
+      <main class="main-content" id="app-content"></main>
     </div>
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
