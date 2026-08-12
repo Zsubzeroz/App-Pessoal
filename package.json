@@ -1,8 +1,8 @@
 {
   "name": "app-pessoal",
   "version": "1.0.0",
-  "description": "App Pessoal Central Luan",
-  "author": "Luan Estifer <luan@estifer.com>",
+  "description": "Central de Produtividade",
+  "author": "Desenvolvedor",
   "private": true,
   "type": "module",
   "main": "electron-main.js",
@@ -22,7 +22,7 @@
     "deploy": "npm run build"
   },
   "build": {
-    "appId": "com.luanestifer.app",
+    "appId": "com.central.produtividade",
     "files": [
       "dist/**/*",
       "electron-main.js",

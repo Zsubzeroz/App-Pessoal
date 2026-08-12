@@ -73,7 +73,7 @@ export function renderRotina() {
       <header class="dashboard-header">
         <div class="greeting-box">
           <div class="status-indicator"><span class="pulse"></span> Online e Focado</div>
-          <h1 id="greeting-text">Olá, Luan</h1>
+          <h1 id="greeting-text">Olá!</h1>
           <p id="current-date">Aguardando data...</p>
         </div>
         <div class="quote-box glass-panel">
@@ -157,9 +157,9 @@ export function mountRotina() {
 
     if (greetingEl) {
       const hour = now.getHours();
-      let greeting = "Boa noite, Luan";
-      if (hour >= 5 && hour < 12) greeting = "Bom dia, Luan";
-      else if (hour >= 12 && hour < 18) greeting = "Boa tarde, Luan";
+      let greeting = "Boa noite";
+      if (hour >= 5 && hour < 12) greeting = "Bom dia";
+      else if (hour >= 12 && hour < 18) greeting = "Boa tarde";
       greetingEl.innerText = greeting;
     }
   }

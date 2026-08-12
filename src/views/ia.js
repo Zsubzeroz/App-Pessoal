@@ -75,7 +75,7 @@ export function mountIA() {
           <code style="background:#222; padding:4px 8px; border-radius:4px; display:inline-block; margin-top:5px; color:#0f0">curl -fsSL https://ollama.com/install.sh | sh</code><br><br>
           2. Depois, baixe o cérebro da IA (Llama 3) rodando:<br>
           <code style="background:#222; padding:4px 8px; border-radius:4px; display:inline-block; margin-top:5px; color:#0f0">ollama run llama3.2</code><br><br>
-          Após baixar, reinicie a Central Luan e aproveite!
+          Após baixar, reinicie o app e aproveite!
         `;
         addMessage(installMsg, 'bot');
       }
