@@ -6,6 +6,9 @@ import { renderCurriculo, mountCurriculo } from './views/curriculo.js';
 import { renderIA, mountIA } from './views/ia.js';
 import { renderNotas, mountNotas } from './views/notas.js';
 import { renderChecklist, mountChecklist } from './views/checklist.js';
+import { renderDesafio, mountDesafio } from './views/desafio.js';
+import { renderCiclo, mountCiclo } from './views/ciclo.js';
+import { renderReferencia, mountReferencia } from './views/referencia.js';
 
 const appContent = document.getElementById('app-content');
 const navItems = document.querySelectorAll('.nav-item');
@@ -17,36 +20,33 @@ const views = {
   curriculo: { render: renderCurriculo, mount: mountCurriculo },
   ia: { render: renderIA, mount: mountIA },
   notas: { render: renderNotas, mount: mountNotas },
-  checklist: { render: renderChecklist, mount: mountChecklist }
+  checklist: { render: renderChecklist, mount: mountChecklist },
+  desafio: { render: renderDesafio, mount: mountDesafio },
+  ciclo: { render: renderCiclo, mount: mountCiclo },
+  referencia: { render: renderReferencia, mount: mountReferencia }
 };
 
 function switchView(target) {
   if (!views[target]) return;
 
-  // Update Active Nav
   navItems.forEach(btn => {
     btn.classList.toggle('active', btn.getAttribute('data-target') === target);
   });
 
-  // Clear and Transition
   appContent.innerHTML = '';
   const viewContainer = document.createElement('div');
   viewContainer.className = 'view-container';
   
-  // Inject
   viewContainer.innerHTML = views[target].render();
   appContent.appendChild(viewContainer);
   
-  // Initialize View Logic
   views[target].mount();
 }
 
-// Event Listeners for Nav
 navItems.forEach(btn => {
   btn.addEventListener('click', () => {
     switchView(btn.getAttribute('data-target'));
   });
 });
 
-// Initialize with Rotina
 switchView('rotina');
