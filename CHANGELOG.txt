@@ -1,0 +1,118 @@
+========================================
+  CHANGELOG - Central de Produtividade
+  Atualizado em: 12/08/2026
+========================================
+
+--- v2.1.0 (12/08/2026) ---
+
+[CHORE] Remove dados pessoais
+  - Nome "Luan Estifer" removido de saudações, sidebar, footer e metadata
+  - Imagem de perfil substituída por ícone genérico
+  - Descrição e autor do package.json generalizados
+  - AppId alterado de com.luanestifer.app para com.central.produtividade
+  - Currículo substituído por placeholders genéricos
+
+[CHORE] Remove Electron e dependências desnecessárias
+  - Arquivos electron-main.js e preload.js deletados
+  - Pacotes removidos: electron, electron-builder, concurrently, cross-env, wait-on
+  - @huggingface/transformers removido
+  - npm install agora instala apenas 11 pacotes (vs 264+ antes)
+  - Workflow .github/workflows/build.yml removido
+
+[CHORE] Remove módulos de engenharia
+  - Desafio Akita (7 Dias) removido
+  - Ciclo XP removido
+  - Referência Técnica & Cibersegurança removido
+  - Nav items e imports removidos da sidebar e main.js
+
+[CHORE] Rotina e Checklist vazios por padrão
+  - DEFAULT_ROUTINE: todos os dias iniciam com array vazio []
+  - DAILY_HABITS: inicializado como array vazio []
+
+[CHORE] Assinatura do desenvolvedor
+  - Footer: "v2.0.0 • Desenvolvedor: Luan Estifer R Pereira"
+
+[FIX] Correções de segurança (XSS)
+  - Criado src/utils.js com funções escapeHtml() e escapeAttr()
+  - ia.js: addMessage() agora usa textContent em vez de innerHTML
+  - ia.js: statusText usa textContent em vez de innerHTML
+  - rotina.js: dados do localStorage sanitizados com escapeHtml/escapeAttr
+
+[FIX] Limpeza automática de localStorage
+  - Adicionado controle de versão (APP_VERSION = '2.1.0')
+  - Na primeira carga da nova versão, limpa dados antigos automaticamente
+  - Remove: zen-routine-data, zen-routine-completed, zen-checklist-items, zen-checklist-last-reset
+
+[SECURITY] Auditoria de segurança
+  - XSS crítico em ia.js corrigido (innerHTML → textContent)
+  - XSS em rotina.js corrigido (sanitização de dados do localStorage)
+  - Vulnerabilidades de dependências: esbuild/vite apenas em devDependencies (não afeta produção)
+  - API key no localStorage: aceitável para app pessoal, migrate para backend quando disponível
+
+
+--- v2.0.0 (versão anterior) ---
+
+[FEAT] Minha Rotina
+  - Saudação dinâmica com horário local em Português
+  - Frases motivacionais rotativas e relógio digital
+  - Timer Pomodoro (25m foco / 5m pausa)
+  - Card de Progresso Diário
+  - Cronograma de Estudos semanal interativo (Seg-Sáb)
+  - Edição de rotina via modal com CRUD de tarefas
+
+[FEAT] Plano Bíblico & Devocional
+  - Leitura bíblica por 365 dias com checkboxes
+  - Barra de progresso percentual
+  - Auto-reset após conclusão do ciclo
+
+[FEAT] Zen AI Companion
+  - Chat com motor offline (Ollama)
+  - Interface de mensagens com bubbles
+
+[FEAT] Checklist Geral
+  - Hábitos diários com reset automático
+  - Tarefas customizáveis com CRUD
+  - Botão limpar concluídos
+
+[FEAT] Gestão de Vagas
+  - Dashboard de candidaturas com status
+  - Formulário modal para CRUD de vagas
+  - Métricas de vagas
+
+[FEAT] Currículo & Perfil Profissional
+  - Editor live tipo CodePen (HTML + CSS)
+  - Preview em tempo real
+  - Botão imprimir / salvar PDF
+
+[FEAT] Desafio Akita (7 Dias) [REMOVIDO]
+  - Checklist interativo da esteira de desenvolvimento
+  - Gerador de CLAUDE.md
+
+[FEAT] Ciclo XP [REMOVIDO]
+  - Diagrama vetorial interativo de 5 etapas
+
+[FEAT] Referência Técnica [REMOVIDO]
+  - Guia consultável com busca rápida
+  - Arquiteturas, REST/Status Codes, OWASP, Docker/Git
+
+[FEAT] Ideias & Anotações
+  - Bloco de notas rápido
+  - Organização com IA (API Anthropic/Claude)
+  - Persistência em localStorage
+
+[STYLE] Design System
+  - Dark mode técnico (#0a0d13, #0d1119, #131924)
+  - Cores: Azul ciano (#4fc3ff), Verde Mente (#34e0a1), Ambar (#f5c563)
+  - Font Awesome para ícones
+  - Fonte Inter para UI
+  - Sidebar fixa no desktop, responsiva no mobile
+  - Animações de transição entre views
+  - Scrollbar customizada
+
+[TECH] Stack
+  - Frontend: Vanilla JS + Vite
+  - CSS: Custom CSS (sem framework)
+  - Ícones: Font Awesome
+  - Fontes: Google Fonts (Inter)
+  - Persistência: localStorage
+  - Deploy: GitHub Pages
