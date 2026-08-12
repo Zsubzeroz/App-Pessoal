@@ -1,7 +1,4 @@
-const DAILY_HABITS = [
-  { id: "habito-biblia", text: "📖 Ler a Bíblia (Estudo e Devocional)", done: false, fixed: true, categoria: "Pessoal" },
-  { id: "habito-leitura", text: "📚 Ler um Livro (Mín. 15 minutos)", done: false, fixed: true, categoria: "Estudos" }
-];
+const DAILY_HABITS = [];
 
 function getTodayStr() {
   return new Date().toISOString().split('T')[0];

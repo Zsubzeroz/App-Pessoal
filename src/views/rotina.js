@@ -1,46 +1,13 @@
 import { escapeHtml, escapeAttr } from '../utils.js';
 
 const DEFAULT_ROUTINE = {
-  Segunda: [
-    { title: "Carreira & Inglês", desc: "30 min Gestão de Vagas + 30 min SEDA College", link: "#", color: "c-career", tempo: "1h" },
-    { title: "Mate Academy", desc: "Foco absoluto: Superar o Python Tech Check", link: "#", color: "c-tech", tempo: "2h" },
-    { title: "UniCesumar", desc: "Disciplinas acadêmicas de Engenharia de Software", link: "#", color: "c-tech", tempo: "1h30" },
-    { title: "Leitura Diária", desc: "Estudo devocional da Bíblia + leitura de livro", link: "#", color: "c-spirit", tempo: "30min" }
-  ],
-  Terça: [
-    { title: "Carreira & Inglês", desc: "30 min Gestão de Vagas + 30 min SEDA College", link: "#", color: "c-career", tempo: "1h" },
-    { title: "Cisco NetAcad", desc: "Estudo de Redes, Conectividade e Protocolos", link: "#", color: "c-tech", tempo: "2h" },
-    { title: "Estácio", desc: "Disciplinas acadêmicas de Defesa Cibernética", link: "#", color: "c-tech", tempo: "1h30" },
-    { title: "Leitura Diária", desc: "Estudo devocional da Bíblia + leitura de livro", link: "#", color: "c-spirit", tempo: "30min" }
-  ],
-  Quarta: [
-    { title: "Carreira & Inglês", desc: "30 min Gestão de Vagas + 30 min SEDA College", link: "#", color: "c-career", tempo: "1h" },
-    { title: "Mate Academy", desc: "Foco absoluto: Superar o Python Tech Check", link: "#", color: "c-tech", tempo: "2h" },
-    { title: "UniCesumar", desc: "Disciplinas acadêmicas de Engenharia de Software", link: "#", color: "c-tech", tempo: "1h30" },
-    { title: "Leitura Diária", desc: "Estudo devocional da Bíblia + leitura de livro", link: "#", color: "c-spirit", tempo: "30min" }
-  ],
-  Quinta: [
-    { title: "Carreira & Inglês", desc: "30 min Gestão de Vagas + 30 min SEDA College", link: "#", color: "c-career", tempo: "1h" },
-    { title: "Cisco NetAcad", desc: "Laboratórios práticos de rede no Packet Tracer", link: "#", color: "c-tech", tempo: "2h" },
-    { title: "Estácio", desc: "Disciplinas acadêmicas de Defesa Cibernética", link: "#", color: "c-tech", tempo: "1h30" },
-    { title: "Leitura Diária", desc: "Estudo devocional da Bíblia + leitura de livro", link: "#", color: "c-spirit", tempo: "30min" }
-  ],
-  Sexta: [
-    { title: "Carreira & Inglês", desc: "30 min Gestão de Vagas + 30 min SEDA College", link: "#", color: "c-career", tempo: "1h" },
-    { title: "AWS & IA Generativa", desc: "AWS Foundations e trilhas do Fellowship", link: "#", color: "c-tech", tempo: "2h" },
-    { title: "Revisão Acadêmica", desc: "Fechamento de pendências UniCesumar e Estácio", link: "#", color: "c-tech", tempo: "1h" },
-    { title: "Leitura Diária", desc: "Estudo devocional da Bíblia + leitura de livro", link: "#", color: "c-spirit", tempo: "30min" }
-  ],
-  Sábado: [
-    { title: "Deep Work - Portfólio", desc: "Desenvolvimento focado e livre de projetos no GitHub", link: "#", color: "c-tech", tempo: "3h" },
-    { title: "Mate Academy", desc: "Foco absoluto: Superar o Python Tech Check", link: "#", color: "c-tech", tempo: "1h30" },
-    { title: "Leitura Diária", desc: "Estudo devocional da Bíblia + leitura de livro", link: "#", color: "c-spirit", tempo: "30min" }
-  ],
-  Domingo: [
-    { title: "Planejamento", desc: "Organizar as metas e a rotina da semana seguinte", link: "#", color: "c-career", tempo: "30min" },
-    { title: "Leitura Diária", desc: "Estudo devocional da Bíblia + leitura de livro", link: "#", color: "c-spirit", tempo: "30min" },
-    { title: "Descansar", desc: "Lazer completo, leitura livre e descanso", link: "#", color: "c-relax", tempo: "Lazer" }
-  ]
+  Segunda: [],
+  Terça: [],
+  Quarta: [],
+  Quinta: [],
+  Sexta: [],
+  Sábado: [],
+  Domingo: []
 };
 
 
