@@ -10,12 +10,18 @@ const DEFAULT_WORKOUT = [
   { day: 'Domingo', focus: 'Descanso', routine: '' }
 ];
 
+const DEFAULT_PEOPLE = [
+  { name: 'Luan Estifer', color: '#34e0a1', data: [] },
+  { name: 'Mamãe', color: '#a855f7', data: [] },
+  { name: 'Renan', color: '#4fc3ff', data: [] }
+];
+
 function load() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) return JSON.parse(raw);
   } catch {}
-  return { workout: DEFAULT_WORKOUT, people: [] };
+  return { workout: DEFAULT_WORKOUT, people: DEFAULT_PEOPLE };
 }
 
 function save(data) {
