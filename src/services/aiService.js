@@ -1,19 +1,38 @@
 const BAI_BASE = 'https://api.b.ai/v1';
-const API_KEY = import.meta.env.VITE_BAI_API_KEY;
+const AI_CONFIG_KEY = 'zen-ai-config';
 
-const MODELS = [
-  'MiMo-V2.5',
-  'Qwen3.8-Flash',
-  'GLM-5.3-Flash'
-];
+function getConfig() {
+  try { return JSON.parse(localStorage.getItem(AI_CONFIG_KEY) || '{}'); } catch { return {}; }
+}
+
+function saveConfig(cfg) {
+  localStorage.setItem(AI_CONFIG_KEY, JSON.stringify(cfg));
+}
+
+function getApiKey() {
+  return getConfig().apiKey || import.meta.env.VITE_BAI_API_KEY || '';
+}
+
+function getApiBase() {
+  return getConfig().apiBase || BAI_BASE;
+}
+
+const MODELS = ['MiMo-V2.5', 'Qwen3.8-Flash', 'GLM-5.3-Flash'];
 
 const SYSTEM_PROMPT_DEFAULT = `Você é a Zen AI, uma assistente virtual inteligente focada em produtividade, carreira e engenharia de software. Responda sempre em Português do Brasil, de forma clara, objetiva e profissional. Use Markdown quando apropriado.`;
 
 async function callBAI(messages, model = MODELS[0], temperature = 0.7, maxTokens = 2048) {
-  const res = await fetch(`${BAI_BASE}/chat/completions`, {
+  const apiKey = getApiKey();
+  const apiBase = getApiBase();
+
+  if (!apiKey) {
+    throw new Error('API key não configurada. Configure em Zen AI → Config.');
+  }
+
+  const res = await fetch(`${apiBase}/chat/completions`, {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${API_KEY}`,
+      'Authorization': `Bearer ${apiKey}`,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
@@ -30,6 +49,22 @@ async function callBAI(messages, model = MODELS[0], temperature = 0.7, maxTokens
 
   const data = await res.json();
   return data.choices?.[0]?.message?.content || '';
+}
+
+export function hasAIConfig() {
+  return !!getApiKey();
+}
+
+export function getAIConfig() {
+  return getConfig();
+}
+
+export function saveAIConfig(cfg) {
+  saveConfig(cfg);
+}
+
+export function clearAIConfig() {
+  localStorage.removeItem(AI_CONFIG_KEY);
 }
 
 export async function chat(userMessage, history = [], systemPrompt = SYSTEM_PROMPT_DEFAULT) {
@@ -49,7 +84,7 @@ export async function chat(userMessage, history = [], systemPrompt = SYSTEM_PROM
     }
   }
 
-  throw new Error('Todos os modelos falharam. Tente novamente mais tarde.');
+  throw new Error('Todos os modelos falharam. Verifique sua API key.');
 }
 
 export async function analyzeJob(vaga, dossie) {
