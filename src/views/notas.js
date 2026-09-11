@@ -1,5 +1,5 @@
-const NOTES_KEY = "central-luan-notas";
-const API_KEY_STORAGE = "central-luan-api-key";
+const NOTES_KEY = "central-notas";
+const API_KEY_STORAGE = "central-api-key";
 
 function getNotes() {
   try { return JSON.parse(localStorage.getItem(NOTES_KEY) || "[]"); } catch { return []; }
