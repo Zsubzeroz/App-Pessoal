@@ -1,4 +1,4 @@
-import { chat, hasAIConfig, getAIConfig, saveAIConfig, clearAIConfig } from '../services/aiService.js';
+import { chat, hasAIConfig, getAIConfig, saveAIConfig, clearAIConfig, MODELS, PROVIDERS } from '../services/aiService.js';
 
 const HISTORY_KEY = 'zen-ai-chat-history';
 
@@ -22,24 +22,42 @@ function renderMessage(msg) {
 
 function renderConfigPanel() {
   const cfg = getAIConfig();
+  const currentModel = cfg.model || 'MiMo-V2.5';
+  const currentProvider = cfg.provider || 'bai';
+  const filteredModels = MODELS.filter(m => m.group === currentProvider);
+
   return `
     <div class="notion-config glass-panel" style="margin-bottom:20px;">
       <div class="notion-config-header">
         <i class="fas fa-key"></i>
         <h3>Configurar API de IA</h3>
       </div>
-      <p class="notion-config-desc">Cole sua API Key do B.AI (ou compatível OpenAI).</p>
+      <p class="notion-config-desc">Escolha o provedor, cole sua API Key e selecione o modelo.</p>
 
       <div class="notion-config-field">
-        <label>API Base URL</label>
-        <input type="text" id="ai-base-input" class="notion-config-input"
-          placeholder="https://api.b.ai/v1" value="${cfg.apiBase || 'https://api.b.ai/v1'}">
+        <label>Provedor</label>
+        <select id="ai-provider-select" class="notion-config-input" style="cursor:pointer;">
+          ${Object.entries(PROVIDERS).map(([k, v]) => `
+            <option value="${k}" ${k === currentProvider ? 'selected' : ''}>${v.name}</option>
+          `).join('')}
+        </select>
       </div>
 
       <div class="notion-config-field">
         <label>API Key</label>
         <input type="password" id="ai-key-input" class="notion-config-input"
           placeholder="sk-..." value="${cfg.apiKey || ''}">
+      </div>
+
+      <div class="notion-config-field">
+        <label>Modelo</label>
+        <select id="ai-model-select" class="notion-config-input" style="cursor:pointer;">
+          ${filteredModels.map(m => `
+            <option value="${m.id}" ${m.id === currentModel ? 'selected' : ''}>
+              ${m.name} — ${m.provider} (${m.cost})
+            </option>
+          `).join('')}
+        </select>
       </div>
 
       <div class="notion-config-actions">
@@ -108,15 +126,25 @@ export function mountIA() {
       configArea.innerHTML = renderConfigPanel();
 
       document.getElementById('ai-save-config').addEventListener('click', () => {
-        const apiBase = document.getElementById('ai-base-input').value.trim();
+        const provider = document.getElementById('ai-provider-select').value;
         const apiKey = document.getElementById('ai-key-input').value.trim();
+        const model = document.getElementById('ai-model-select').value;
         if (!apiKey) {
           alert('Cole sua API Key.');
           return;
         }
-        saveAIConfig({ apiBase: apiBase || 'https://api.b.ai/v1', apiKey });
+        saveAIConfig({ provider, apiKey, model });
         configArea.innerHTML = '';
         location.reload();
+      });
+
+      document.getElementById('ai-provider-select').addEventListener('change', (e) => {
+        const provider = e.target.value;
+        const filtered = MODELS.filter(m => m.group === provider);
+        const modelSelect = document.getElementById('ai-model-select');
+        modelSelect.innerHTML = filtered.map(m => `
+          <option value="${m.id}">${m.name} — ${m.provider} (${m.cost})</option>
+        `).join('');
       });
 
       document.getElementById('ai-clear-config').addEventListener('click', () => {

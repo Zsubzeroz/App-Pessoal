@@ -1,4 +1,5 @@
 const BAI_BASE = 'https://api.b.ai/v1';
+const GEMINI_BASE = 'https://generativelanguage.googleapis.com/v1beta';
 const AI_CONFIG_KEY = 'zen-ai-config';
 
 function getConfig() {
@@ -17,17 +18,96 @@ function getApiBase() {
   return getConfig().apiBase || BAI_BASE;
 }
 
-const MODELS = ['MiMo-V2.5', 'Qwen3.8-Flash', 'GLM-5.3-Flash'];
+function getSelectedModel() {
+  return getConfig().model || 'MiMo-V2.5';
+}
+
+function getProvider() {
+  return getConfig().provider || 'bai';
+}
+
+export const PROVIDERS = {
+  bai: { name: 'B.AI (OpenAI compatível)', base: 'https://api.b.ai/v1' },
+  gemini: { name: 'Google Gemini', base: 'https://generativelanguage.googleapis.com/v1beta' },
+  openrouter: { name: 'OpenRouter', base: 'https://openrouter.ai/api/v1' },
+  groq: { name: 'Groq', base: 'https://api.groq.com/openai/v1' },
+  openai: { name: 'OpenAI', base: 'https://api.openai.com/v1' },
+};
+
+export const MODELS = [
+  { id: 'MiMo-V2.5', name: 'MiMo-V2.5', provider: 'Xiaomi', cost: 'Grátis', group: 'bai' },
+  { id: 'GLM-5.3-Flash', name: 'GLM-5.3-Flash', provider: 'Z.ai', cost: 'Grátis', group: 'bai' },
+  { id: 'Qwen3.8-Flash', name: 'Qwen3.8-Flash', provider: 'Alibaba', cost: 'Grátis', group: 'bai' },
+  { id: 'Hunyuan-Hy3', name: 'Hunyuan Hy3', provider: 'Tencent', cost: 'Grátis', group: 'bai' },
+  { id: 'DeepSeek-V4.1-Flash', name: 'DeepSeek V4.1 Flash', provider: 'DeepSeek', cost: '$0.15/M', group: 'bai' },
+  { id: 'MiMo-V2.5-Pro', name: 'MiMo-V2.5 Pro', provider: 'Xiaomi', cost: '$0.43/M', group: 'bai' },
+  { id: 'GLM-5.3', name: 'GLM-5.3', provider: 'Z.ai', cost: '$1.40/M', group: 'bai' },
+  { id: 'Qwen3.8-27B', name: 'Qwen3.8-27B', provider: 'Alibaba', cost: '$0.22/M', group: 'bai' },
+  { id: 'DeepSeek-V4-Pro', name: 'DeepSeek V4 Pro', provider: 'DeepSeek', cost: '$1.32/M', group: 'bai' },
+
+  { id: 'gemini-3.8-flash', name: 'Gemini 3.8 Flash', provider: 'Google', cost: 'Grátis', group: 'gemini' },
+  { id: 'gemini-3-flash', name: 'Gemini 3 Flash', provider: 'Google', cost: '$0.50/M', group: 'gemini' },
+  { id: 'gemini-3.5-flash', name: 'Gemini 3.5 Flash', provider: 'Google', cost: '$1.50/M', group: 'gemini' },
+  { id: 'gemini-3.1-pro', name: 'Gemini 3.1 Pro', provider: 'Google', cost: '$2.00/M', group: 'gemini' },
+
+  { id: 'GPT-5-nano', name: 'GPT-5 nano', provider: 'OpenAI', cost: '$0.05/M', group: 'openai' },
+  { id: 'GPT-5.4-mini', name: 'GPT-5.4 mini', provider: 'OpenAI', cost: '$0.75/M', group: 'openai' },
+  { id: 'GPT-5.4', name: 'GPT-5.4', provider: 'OpenAI', cost: '$2.50/M', group: 'openai' },
+  { id: 'gpt-4o-mini', name: 'GPT-4o mini', provider: 'OpenAI', cost: '$0.15/M', group: 'openai' },
+
+  { id: 'claude-haiku-4.5', name: 'Claude Haiku 4.5', provider: 'Anthropic', cost: '$1.00/M', group: 'openrouter' },
+  { id: 'claude-sonnet-4.5', name: 'Claude Sonnet 4.5', provider: 'Anthropic', cost: '$3.00/M', group: 'openrouter' },
+  { id: 'llama-3.3-70b-versatile', name: 'Llama 3.3 70B', provider: 'Meta', cost: 'Grátis', group: 'groq' },
+  { id: 'mixtral-8x7b-32768', name: 'Mixtral 8x7B', provider: 'Mistral', cost: 'Grátis', group: 'groq' },
+];
 
 const SYSTEM_PROMPT_DEFAULT = `Você é a Zen AI, uma assistente virtual inteligente focada em produtividade, carreira e engenharia de software. Responda sempre em Português do Brasil, de forma clara, objetiva e profissional. Use Markdown quando apropriado.`;
 
-async function callBAI(messages, model = MODELS[0], temperature = 0.7, maxTokens = 2048) {
+async function callGemini(messages, model, temperature = 0.7, maxTokens = 2048) {
+  const apiKey = getApiKey();
+  if (!apiKey) throw new Error('API key não configurada.');
+
+  const contents = messages.filter(m => m.role !== 'system').map(m => ({
+    role: m.role === 'assistant' ? 'model' : 'user',
+    parts: [{ text: m.content }]
+  }));
+
+  const systemInstruction = messages.find(m => m.role === 'system');
+
+  const body = {
+    contents,
+    generationConfig: {
+      temperature,
+      maxOutputTokens: maxTokens,
+    }
+  };
+
+  if (systemInstruction) {
+    body.systemInstruction = { parts: [{ text: systemInstruction.content }] };
+  }
+
+  const res = await fetch(
+    `${GEMINI_BASE}/models/${model}:generateContent?key=${apiKey}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    }
+  );
+
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`Gemini API error: ${res.status} - ${err}`);
+  }
+
+  const data = await res.json();
+  return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+}
+
+async function callOpenAICompat(messages, model, temperature = 0.7, maxTokens = 2048) {
   const apiKey = getApiKey();
   const apiBase = getApiBase();
-
-  if (!apiKey) {
-    throw new Error('API key não configurada. Configure em Zen AI → Config.');
-  }
+  if (!apiKey) throw new Error('API key não configurada.');
 
   const res = await fetch(`${apiBase}/chat/completions`, {
     method: 'POST',
@@ -35,20 +115,21 @@ async function callBAI(messages, model = MODELS[0], temperature = 0.7, maxTokens
       'Authorization': `Bearer ${apiKey}`,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({
-      model,
-      messages,
-      temperature,
-      max_tokens: maxTokens
-    })
+    body: JSON.stringify({ model, messages, temperature, max_tokens: maxTokens })
   });
 
-  if (!res.ok) {
-    throw new Error(`BAI API error: ${res.status} ${res.statusText}`);
-  }
+  if (!res.ok) throw new Error(`API error: ${res.status} ${res.statusText}`);
 
   const data = await res.json();
   return data.choices?.[0]?.message?.content || '';
+}
+
+async function callAI(messages, model, temperature = 0.7, maxTokens = 2048) {
+  const provider = getProvider();
+  if (provider === 'gemini') {
+    return await callGemini(messages, model, temperature, maxTokens);
+  }
+  return await callOpenAICompat(messages, model, temperature, maxTokens);
 }
 
 export function hasAIConfig() {
@@ -74,124 +155,44 @@ export async function chat(userMessage, history = [], systemPrompt = SYSTEM_PROM
     { role: 'user', content: userMessage }
   ];
 
-  for (const model of MODELS) {
-    try {
-      const response = await callBAI(messages, model);
-      return { response, model };
-    } catch (err) {
-      console.warn(`Model ${model} failed:`, err.message);
-      continue;
-    }
-  }
-
-  throw new Error('Todos os modelos falharam. Verifique sua API key.');
+  const model = getSelectedModel();
+  const response = await callAI(messages, model);
+  return { response, model };
 }
 
 export async function analyzeJob(vaga, dossie) {
-  const systemPrompt = `Você é um analista de carreira especialista. Analise a vaga abaixo considerando o perfil do candidato e retorne um JSON com:
-{
-  "fitScore": número de 0 a 100,
-  "pontosFortes": ["ponto 1", "ponto 2"],
-  "pontosAtencao": ["atenção 1"],
-  "sugestaoAbordagem": "texto curto com dica de como se candidatar",
-  "resumoFit": "resumo de 1-2 frases do fit"
-}
+  const systemPrompt = `Você é um analista de carreira especialista. Analise a vaga e retorne um JSON:
+{ "fitScore": 0-100, "pontosFortes": [], "pontosAtencao": [], "sugestaoAbordagem": "texto", "resumoFit": "resumo" }
 Retorne APENAS o JSON, sem markdown.`;
 
-  const userMsg = `VAGA:
-Empresa: ${vaga.empresa}
-Cargo: ${vaga.cargo}
-Modelo: ${vaga.modelo}
-Link: ${vaga.link || 'Não informado'}
+  const userMsg = `VAGA: ${vaga.empresa} - ${vaga.cargo} (${vaga.modelo})\nLink: ${vaga.link || 'N/A'}\n\nPERFIL:\n${dossie}`;
+  const messages = [{ role: 'system', content: systemPrompt }, { role: 'user', content: userMsg }];
 
-PERFIL DO CANDIDATO:
-${dossie}`;
-
-  const messages = [
-    { role: 'system', content: systemPrompt },
-    { role: 'user', content: userMsg }
-  ];
-
-  for (const model of MODELS) {
-    try {
-      const raw = await callBAI(messages, model, 0.3, 1024);
-      const jsonStr = raw.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-      return JSON.parse(jsonStr);
-    } catch (err) {
-      console.warn(`Model ${model} failed for job analysis:`, err.message);
-      continue;
-    }
-  }
-
-  throw new Error('Não foi possível analisar a vaga.');
+  const model = getSelectedModel();
+  const raw = await callAI(messages, model, 0.3, 1024);
+  return JSON.parse(raw.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim());
 }
 
 export async function generateCV(vaga, dossie) {
-  const systemPrompt = `Você é um especialista em recrutamento e criação de currículos profissionais.
-Gere um currículo em HTML + CSS para o candidato, direcionado para a vaga descrita.
-O HTML deve ser semântico, profissional, e caber em uma página A4.
-Use a paleta: fundo branco, texto escuro, acentos em #0ea5e9.
-O CSS deve ser inline no <style>.
-Retorne APENAS o bloco HTML completo (com <!DOCTYPE html>), sem markdown.`;
+  const systemPrompt = `Você é especialista em currículos. Gere um currículo HTML+CSS profissional para A4, fundo branco, texto escuro, acentos #0ea5e9. CSS inline. Retorne APENAS o HTML completo.`;
 
-  const userMsg = `VAGA:
-Empresa: ${vaga.empresa}
-Cargo: ${vaga.cargo}
+  const userMsg = `VAGA: ${vaga.empresa} - ${vaga.cargo}\n\nPERFIL:\n${dossie}`;
+  const messages = [{ role: 'system', content: systemPrompt }, { role: 'user', content: userMsg }];
 
-PERFIL DO CANDIDATO:
-${dossie}
-
-Gere o currículo direcionado para esta vaga.`;
-
-  const messages = [
-    { role: 'system', content: systemPrompt },
-    { role: 'user', content: userMsg }
-  ];
-
-  for (const model of MODELS) {
-    try {
-      const html = await callBAI(messages, model, 0.5, 4096);
-      return html.replace(/```html\n?/g, '').replace(/```\n?/g, '').trim();
-    } catch (err) {
-      console.warn(`Model ${model} failed for CV generation:`, err.message);
-      continue;
-    }
-  }
-
-  throw new Error('Não foi possível gerar o currículo.');
+  const model = getSelectedModel();
+  const html = await callAI(messages, model, 0.5, 4096);
+  return html.replace(/```html\n?/g, '').replace(/```\n?/g, '').trim();
 }
 
 export async function interviewFeedback(pergunta, resposta) {
-  const systemPrompt = `Você é um entrevistador técnico experiente. Analise a resposta do candidato e retorne um JSON:
-{
-  "nota": número de 1 a 10,
-  "pontosFortes": ["ponto 1"],
-  "melhorias": ["melhoria 1"],
-  "respostaModelo": "uma versão melhorada da resposta em 2-3 parágrafos"
-}
+  const systemPrompt = `Você é um entrevistador técnico. Analise a resposta e retorne um JSON:
+{ "nota": 1-10, "pontosFortes": [], "melhorias": [], "respostaModelo": "versão melhorada" }
 Retorne APENAS o JSON, sem markdown.`;
 
-  const userMsg = `PERGUNTA: ${pergunta}
+  const userMsg = `PERGUNTA: ${pergunta}\nRESPOSTA: ${resposta}`;
+  const messages = [{ role: 'system', content: systemPrompt }, { role: 'user', content: userMsg }];
 
-RESPOSTA DO CANDIDATO: ${resposta}
-
-Analise e dê seu feedback.`;
-
-  const messages = [
-    { role: 'system', content: systemPrompt },
-    { role: 'user', content: userMsg }
-  ];
-
-  for (const model of MODELS) {
-    try {
-      const raw = await callBAI(messages, model, 0.3, 1024);
-      const jsonStr = raw.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-      return JSON.parse(jsonStr);
-    } catch (err) {
-      console.warn(`Model ${model} failed for interview feedback:`, err.message);
-      continue;
-    }
-  }
-
-  throw new Error('Não foi possível gerar o feedback.');
+  const model = getSelectedModel();
+  const raw = await callAI(messages, model, 0.3, 1024);
+  return JSON.parse(raw.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim());
 }
