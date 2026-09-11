@@ -1,4 +1,5 @@
 import { analyzeJob } from '../services/aiService.js';
+import { getDossie } from '../services/profileService.js';
 
 function getVagas() {
   return JSON.parse(localStorage.getItem('minhas_vagas') || '[]');
@@ -207,11 +208,7 @@ export function mountVagas() {
         showAnalysisModal('<div class="notion-loading"><i class="fas fa-spinner fa-spin"></i> Analisando com IA...</div>');
 
         try {
-          const dossie = `Nome: Luan Estifer Rodrigues Pereira
-Experiência: 29 meses (Ecoflora Brasil + Embrasatec)
-Stack: Python, Django, SQL, ERP Protheus, Docker, Git, C#
-Formação: Engenharia de Software (UniCesumar), Defesa Cibernética (Estácio)
-Diferenciais: Xadrez competitivo, Piano, Arduino, Inglês B2`;
+          const dossie = getDossie();
 
           const result = await analyzeJob(vaga, dossie);
           document.querySelector('#vagas-analysis-modal .modal-body').innerHTML = renderAnalysisResult(result);

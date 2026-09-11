@@ -1,4 +1,5 @@
 import { generateCV } from '../services/aiService.js';
+import { getDossie, hasProfile, renderProfileConfig, mountProfileConfig } from '../services/profileService.js';
 
 function showCVModal(content) {
   let modal = document.getElementById('cv-analysis-modal');
@@ -176,16 +177,7 @@ export function mountCurriculo() {
         resultEl.innerHTML = '<div class="notion-loading"><i class="fas fa-spinner fa-spin"></i> Gerando currículo...</div>';
 
         try {
-          const dossie = `Nome: Luan Estifer Rodrigues Pereira
-Localização: Artur Nogueira, SP
-Contato: (19) 99722-2694 | luanestiferpy@gmail.com
-GitHub: github.com/Zsubzeroz | LinkedIn: linkedin.com/in/luanestifer
-Experiência: 29 meses (Ecoflora Brasil - Automação IA/TI + Embrasatec - Suporte TI/Protheus)
-Stack: Python, Django, SQL, ERP Protheus, Docker, Git, C#, JavaScript, HTML5, CSS3
-Formação: Engenharia de Software (UniCesumar, previsão 2027), Defesa Cibernética (Estácio, 2026)
-Cursos: Python & Django, SQL Basics, IA Generativa & AWS Bedrock, C#, Git
-Diferenciais: Ex-Líder de Xadrez, Campeão Olimpíada de Astronomia, Piano Clássico, Inglês B2
-Nota 9,7 em Técnicas de Programação`;
+          const dossie = getDossie();
 
           const html = await generateCV(
             { empresa: '', cargo: vagaText, modelo: '', link: '' },

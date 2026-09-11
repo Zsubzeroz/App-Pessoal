@@ -16,6 +16,7 @@ import { renderCabelo, mountCabelo } from './views/cabelo.js';
 import { renderFinanceiro, mountFinanceiro } from './views/financeiro.js';
 import { renderProjetos, mountProjetos } from './views/projetos.js';
 import { renderNotion, mountNotion } from './views/notion.js';
+import { renderProfileConfig, mountProfileConfig, hasProfile } from './services/profileService.js';
 
 const loginScreen = document.getElementById('login-screen');
 const loginForm = document.getElementById('login-form');
@@ -44,7 +45,11 @@ const views = {
   cabelo: { render: renderCabelo, mount: mountCabelo },
   financeiro: { render: renderFinanceiro, mount: mountFinanceiro },
   projetos: { render: renderProjetos, mount: mountProjetos },
-  notion: { render: renderNotion, mount: mountNotion }
+  notion: { render: renderNotion, mount: mountNotion },
+  perfil: {
+    render: () => '<div id="profile-container"></div>',
+    mount: () => mountProfileConfig('profile-container')
+  }
 };
 
 function switchView(target) {
