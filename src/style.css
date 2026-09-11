@@ -2255,3 +2255,160 @@ button:disabled {
   background: rgba(14, 165, 233, 0.2);
   transform: translateY(-1px);
 }
+
+.cartas-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cartas-input {
+  width: 100%;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.cartas-input:focus, .cartas-textarea:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.cartas-textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.cartas-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.cartas-del-btn {
+  background: rgba(239,68,68,0.15);
+  border: none;
+  color: #ef4444;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.cartas-del-btn:hover {
+  background: rgba(239,68,68,0.3);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+}
+
+.empty-state i {
+  font-size: 2.5rem;
+  opacity: 0.3;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.empty-state p {
+  font-size: 0.9rem;
+}
+
+.proj-input {
+  width: 100%;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.proj-input:focus, .proj-textarea:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.proj-textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.proj-mark {
+  width: 48px;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+.proj-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.proj-tags {
+  font-size: 0.78rem;
+  color: var(--accent);
+}
+
+.proj-link {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.project-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.proj-card-btns {
+  display: flex;
+  gap: 4px;
+}
+
+.proj-toggle, .proj-del {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 4px;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+
+.proj-toggle:hover, .proj-del:hover {
+  opacity: 1;
+}
+
+.proj-del {
+  color: #ef4444;
+}
