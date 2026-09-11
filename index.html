@@ -114,10 +114,12 @@
 
         <div id="login-error" class="login-error"></div>
 
-        <div id="google-btn-container" style="display:flex; justify-content:center; margin: 20px 0;"></div>
+        <form id="login-form" class="login-form">
+          <input type="text" id="login-username" class="login-input" placeholder="Digite seu nome" required minlength="2" autofocus>
+          <button type="submit" id="login-submit" class="login-btn">Entrar</button>
+        </form>
 
-        <p style="font-size: 0.75rem; color: #5c6577; margin-top: 16px;">Faça login com sua conta Google para começar.</p>
-
+        <p style="font-size: 0.72rem; color: #5c6577; margin-top: 16px;">Seus dados ficam salvos apenas no seu navegador.</p>
         <div class="login-footer">Desenvolvido por Luan Estifer Rodrigues Pereira (Software Engineer)</div>
       </div>
     </div>

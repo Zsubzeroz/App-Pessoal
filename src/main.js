@@ -1,5 +1,6 @@
 import './style.css';
-import { getLoggedUser, logout, initGoogleAuth, renderGoogleButton, handleCredentialResponse } from './auth.js';
+import { getLoggedUser, logout, loginWithName } from './auth.js';
+import { promptSave } from './services/fileSave.js';
 import { exportToTxt } from './utils.js';
 import { renderRotina, mountRotina } from './views/rotina.js';
 import { renderBiblia, mountBiblia } from './views/biblia.js';
@@ -17,6 +18,10 @@ import { renderProjetos, mountProjetos } from './views/projetos.js';
 import { renderNotion, mountNotion } from './views/notion.js';
 
 const loginScreen = document.getElementById('login-screen');
+const loginForm = document.getElementById('login-form');
+const loginUsername = document.getElementById('login-username');
+const loginSubmit = document.getElementById('login-submit');
+const loginError = document.getElementById('login-error');
 const appLayout = document.getElementById('app-layout');
 const userAvatar = document.getElementById('user-avatar');
 const userName = document.getElementById('user-name');
@@ -24,7 +29,6 @@ const appContent = document.getElementById('app-content');
 const navItems = document.querySelectorAll('.nav-item');
 const btnExport = document.getElementById('btn-export');
 const btnLogout = document.getElementById('btn-logout');
-const loginError = document.getElementById('login-error');
 
 const views = {
   rotina: { render: renderRotina, mount: mountRotina },
@@ -79,25 +83,39 @@ function showError(msg) {
   loginError.style.display = 'block';
 }
 
-function onGoogleLogin(googleResponse) {
-  try {
-    const user = handleCredentialResponse(googleResponse);
-    startApp(user);
-  } catch (err) {
-    showError('Erro ao processar login: ' + err.message);
+function clearError() {
+  loginError.style.display = 'none';
+}
+
+loginForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  clearError();
+
+  const name = loginUsername.value.trim();
+  if (!name) {
+    showError('Digite seu nome.');
+    return;
   }
-}
 
-function initLogin() {
-  initGoogleAuth(onGoogleLogin);
-
-  setTimeout(() => {
-    renderGoogleButton('google-btn-container');
-  }, 500);
-}
+  const result = loginWithName(name);
+  if (result.ok) {
+    startApp(result.user);
+  } else {
+    showError(result.error);
+  }
+});
 
 if (btnExport) {
-  btnExport.addEventListener('click', exportToTxt);
+  btnExport.addEventListener('click', async () => {
+    const saved = await promptSave();
+    if (saved) {
+      const status = document.createElement('div');
+      status.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#10b981;color:#fff;padding:12px 20px;border-radius:12px;font-size:0.85rem;font-weight:600;z-index:9999;box-shadow:0 4px 12px rgba(16,185,129,0.3);';
+      status.textContent = 'Dados salvos com sucesso!';
+      document.body.appendChild(status);
+      setTimeout(() => status.remove(), 3000);
+    }
+  });
 }
 
 if (btnLogout) {
@@ -111,6 +129,4 @@ if (btnLogout) {
 const user = getLoggedUser();
 if (user) {
   startApp(user);
-} else {
-  initLogin();
 }
