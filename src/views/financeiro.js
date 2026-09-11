@@ -1,63 +1,56 @@
-const questions = [
-  { q: 'Evite lugares que te levam a gastar', a: 'Identifique seus gatilhos de consumo e corte a exposição a eles.' },
-  { q: 'Você está preparado?', a: 'Se a resposta for "Não", deixe quieto e preserve seu dinheiro.' },
-  { q: 'Contas pagas?', a: 'Pague suas contas e custos essenciais rigorosamente em dia.' },
-  { q: 'Cartão de crédito quitado?', a: 'Quite o valor integral da fatura antes de pensar em novos parcelamentos.' },
-  { q: 'Reserva financeira para imprevistos?', a: 'Construa e preserve uma reserva de emergência intocável.' }
-];
+const STORAGE_KEY = 'zen-financeiro-data';
 
-const cutTips = [
-  'Assinaturas que não usa regularmente',
-  'Delivery excessivo (refeições em casa saem 3-5x mais baratas)',
-  'Impulsos de "promoção" — se não estava no orçamento, não existe desconto',
-  'Comparação social — seu ritmo é o seu ritmo',
-  'Gastos com transporte quando dá para caminhar'
-];
+function load() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch {}
+  return { rules: [], cutTips: [], earnTips: [] };
+}
 
-const earnTips = [
-  'Freelances de programação ( Django, automação Python )',
-  'Projetos paralelos que geram renda passiva',
-  'Capacitação contínua = salários maiores',
-  'Networking estratégico — oportunidades vêm de contatos',
-  'Resolução de problemas reais = maior valor percebido'
-];
+function save(data) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
 
 export function renderFinanceiro() {
   return `
     <div class="financeiro-container">
       <header class="view-header">
         <h1 class="section-title">💰 Controle Financeiro</h1>
-        <p class="section-desc">Filosofia de gastos e regras práticas para quem trabalha duro pelo que tem.</p>
+        <p class="section-desc">Suas regras e dicas financeiras.</p>
       </header>
 
-      <div class="glass-panel quote-banner">
-        "O corre é dobrado para quem não nasceu herdeiro!"
-      </div>
-
       <div class="finance-rules glass-panel">
-        <h2 class="sub-title"><i class="fas fa-question-circle"></i> Antes de Gastar, Pergunte-se:</h2>
-        <div class="rules-list">
-          ${questions.map(q => `
-            <div class="rule-item">
-              <div class="rule-q">${q.q}</div>
-              <div class="rule-a">${q.a}</div>
-            </div>
-          `).join('')}
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
+          <h2 class="sub-title" style="margin:0;"><i class="fas fa-question-circle"></i> Perguntas Antes de Gastar</h2>
+          <button class="accent-btn" id="add-rule-btn"><i class="fas fa-plus"></i></button>
+        </div>
+        <div id="rules-list"></div>
+        <div id="rules-empty" class="empty-state" style="display:none; padding:20px;">
+          <p>Nenhuma regra ainda.</p>
         </div>
       </div>
 
-      <div class="finance-tips-grid">
+      <div class="finance-tips-grid" style="margin-top:24px;">
         <div class="tips-card glass-panel">
-          <h3><i class="fas fa-arrow-down" style="color:#ef4444"></i> Cortar Gastos</h3>
-          <ul>
-            ${cutTips.map(t => `<li>${t}</li>`).join('')}
-          </ul>
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+            <h3 style="margin:0;"><i class="fas fa-arrow-down" style="color:#ef4444"></i> Cortar Gastos</h3>
+            <button class="accent-btn" id="add-cut-btn" style="padding:6px 10px; font-size:0.75rem;"><i class="fas fa-plus"></i></button>
+          </div>
+          <div id="cut-list"></div>
+          <div id="cut-empty" class="empty-state" style="display:none; padding:16px;">
+            <p>Nenhuma dica ainda.</p>
+          </div>
         </div>
         <div class="tips-card glass-panel">
-          <h3><i class="fas fa-arrow-up" style="color:#34e0a1"></i> Aumentar Receita</h3>
-          <ul>
-            ${earnTips.map(t => `<li>${t}</li>`).join('')}
-          </ul>
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+            <h3 style="margin:0;"><i class="fas fa-arrow-up" style="color:#34e0a1"></i> Aumentar Receita</h3>
+            <button class="accent-btn" id="add-earn-btn" style="padding:6px 10px; font-size:0.75rem;"><i class="fas fa-plus"></i></button>
+          </div>
+          <div id="earn-list"></div>
+          <div id="earn-empty" class="empty-state" style="display:none; padding:16px;">
+            <p>Nenhuma dica ainda.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -65,5 +58,100 @@ export function renderFinanceiro() {
 }
 
 export function mountFinanceiro() {
-  // Static view
+  const rulesList = document.getElementById('rules-list');
+  const rulesEmpty = document.getElementById('rules-empty');
+  const cutList = document.getElementById('cut-list');
+  const cutEmpty = document.getElementById('cut-empty');
+  const earnList = document.getElementById('earn-list');
+  const earnEmpty = document.getElementById('earn-empty');
+  const addRuleBtn = document.getElementById('add-rule-btn');
+  const addCutBtn = document.getElementById('add-cut-btn');
+  const addEarnBtn = document.getElementById('add-earn-btn');
+
+  let data = load();
+
+  function renderRules() {
+    if (data.rules.length === 0) {
+      rulesList.innerHTML = '';
+      rulesEmpty.style.display = 'block';
+      return;
+    }
+    rulesEmpty.style.display = 'none';
+    rulesList.innerHTML = data.rules.map((r, i) => `
+      <div class="fin-edit-row">
+        <input class="fin-input" data-arr="rules" data-i="${i}" data-field="q" value="${(r.q || '').replace(/"/g, '&quot;')}" placeholder="Pergunta">
+        <input class="fin-input" data-arr="rules" data-i="${i}" data-field="a" value="${(r.a || '').replace(/"/g, '&quot;')}" placeholder="Resposta">
+        <button class="fin-del" data-arr="rules" data-i="${i}"><i class="fas fa-times"></i></button>
+      </div>
+    `).join('');
+    bindEvents(rulesList);
+  }
+
+  function renderTips(arr, listEl, emptyEl) {
+    if (arr.length === 0) {
+      listEl.innerHTML = '';
+      emptyEl.style.display = 'block';
+      return;
+    }
+    emptyEl.style.display = 'none';
+    listEl.innerHTML = arr.map((t, i) => `
+      <div class="fin-edit-row">
+        <input class="fin-input fin-tip-input" data-arr="${arr === data.cutTips ? 'cutTips' : 'earnTips'}" data-i="${i}" value="${(t || '').replace(/"/g, '&quot;')}" placeholder="Dica">
+        <button class="fin-del" data-arr="${arr === data.cutTips ? 'cutTips' : 'earnTips'}" data-i="${i}"><i class="fas fa-times"></i></button>
+      </div>
+    `).join('');
+    bindEvents(listEl);
+  }
+
+  function bindEvents(container) {
+    container.querySelectorAll('.fin-input').forEach(el => {
+      el.addEventListener('input', () => {
+        const arr = el.dataset.arr;
+        const i = +el.dataset.i;
+        const field = el.dataset.field;
+        if (field) {
+          data[arr][i][field] = el.value;
+        } else {
+          data[arr][i] = el.value;
+        }
+        save(data);
+      });
+    });
+
+    container.querySelectorAll('.fin-del').forEach(el => {
+      el.addEventListener('click', () => {
+        const arr = el.dataset.arr;
+        const i = +el.dataset.i;
+        data[arr].splice(i, 1);
+        save(data);
+        renderAll();
+      });
+    });
+  }
+
+  function renderAll() {
+    renderRules();
+    renderTips(data.cutTips, cutList, cutEmpty);
+    renderTips(data.earnTips, earnList, earnEmpty);
+  }
+
+  addRuleBtn.addEventListener('click', () => {
+    data.rules.push({ q: '', a: '' });
+    save(data);
+    renderAll();
+  });
+
+  addCutBtn.addEventListener('click', () => {
+    data.cutTips.push('');
+    save(data);
+    renderAll();
+  });
+
+  addEarnBtn.addEventListener('click', () => {
+    data.earnTips.push('');
+    save(data);
+    renderAll();
+  });
+
+  renderAll();
 }

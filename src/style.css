@@ -2412,3 +2412,313 @@ button:disabled {
 .proj-del {
   color: #ef4444;
 }
+
+.workout-textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-family: inherit;
+  resize: vertical;
+  box-sizing: border-box;
+  margin-top: 8px;
+}
+
+.workout-textarea:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.meas-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.meas-name-input {
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: inherit;
+  flex: 1;
+  padding: 4px 0;
+  border-bottom: 1px solid transparent;
+}
+
+.meas-name-input:focus {
+  border-bottom-color: var(--accent);
+  outline: none;
+}
+
+.meas-card-btns {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.meas-color {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  background: none;
+  padding: 0;
+}
+
+.meas-del-person {
+  background: none;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  font-size: 0.8rem;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+
+.meas-del-person:hover { opacity: 1; }
+
+.meas-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.meas-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.meas-input {
+  flex: 1;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.meas-input:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.meas-del-row {
+  background: none;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  font-size: 0.75rem;
+  opacity: 0.4;
+  transition: opacity 0.2s;
+  padding: 4px;
+}
+
+.meas-del-row:hover { opacity: 1; }
+
+.meas-add-row {
+  background: rgba(255,255,255,0.03);
+  border: 1px dashed var(--border);
+  color: var(--text-muted);
+  padding: 6px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  font-family: inherit;
+  margin-top: 8px;
+  transition: all 0.2s;
+}
+
+.meas-add-row:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.hair-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.hair-day-input {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--accent);
+}
+
+.hair-input {
+  width: 100%;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-family: inherit;
+  box-sizing: border-box;
+  margin-bottom: 6px;
+}
+
+.hair-input:focus, .hair-textarea:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.hair-textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-family: inherit;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.hair-del {
+  background: none;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  font-size: 0.8rem;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+  padding: 4px;
+}
+
+.hair-del:hover { opacity: 1; }
+
+.fin-edit-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.fin-input {
+  flex: 1;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.fin-input:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.fin-tip-input {
+  flex: 1;
+}
+
+.fin-del {
+  background: none;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  font-size: 0.75rem;
+  opacity: 0.4;
+  transition: opacity 0.2s;
+  padding: 6px;
+}
+
+.fin-del:hover { opacity: 1; }
+
+.notion-config {
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.notion-config-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.notion-config-header i {
+  color: var(--accent);
+  font-size: 1.2rem;
+}
+
+.notion-config-header h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.notion-config-desc {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  margin-bottom: 20px;
+}
+
+.notion-config-field {
+  margin-bottom: 14px;
+}
+
+.notion-config-field label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.notion-config-input {
+  width: 100%;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-family: monospace;
+  box-sizing: border-box;
+}
+
+.notion-config-input:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.notion-config-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.notion-config-help {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.notion-config-help p { margin: 0 0 8px; }
+.notion-config-help ol { margin: 0; padding-left: 20px; }
+.notion-config-help a { color: var(--accent); }
+.notion-config-help strong { color: var(--text-primary); }

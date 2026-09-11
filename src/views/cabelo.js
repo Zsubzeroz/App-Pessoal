@@ -1,31 +1,31 @@
-const hairSchedule = [
-  { day: 'Segunda', activity: 'Lavagem + Condicionamento + Finalização', details: 'Utilize shampoo sem sulfato e condicionador específico para cachos. Finalize com leave-in e ativador.' },
-  { day: 'Terça', activity: 'Revitalização (se necessário)', details: 'Borrifar água com leave-in ou ativador para reativar a curvatura e controlar o frizz.' },
-  { day: 'Quarta', activity: 'Pausa Total (Day Off)', details: 'Simplesmente não fazer nada. Aplicar spray ou tônico suave apenas se necessário.' },
-  { day: 'Quinta', activity: 'Hidratação Profunda (Opcional)', details: 'Máscara de hidratação após a lavagem (ou substituir por co-wash + máscara nutritiva).' },
-  { day: 'Sexta', activity: 'Pausa Total (Day Off)', details: 'Manter livre. Tônico no couro cabeludo se sentir ressecamento.' },
-  { day: 'Sábado', activity: 'Lavagem + Condicionamento + Umectação', details: 'Se optar pela umectação, aplique o óleo vegetal antes da lavagem ou como pré-shampoo.' },
-  { day: 'Domingo', activity: 'Revitalização leve', details: 'Ajuste pontual dos cachos amassados ao acordar.' }
-];
+const STORAGE_KEY = 'zen-cabelo-data';
+
+function load() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch { return []; }
+}
+
+function save(data) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+function emptyDay() {
+  return { day: '', activity: '', details: '' };
+}
 
 export function renderCabelo() {
   return `
     <div class="cabelo-container">
       <header class="view-header">
         <h1 class="section-title">💈 Cronograma Capilar</h1>
-        <p class="section-desc">7 dias de cuidados para cabelo cacheado — faithfully preserved from original document.</p>
+        <p class="section-desc">Organize seus cuidados semanais.</p>
+        <button class="accent-btn" id="new-hair-btn"><i class="fas fa-plus"></i> Novo Dia</button>
       </header>
 
       <div class="hair-schedule glass-panel">
-        <div class="hair-grid">
-          ${hairSchedule.map((h, i) => `
-            <div class="hair-day-card ${h.activity.includes('Pausa') ? 'rest-day' : ''}">
-              <div class="hair-day-num">${i + 1}</div>
-              <div class="hair-day-name">${h.day}</div>
-              <div class="hair-activity">${h.activity}</div>
-              <div class="hair-details">${h.details}</div>
-            </div>
-          `).join('')}
+        <div class="hair-grid" id="hair-grid"></div>
+        <div id="hair-empty" class="empty-state" style="display:none;">
+          <i class="fas fa-cut"></i>
+          <p>Nenhum dia ainda. Clique em "Novo Dia" para começar.</p>
         </div>
       </div>
     </div>
@@ -33,5 +33,59 @@ export function renderCabelo() {
 }
 
 export function mountCabelo() {
-  // Static view
+  const grid = document.getElementById('hair-grid');
+  const emptyState = document.getElementById('hair-empty');
+  const newBtn = document.getElementById('new-hair-btn');
+  let data = load();
+
+  function render() {
+    if (data.length === 0) {
+      grid.innerHTML = '';
+      emptyState.style.display = 'block';
+      return;
+    }
+    emptyState.style.display = 'none';
+    grid.innerHTML = data.map((h, i) => `
+      <div class="hair-day-card">
+        <div class="hair-card-top">
+          <input class="hair-input hair-day-input" data-i="${i}" data-field="day" value="${(h.day || '').replace(/"/g, '&quot;')}" placeholder="Dia">
+          <button class="hair-del" data-i="${i}"><i class="fas fa-trash"></i></button>
+        </div>
+        <input class="hair-input" data-i="${i}" data-field="activity" value="${(h.activity || '').replace(/"/g, '&quot;')}" placeholder="Atividade">
+        <textarea class="hair-textarea" data-i="${i}" placeholder="Detalhes..." rows="2">${h.details || ''}</textarea>
+      </div>
+    `).join('');
+
+    grid.querySelectorAll('[data-field]').forEach(el => {
+      el.addEventListener('input', () => {
+        data[+el.dataset.i][el.dataset.field] = el.value;
+        save(data);
+      });
+    });
+
+    grid.querySelectorAll('.hair-textarea').forEach(el => {
+      el.addEventListener('input', () => {
+        data[+el.dataset.i].details = el.value;
+        save(data);
+      });
+    });
+
+    grid.querySelectorAll('.hair-del').forEach(el => {
+      el.addEventListener('click', () => {
+        if (confirm('Excluir este dia?')) {
+          data.splice(+el.dataset.i, 1);
+          save(data);
+          render();
+        }
+      });
+    });
+  }
+
+  newBtn.addEventListener('click', () => {
+    data.push(emptyDay());
+    save(data);
+    render();
+  });
+
+  render();
 }

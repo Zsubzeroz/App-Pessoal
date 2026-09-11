@@ -1,48 +1,34 @@
-const workoutDays = [
-  { day: 'Segunda', focus: 'Bíceps & Costas', routine: 'Aquecimento sem peso, musculação com carga progressiva, Pulley Frente, Rosca Direta.' },
-  { day: 'Terça', focus: 'Abdômen & Cardio', routine: 'Pular corda, Pulley corda, circuitos abdominais.' },
-  { day: 'Quarta', focus: 'Pernas / Recuperação', routine: '150 Repetições de Agachamento, Tríceps testa na polia alta com corda.' },
-  { day: 'Quinta', focus: 'Tríceps & Peito', routine: 'Alongamento, Crucifixo Máquina, Supino Fechado / Flexão Fechada, Elevação Lateral.' },
-  { day: 'Sexta', focus: 'Panturrilha & Tríceps', routine: '3 Séries de Stiff, Tríceps Francês, elevação de panturrilha.' },
-  { day: 'Sábado', focus: 'Membros Inferiores', routine: '3 Séries Borboleta, Agachamento com peso (3x), Cadeira Extensora (3x), Stiff com barra (3x), Abdução de quadríceps (3x), Flexora em pé (2x).' },
-  { day: 'Domingo', focus: 'Descanso', routine: 'Recuperação muscular passiva.' }
+const STORAGE_KEY = 'zen-saude-data';
+
+const DEFAULT_WORKOUT = [
+  { day: 'Segunda', focus: 'Bíceps & Costas', routine: '' },
+  { day: 'Terça', focus: 'Abdômen & Cardio', routine: '' },
+  { day: 'Quarta', focus: 'Pernas / Recuperação', routine: '' },
+  { day: 'Quinta', focus: 'Tríceps & Peito', routine: '' },
+  { day: 'Sexta', focus: 'Panturrilha & Tríceps', routine: '' },
+  { day: 'Sábado', focus: 'Membros Inferiores', routine: '' },
+  { day: 'Domingo', focus: 'Descanso', routine: '' }
 ];
 
-const measurements = [
-  {
-    name: 'Luan Estifer',
-    color: '#34e0a1',
-    data: [
-      { part: 'Braço (Bíceps/Tríceps)', value: '32 D / 31 E' },
-      { part: 'Antebraço', value: '26 D / 26 E' },
-      { part: 'Peitoral', value: '93 cm' },
-      { part: 'Panturrilha', value: '32 D / 32,5 E' },
-      { part: 'Coxa', value: '51 D / 52 E' }
-    ]
-  },
-  {
-    name: 'Mamãe',
-    color: '#a855f7',
-    data: [
-      { part: 'Braço', value: '38 D / 40 E' },
-      { part: 'Antebraço', value: '30 D / 29 E' },
-      { part: 'Peito', value: '122 / 121 cm' },
-      { part: 'Barriga', value: '130 / 120 cm' },
-      { part: 'Panturrilha', value: '36 E' }
-    ]
-  },
-  {
-    name: 'Renan',
-    color: '#4fc3ff',
-    data: [
-      { part: 'Braço (Bíceps/Tríceps)', value: '33,5 D / 33,3 E' },
-      { part: 'Antebraço', value: '28 D / 28,5 E' },
-      { part: 'Peitoral', value: '97 cm' },
-      { part: 'Panturrilha', value: '37,5 D / 37 E' },
-      { part: 'Coxa', value: '60 D / 60 E' }
-    ]
-  }
-];
+function load() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch {}
+  return { workout: DEFAULT_WORKOUT, people: [] };
+}
+
+function save(data) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+function emptyPerson() {
+  return { name: '', color: '#34e0a1', data: [] };
+}
+
+function emptyMeasurement() {
+  return { part: '', value: '' };
+}
 
 export function renderSaude() {
   return `
@@ -54,33 +40,18 @@ export function renderSaude() {
 
       <div class="workout-section glass-panel">
         <h2 class="sub-title"><i class="fas fa-dumbbell"></i> Ficha de Treino Semanal</h2>
-        <div class="workout-grid">
-          ${workoutDays.map(w => `
-            <div class="workout-card ${w.focus === 'Descanso' ? 'rest-day' : ''}">
-              <div class="workout-day">${w.day}</div>
-              <div class="workout-focus">${w.focus}</div>
-              <div class="workout-routine">${w.routine}</div>
-            </div>
-          `).join('')}
-        </div>
+        <div class="workout-grid" id="workout-grid"></div>
       </div>
 
       <div class="measurements-section" style="margin-top:32px;">
-        <h2 class="sub-title"><i class="fas fa-ruler-vertical"></i> Medidas Corporais</h2>
-        <div class="measurements-grid">
-          ${measurements.map(m => `
-            <div class="measurement-card glass-panel">
-              <h3 style="color:${m.color}">${m.name}</h3>
-              <table class="data-table">
-                ${m.data.map(d => `
-                  <tr>
-                    <td>${d.part}</td>
-                    <td><strong>${d.value}</strong></td>
-                  </tr>
-                `).join('')}
-              </table>
-            </div>
-          `).join('')}
+        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+          <h2 class="sub-title" style="margin:0;"><i class="fas fa-ruler-vertical"></i> Medidas Corporais</h2>
+          <button class="accent-btn" id="new-person-btn"><i class="fas fa-user-plus"></i> Nova Pessoa</button>
+        </div>
+        <div class="measurements-grid" id="measurements-grid"></div>
+        <div id="measurements-empty" class="empty-state" style="display:none;">
+          <i class="fas fa-ruler"></i>
+          <p>Nenhuma medida ainda. Clique em "Nova Pessoa" para começar.</p>
         </div>
       </div>
     </div>
@@ -88,5 +59,123 @@ export function renderSaude() {
 }
 
 export function mountSaude() {
-  // Static view — no interactive events needed
+  const data = load();
+  const workoutGrid = document.getElementById('workout-grid');
+  const measGrid = document.getElementById('measurements-grid');
+  const measEmpty = document.getElementById('measurements-empty');
+  const newPersonBtn = document.getElementById('new-person-btn');
+
+  function renderWorkout() {
+    workoutGrid.innerHTML = data.workout.map((w, i) => `
+      <div class="workout-card ${w.focus === 'Descanso' ? 'rest-day' : ''}">
+        <div class="workout-day">${w.day}</div>
+        <div class="workout-focus">${w.focus}</div>
+        <textarea class="workout-textarea" data-i="${i}" placeholder="Descrição do treino..." rows="3">${w.routine || ''}</textarea>
+      </div>
+    `).join('');
+
+    workoutGrid.querySelectorAll('.workout-textarea').forEach(el => {
+      el.addEventListener('input', () => {
+        data.workout[+el.dataset.i].routine = el.value;
+        save(data);
+      });
+    });
+  }
+
+  function renderMeasurements() {
+    if (data.people.length === 0) {
+      measGrid.innerHTML = '';
+      measEmpty.style.display = 'block';
+      return;
+    }
+    measEmpty.style.display = 'none';
+
+    measGrid.innerHTML = data.people.map((p, pi) => `
+      <div class="measurement-card glass-panel">
+        <div class="meas-card-top">
+          <input class="meas-name-input" data-pi="${pi}" value="${(p.name || '').replace(/"/g, '&quot;')}" placeholder="Nome">
+          <div class="meas-card-btns">
+            <input type="color" class="meas-color" data-pi="${pi}" value="${p.color || '#34e0a1'}">
+            <button class="meas-del-person" data-pi="${pi}" title="Excluir pessoa"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>
+        <div class="meas-rows" id="meas-rows-${pi}">
+          ${p.data.map((d, di) => `
+            <div class="meas-row">
+              <input class="meas-input" data-pi="${pi}" data-di="${di}" data-field="part" value="${(d.part || '').replace(/"/g, '&quot;')}" placeholder="Parte do corpo">
+              <input class="meas-input" data-pi="${pi}" data-di="${di}" data-field="value" value="${(d.value || '').replace(/"/g, '&quot;')}" placeholder="Medida">
+              <button class="meas-del-row" data-pi="${pi}" data-di="${di}"><i class="fas fa-times"></i></button>
+            </div>
+          `).join('')}
+        </div>
+        <button class="meas-add-row" data-pi="${pi}"><i class="fas fa-plus"></i> Medida</button>
+      </div>
+    `).join('');
+
+    bindMeasurementEvents();
+  }
+
+  function bindMeasurementEvents() {
+    measGrid.querySelectorAll('.meas-name-input').forEach(el => {
+      el.addEventListener('input', () => {
+        data.people[+el.dataset.pi].name = el.value;
+        save(data);
+      });
+    });
+
+    measGrid.querySelectorAll('.meas-color').forEach(el => {
+      el.addEventListener('input', () => {
+        data.people[+el.dataset.pi].color = el.value;
+        save(data);
+      });
+    });
+
+    measGrid.querySelectorAll('.meas-input').forEach(el => {
+      el.addEventListener('input', () => {
+        const pi = +el.dataset.pi;
+        const di = +el.dataset.di;
+        const field = el.dataset.field;
+        data.people[pi].data[di][field] = el.value;
+        save(data);
+      });
+    });
+
+    measGrid.querySelectorAll('.meas-del-row').forEach(el => {
+      el.addEventListener('click', () => {
+        const pi = +el.dataset.pi;
+        const di = +el.dataset.di;
+        data.people[pi].data.splice(di, 1);
+        save(data);
+        renderMeasurements();
+      });
+    });
+
+    measGrid.querySelectorAll('.meas-add-row').forEach(el => {
+      el.addEventListener('click', () => {
+        const pi = +el.dataset.pi;
+        data.people[pi].data.push(emptyMeasurement());
+        save(data);
+        renderMeasurements();
+      });
+    });
+
+    measGrid.querySelectorAll('.meas-del-person').forEach(el => {
+      el.addEventListener('click', () => {
+        if (confirm('Excluir esta pessoa e todas as medidas?')) {
+          data.people.splice(+el.dataset.pi, 1);
+          save(data);
+          renderMeasurements();
+        }
+      });
+    });
+  }
+
+  newPersonBtn.addEventListener('click', () => {
+    data.people.push(emptyPerson());
+    save(data);
+    renderMeasurements();
+  });
+
+  renderWorkout();
+  renderMeasurements();
 }
