@@ -8,6 +8,12 @@ import { renderCurriculo, mountCurriculo } from './views/curriculo.js';
 import { renderIA, mountIA } from './views/ia.js';
 import { renderNotas, mountNotas } from './views/notas.js';
 import { renderChecklist, mountChecklist } from './views/checklist.js';
+import { renderCartas, mountCartas } from './views/cartas.js';
+import { renderEntrevistas, mountEntrevistas } from './views/entrevistas.js';
+import { renderSaude, mountSaude } from './views/saude.js';
+import { renderCabelo, mountCabelo } from './views/cabelo.js';
+import { renderFinanceiro, mountFinanceiro } from './views/financeiro.js';
+import { renderProjetos, mountProjetos } from './views/projetos.js';
 
 let isRegisterMode = false;
 
@@ -35,7 +41,13 @@ const views = {
   curriculo: { render: renderCurriculo, mount: mountCurriculo },
   ia: { render: renderIA, mount: mountIA },
   notas: { render: renderNotas, mount: mountNotas },
-  checklist: { render: renderChecklist, mount: mountChecklist }
+  checklist: { render: renderChecklist, mount: mountChecklist },
+  cartas: { render: renderCartas, mount: mountCartas },
+  entrevistas: { render: renderEntrevistas, mount: mountEntrevistas },
+  saude: { render: renderSaude, mount: mountSaude },
+  cabelo: { render: renderCabelo, mount: mountCabelo },
+  financeiro: { render: renderFinanceiro, mount: mountFinanceiro },
+  projetos: { render: renderProjetos, mount: mountProjetos }
 };
 
 function switchView(target) {
