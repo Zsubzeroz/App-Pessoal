@@ -11,24 +11,53 @@ Aplicação web SPA responsiva e moderna para organizar rotina, estudos, carreir
 | Módulo | Descrição |
 |--------|-----------|
 | **Minha Rotina** | Saudação dinâmica, relógio, Pomodoro 25/5, progresso diário, cronograma semanal editável |
-| **Plano Bíblico** | Leitura de 365 dias com checkboxes, barra de progresso, auto-reset |
-| **Zen AI** | Chat assistente com motor offline (Ollama) |
+| **Plano Bíblico** | Leitura de 365 dias com checkboxes, barra de progresso |
+| **Zen AI** | Chat assistente com API de IA (configurável) |
 | **Ideias & Notas** | Bloco de notas com organização via IA |
 | **Checklist** | Hábitos diários com reset automático + tarefas customizáveis |
 | **Gestão de Vagas** | Dashboard de candidaturas com status, métricas e CRUD |
-| **Currículo** | Editor live HTML/CSS com preview e impressão PDF |
+| **Currículo** | Editor live HTML/CSS com preview e impressão PDF + geração por IA |
+| **Cartas de Apresentação** | CRUD de cartas para cada vaga |
+| **Entrevistas** | Simulador de entrevistas com feedback por IA |
+| **Portfólio de Projetos** | CRUD de projetos pessoais |
+| **Pipeline Notion** | Kanban sincronizado com Notion (via API) |
+| **Treinos & Medidas** | Ficha de treino + medidas corporais editáveis |
+| **Cronograma Capilar** | Agenda semanal de cuidados |
+| **Controle Financeiro** | Regras e dicas financeiras editáveis |
 
-## Login Google
+## API de IA (Obrigatória para funcionalidades de IA)
 
-O app utiliza **Google Identity Services** para autenticação. Cada usuário visualiza apenas seus próprios dados. Sem conta Google, o app não funciona.
+Os módulos **Zen AI**, **Análise de Vagas**, **Geração de Currículo** e **Feedback de Entrevistas** precisam de uma **API Key** para funcionar.
 
-## Exportação TXT Criptografado
+### Como configurar
+
+1. Abra o módulo **Zen AI** no menu lateral
+2. Clique no botão **Config** (ícone de engrenagem)
+3. Cole sua **API Key** e, se necessário, altere a **Base URL**
+4. Clique em **Salvar**
+
+### Opções de API compatíveis
+
+| Provedor | URL | Modelos | Custo |
+|----------|-----|---------|-------|
+| **B.AI** | https://b.ai | MiMo-V2.5, Qwen3.8-Flash, GLM-5.3-Flash | Pago |
+| **OpenRouter** | https://openrouter.ai | Vários modelos (incluindo gratuitos) | Free tier |
+| **Groq** | https://console.groq.com | Llama, Mixtral | Free tier rápido |
+| **OpenAI** | https://platform.openai.com | GPT-4o, GPT-4o-mini | Pago |
+
+Qualquer API compatível com o formato OpenAI Chat Completions funciona.
+
+## Login
+
+Login simples por nome — sem dependência de Google ou backend. Cada usuário visualiza apenas seus próprios dados (localStorage isolado por nome).
+
+## Exportação TXT
 
 - Botão **Exportar Dados** no menu lateral
-- Gera arquivo `.enc.txt` com AES-256-GCM
-- Criptografado com ID da conta Google do usuário
-- Apenas a mesma conta consegue descriptografar
-- Verifica duplicatas antes de baixar
+- Modal de permissão: "Deseja salvar seus dados?"
+- Se **Sim** → gera arquivo `.txt` no dispositivo (File System Access API ou download)
+- Se **Não** → mantém dados apenas no navegador
+- Verifica se o arquivo já existe antes de criar
 
 ## PWA (Progressive Web App)
 
@@ -43,8 +72,9 @@ O app pode ser instalado no mobile e desktop como um aplicativo nativo:
 - **Estilo**: CSS customizado com variáveis CSS
 - **Ícones**: Font Awesome 6
 - **Fontes**: Google Fonts (Inter)
-- **Criptografia**: Web Crypto API (AES-256-GCM, PBKDF2)
-- **Auth**: Google Identity Services
+- **Auth**: Login por nome (localStorage)
+- **IA**: API compatível OpenAI (B.AI, OpenRouter, Groq, etc.)
+- **Notion**: Notion API (Internal Integration)
 - **PWA**: vite-plugin-pwa + Workbox
 - **Deploy**: GitHub Pages
 
@@ -69,36 +99,25 @@ npm run dev
 
 ```
 App-Pessoal/
-├── .github/workflows/      # CI/CD (deploy GitHub Pages)
 ├── public/
 │   ├── manifest.json       # Manifest PWA
 │   ├── icon-192.svg        # Ícone PWA 192x192
 │   ├── icon-512.svg        # Ícone PWA 512x512
 │   └── favicon.svg         # Favicon
 ├── src/
-│   ├── auth.js             # Login/logout Google
-│   ├── crypto.js           # Criptografia AES-256-GCM
+│   ├── auth.js             # Login/logout por nome
 │   ├── storage.js          # localStorage por usuário
-│   ├── utils.js            # Funções utilitárias + export TXT
-│   ├── views/              # Componentes de cada módulo
+│   ├── utils.js            # Funções utilitárias
+│   ├── services/
+│   │   ├── aiService.js    # Integração com API de IA
+│   │   └── fileSave.js     # Salvar dados em .txt
+│   ├── views/              # 14 módulos (rotina, biblia, ia, etc.)
 │   ├── main.js             # Router + fluxo de auth
 │   └── style.css           # Design system global
 ├── index.html              # Shell HTML com login + app
 ├── vite.config.js          # Configuração Vite + PWA
-├── CHANGELOG.txt           # Histórico de alterações
 └── package.json
 ```
-
-## Configuração Google OAuth
-
-Para habilitar o login Google:
-
-1. Acesse o [Google Cloud Console](https://console.cloud.google.com/)
-2. Crie um projeto ou selecione um existente
-3. Ative o **Google Identity Services**
-4. Crie um **OAuth 2.0 Client ID** (tipo: Web application)
-5. Adicione o domínio do GitHub Pages nos Authorized JavaScript origins
-6. Substitua `SEU_CLIENT_ID_AQUI` em `src/main.js`
 
 ## Licença
 
