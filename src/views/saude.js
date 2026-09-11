@@ -10,11 +10,7 @@ const DEFAULT_WORKOUT = [
   { day: 'Domingo', focus: 'Descanso', routine: '' }
 ];
 
-const DEFAULT_PEOPLE = [
-  { name: 'Luan Estifer', color: '#34e0a1', data: [] },
-  { name: 'Mamãe', color: '#a855f7', data: [] },
-  { name: 'Renan', color: '#4fc3ff', data: [] }
-];
+const DEFAULT_PEOPLE = [];
 
 function load() {
   try {
