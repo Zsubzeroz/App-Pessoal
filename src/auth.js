@@ -1,89 +1,80 @@
-const USERS_KEY = 'central-users';
-
-function getUsers() {
-  try {
-    return JSON.parse(localStorage.getItem(USERS_KEY) || '{}');
-  } catch {
-    return {};
-  }
-}
-
-function saveUsers(users) {
-  localStorage.setItem(USERS_KEY, JSON.stringify(users));
-}
-
-async function hashPassword(password) {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(password);
-  const hash = await crypto.subtle.digest('SHA-256', data);
-  return bufToBase64(hash);
-}
-
-function bufToBase64(buffer) {
-  const bytes = new Uint8Array(buffer);
-  let binary = '';
-  for (let i = 0; i < bytes.byteLength; i++) {
-    binary += String.fromCharCode(bytes[i]);
-  }
-  return btoa(binary);
-}
+const USER_KEY = 'central-user';
 
 export function getLoggedUser() {
   try {
-    const data = localStorage.getItem('central-user');
+    const data = localStorage.getItem(USER_KEY);
     return data ? JSON.parse(data) : null;
   } catch {
     return null;
   }
 }
 
-export async function register(username, password) {
-  const users = getUsers();
-  const key = username.toLowerCase().trim();
-
-  if (users[key]) {
-    return { ok: false, error: 'Usuário já existe.' };
-  }
-
-  if (key.length < 3) {
-    return { ok: false, error: 'Usuário deve ter pelo menos 3 caracteres.' };
-  }
-
-  if (password.length < 4) {
-    return { ok: false, error: 'Senha deve ter pelo menos 4 caracteres.' };
-  }
-
-  const hash = await hashPassword(password);
-  users[key] = { username: key, hash, createdAt: new Date().toISOString() };
-  saveUsers(users);
-
-  const user = { email: key, name: username, picture: '', sub: key };
-  localStorage.setItem('central-user', JSON.stringify(user));
-
-  return { ok: true, user };
-}
-
-export async function login(username, password) {
-  const users = getUsers();
-  const key = username.toLowerCase().trim();
-  const user = users[key];
-
-  if (!user) {
-    return { ok: false, error: 'Usuário não encontrado.' };
-  }
-
-  const hash = await hashPassword(password);
-  if (hash !== user.hash) {
-    return { ok: false, error: 'Senha incorreta.' };
-  }
-
-  const loggedUser = { email: key, name: user.username, picture: '', sub: key };
-  localStorage.setItem('central-user', JSON.stringify(loggedUser));
-
-  return { ok: true, user: loggedUser };
+function setUser(user) {
+  localStorage.setItem(USER_KEY, JSON.stringify(user));
 }
 
 export function logout() {
-  localStorage.removeItem('central-user');
+  localStorage.removeItem(USER_KEY);
+  if (window.google?.accounts?.id) {
+    window.google.accounts.id.disableAutoSelect();
+  }
   location.reload();
+}
+
+export function initGoogleAuth(handleCredential) {
+  const CLIENT_ID = 'SEU_CLIENT_ID_AQUI.apps.googleusercontent.com';
+
+  const script = document.createElement('script');
+  script.src = 'https://accounts.google.com/gsi/client';
+  script.async = true;
+  script.defer = true;
+  script.onload = () => {
+    window.google.accounts.id.initialize({
+      client_id: CLIENT_ID,
+      callback: handleCredential,
+      auto_select: false
+    });
+  };
+  document.head.appendChild(script);
+}
+
+export function renderGoogleButton(containerId) {
+  if (!window.google?.accounts?.id) return;
+
+  window.google.accounts.id.renderButton(
+    document.getElementById(containerId),
+    {
+      type: 'standard',
+      theme: 'filled_black',
+      size: 'large',
+      text: 'continue_with',
+      shape: 'pill',
+      width: 300
+    }
+  );
+}
+
+export function handleCredentialResponse(response) {
+  const payload = decodeJwtPayload(response.credential);
+
+  const user = {
+    email: payload.email,
+    name: payload.name || payload.given_name || payload.email,
+    picture: payload.picture || '',
+    sub: payload.sub
+  };
+
+  setUser(user);
+  return user;
+}
+
+function decodeJwtPayload(token) {
+  const base64Url = token.split('.')[1];
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  const jsonPayload = decodeURIComponent(
+    atob(base64).split('').map(c =>
+      '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+    ).join('')
+  );
+  return JSON.parse(jsonPayload);
 }
