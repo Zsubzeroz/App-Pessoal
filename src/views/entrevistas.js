@@ -1,3 +1,5 @@
+import { interviewFeedback } from '../services/aiService.js';
+
 const qaQuestions = [
   {
     q: '1) Me conte sobre você e sua trajetória até chegar em Python e IA.',
@@ -44,6 +46,31 @@ const pitchSchedule = [
   { time: '1:50 – 2:00', step: 'Fechamento', msg: 'Compromisso em gerar valor e convite para entrevista técnica.' }
 ];
 
+function showFeedbackModal(content) {
+  let modal = document.getElementById('feedback-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'feedback-modal';
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+      <div class="modal-content glass-panel" style="max-width:600px">
+        <div class="modal-header">
+          <h3>Feedback da IA</h3>
+          <button class="modal-close-btn" onclick="this.closest('.modal-overlay').style.display='none'">&times;</button>
+        </div>
+        <div class="modal-body"></div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.style.display = 'none';
+    });
+  }
+
+  modal.querySelector('.modal-body').innerHTML = content;
+  modal.style.display = 'flex';
+}
+
 export function renderEntrevistas() {
   return `
     <div class="entrevistas-container">
@@ -68,6 +95,21 @@ export function renderEntrevistas() {
         `).join('')}
       </div>
 
+      <div class="section-title" style="margin-top:32px">Pedir Feedback da IA</div>
+      <div class="glass-panel" style="padding:24px">
+        <div class="v-input-group">
+          <label>Pergunta da entrevista</label>
+          <input type="text" id="fb-pergunta" placeholder="Ex: Conte sobre um projeto que você fez...">
+        </div>
+        <div class="v-input-group" style="margin-top:12px">
+          <label>Sua resposta</label>
+          <textarea id="fb-resposta" rows="4" style="width:100%; background:var(--bg-input); border:1px solid var(--border); color:var(--text-main); padding:12px; border-radius:8px; font-family:inherit; resize:vertical;" placeholder="Cole ou digite sua resposta..."></textarea>
+        </div>
+        <button id="fb-submit" class="btn-primary" style="margin-top:12px">
+          <i class="fas fa-magic"></i> Pedir Feedback
+        </button>
+      </div>
+
       <div class="section-title" style="margin-top:32px">Roteiro do Vídeo Pitch (2 minutos)</div>
       <div class="pitch-table glass-panel">
         <table>
@@ -90,10 +132,63 @@ export function renderEntrevistas() {
 }
 
 export function mountEntrevistas() {
-  // Accordion for QA cards
   document.querySelectorAll('.qa-card').forEach(card => {
     card.addEventListener('click', () => {
       card.classList.toggle('expanded');
     });
   });
+
+  const fbSubmit = document.getElementById('fb-submit');
+  if (fbSubmit) {
+    fbSubmit.addEventListener('click', async () => {
+      const pergunta = document.getElementById('fb-pergunta').value.trim();
+      const resposta = document.getElementById('fb-resposta').value.trim();
+      if (!pergunta || !resposta) {
+        alert('Preencha a pergunta e a resposta.');
+        return;
+      }
+
+      showFeedbackModal('<div class="notion-loading"><i class="fas fa-spinner fa-spin"></i> Analisando sua resposta...</div>');
+
+      try {
+        const result = await interviewFeedback(pergunta, resposta);
+
+        if (result.nota !== undefined) {
+          const notaColor = result.nota >= 7 ? '#10b981' : result.nota >= 5 ? '#f59e0b' : '#ef4444';
+          showFeedbackModal(`
+            <div class="analysis-result">
+              <div class="analysis-score">
+                <div class="score-circle" style="--score-color:${notaColor}">
+                  <span class="score-num">${result.nota}</span>
+                  <span class="score-label">Nota</span>
+                </div>
+              </div>
+              ${result.pontosFortes?.length ? `
+                <div class="analysis-section">
+                  <h4 style="color:#10b981">Pontos Fortes</h4>
+                  <ul>${result.pontosFortes.map(p => `<li>${p}</li>`).join('')}</ul>
+                </div>
+              ` : ''}
+              ${result.melhorias?.length ? `
+                <div class="analysis-section">
+                  <h4 style="color:#f59e0b">Melhorias Sugeridas</h4>
+                  <ul>${result.melhorias.map(p => `<li>${p}</li>`).join('')}</ul>
+                </div>
+              ` : ''}
+              ${result.respostaModelo ? `
+                <div class="analysis-section">
+                  <h4 style="color:#3b82f6">Resposta Modelo</h4>
+                  <p style="white-space:pre-wrap">${result.respostaModelo}</p>
+                </div>
+              ` : ''}
+            </div>
+          `);
+        } else {
+          showFeedbackModal(`<p style="color:#cbd5e1; white-space:pre-wrap">${typeof result === 'string' ? result : JSON.stringify(result)}</p>`);
+        }
+      } catch (err) {
+        showFeedbackModal(`<p style="color:#ef4444">Erro: ${err.message}</p>`);
+      }
+    });
+  }
 }

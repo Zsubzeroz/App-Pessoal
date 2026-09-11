@@ -14,6 +14,7 @@ import { renderSaude, mountSaude } from './views/saude.js';
 import { renderCabelo, mountCabelo } from './views/cabelo.js';
 import { renderFinanceiro, mountFinanceiro } from './views/financeiro.js';
 import { renderProjetos, mountProjetos } from './views/projetos.js';
+import { renderNotion, mountNotion } from './views/notion.js';
 
 let isRegisterMode = false;
 
@@ -47,7 +48,8 @@ const views = {
   saude: { render: renderSaude, mount: mountSaude },
   cabelo: { render: renderCabelo, mount: mountCabelo },
   financeiro: { render: renderFinanceiro, mount: mountFinanceiro },
-  projetos: { render: renderProjetos, mount: mountProjetos }
+  projetos: { render: renderProjetos, mount: mountProjetos },
+  notion: { render: renderNotion, mount: mountNotion }
 };
 
 function switchView(target) {
