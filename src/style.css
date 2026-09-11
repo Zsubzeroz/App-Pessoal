@@ -64,7 +64,7 @@ body {
 }
 
 .sidebar-header {
-  padding: 48px 32px;
+  padding: 32px 24px;
   text-align: left;
 }
 
@@ -105,22 +105,24 @@ body {
   padding: 0 12px;
   gap: 4px;
   flex: 1;
+  overflow-y: auto;
 }
 
 .nav-item {
   background: transparent;
   border: none;
   color: var(--text-muted);
-  padding: 12px 20px;
+  padding: 10px 16px;
   text-align: left;
   border-radius: 12px;
   cursor: pointer;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 500;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
 }
 
 .nav-item i {
@@ -146,7 +148,7 @@ body {
 .nav-item.active i { opacity: 1; color: var(--accent); }
 
 .sidebar-footer {
-  padding: 24px;
+  padding: 16px 24px;
   border-top: 1px solid var(--border);
   font-size: 0.65rem;
   color: #333;
